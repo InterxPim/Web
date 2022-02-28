@@ -1,6 +1,8 @@
 
 import React from "react";
 import axios from "axios";
+
+import { useToast } from '@chakra-ui/react'
 // Chakra imports
 import {
     Flex,
@@ -10,13 +12,23 @@ import {
     Th,
     Thead,
     Tr,
+    Input,
+    InputGroup,
     Select,
+    InputLeftElement,
     Icon,
     Button,
 } from "@chakra-ui/react";
 import {
     FaPlus,
 } from "react-icons/fa";
+import {
+  AiOutlineFontColors,
+  AiFillPhone,
+  AiOutlineEnvironment,
+  AiOutlineMail,
+  AiTwotoneCalendar
+} from "react-icons/ai";
 import {
     Modal,
     ModalOverlay,
@@ -27,7 +39,6 @@ import {
     ModalCloseButton,
     FormControl,
     FormLabel,
-    Input
   } from "@chakra-ui/react"
 // Custom components
 import Card from "components/Card/Card.js";
@@ -56,7 +67,8 @@ class Users extends React.Component {
       gender: '',
       situationF: '',
       age: '',
-      password:'',
+      //password:'',
+      hospital:'',
       modalIsOpen: false,
       resdata:[]
     }
@@ -75,9 +87,11 @@ class Users extends React.Component {
         email: this.state.email,
         birthday: this.state.birthday,
         age: this.state.age,
-        password:this.state.password,
+        //password:this.state.password,
         situationF: this.state.situationF,
         gender: this.state.gender,
+        hospital:sessionStorage.getItem("id"),
+
       }
       axios.post("http://localhost:9091/api/users/createUsers", user)
         .then(res => {
@@ -112,7 +126,7 @@ class Users extends React.Component {
                     <CardHeader p="6px 0px 22px 0px">
                         <Flex justify="space-between" align="center" mb="1rem" w="100%">
                             <Text fontSize="xl" color={"gray.700"} fontWeight="bold">
-                                Users for your Hospital
+                                Employes for your Hospital
                             </Text>
                             <Button
                                 colorScheme="teal"
@@ -192,19 +206,66 @@ class Users extends React.Component {
                             py="1rem"
                             padding="2px"
                         >
+                            <InputGroup>
+                      <InputLeftElement
+                        pointerEvents='none'
+                        children={<AiOutlineFontColors color='gray.300' />}
+                      />
                      <Input onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
-                                 
+                          </InputGroup>     
+                          <InputGroup>
+                      <InputLeftElement
+                        pointerEvents='none'
+                        children={<AiOutlineFontColors color='gray.300' />}
+                      />  
                      <Input onChange={(event) => this.handleChange(event, "lastname")} placeholder="Nom" />
+                     </InputGroup>
                     </Flex>
-                     <FormLabel>Téléphone</FormLabel>
+                    
+                    <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiFillPhone color='gray.300' />}
+                    />
                      <Input onChange={(event) => this.handleChange(event, "phone")} placeholder="Téléphone" />
+                     </InputGroup>
                      <FormLabel>Email</FormLabel>
+                     <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiOutlineMail color='gray.300' />}
+                    />
                      <Input type="email"  onChange={(event) => this.handleChange(event, "email")} placeholder="email" />
+                     </InputGroup>
                      <FormLabel>age</FormLabel>
                      <Input onChange={(event) => this.handleChange(event, "age")} placeholder="age" />
                      <FormLabel>birthday</FormLabel>
+                     <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiTwotoneCalendar color='gray.300' />}
+                    />
                      <Input onChange={(event) => this.handleChange(event, "birthday")} placeholder="birthday" />
-                     <FormLabel>gender</FormLabel>
+                     </InputGroup>
+                     <Flex
+                    direction={{ sm: "column", md: "row" }}
+                    align="center"
+                    w="100%"
+                    justify="center"
+                    py="1rem"
+                    padding="2px"
+                  >
+                     <FormLabel></FormLabel>
+                     
+                     </Flex>
+                     <Flex
+                            direction={{ sm: "column", md: "row" }}
+                            align="center"
+                            w="100%"
+                            justify="center"
+                            py="1rem"
+                            padding="2px"
+                        >
                      <Select fontSize="sm"
                             ms="4px"
                             borderRadius="15px"
@@ -215,7 +276,7 @@ class Users extends React.Component {
                             <option value="femme">Femme</option>
                           
                         </Select>
-                    <FormLabel>situationF</FormLabel>
+                    
                      <Select fontSize="sm"
                             ms="4px"
                             borderRadius="15px"
@@ -227,13 +288,13 @@ class Users extends React.Component {
                             <option value="mariée">Mariée</option>
                             <option value="dévorcée">Dévorcée</option>
                         </Select>
-                      <FormLabel>password</FormLabel>
-                     <Input onChange={(event) => this.handleChange(event, "password")} placeholder="password" />
-                   
+                        </Flex>
+                     
                    </FormControl>
                  </ModalBody>
                  <ModalFooter>
-                   <Button type="submit" colorScheme="blue" mr={3}>
+                   <Button type="submit" bg="teal.300"
+                color="white" mr={3}>
                      Valider
                    </Button>
                    <Button onClick={() => { this.closeModal() }} >Annuler</Button>

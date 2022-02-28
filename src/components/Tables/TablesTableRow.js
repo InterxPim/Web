@@ -5,11 +5,20 @@ import {
   Icon,
   Flex,
   Td,
+  InputGroup,
+  InputLeftElement,
   Text,
   Select,
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
+import {
+  AiOutlineFontColors,
+  AiFillPhone,
+  AiOutlineEnvironment,
+  AiOutlineMail,
+  AiTwotoneCalendar
+} from "react-icons/ai";
 import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import {
   Popover,
@@ -38,7 +47,7 @@ import {
 } from "@chakra-ui/react"
 class TablesTableRowUser extends React.Component {
   componentDidMount() {
-    const { firstname, lastname, phone, age, email, birthday, gender, situationF, id } = this.props;
+    const { firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital } = this.props;
     this.setState({ firstname });
     this.setState({ lastname });
     this.setState({ phone });
@@ -48,6 +57,7 @@ class TablesTableRowUser extends React.Component {
     this.setState({ gender });
     this.setState({ situationF });
     this.setState({ id });
+    this.setState({hospital})
   }
 
   constructor(props) {
@@ -63,6 +73,7 @@ class TablesTableRowUser extends React.Component {
       birthday: '',
       gender: '',
       situationF: '',
+      hospital:'',
       modalIsOpen: false,
     }
   }
@@ -70,7 +81,7 @@ class TablesTableRowUser extends React.Component {
     this.setState({ [field]: evt.target.value });
 
   }
-  
+
   delete = async () => {
     const user = {
       _id: this.props.id
@@ -86,7 +97,7 @@ class TablesTableRowUser extends React.Component {
       })
   }
   handleSubmit = async (event) => {
-    
+
     event.preventDefault();
     const user = {
       _id: this.props.id,
@@ -98,14 +109,15 @@ class TablesTableRowUser extends React.Component {
       birthday: this.state.birthday,
       gender: this.state.gender,
       situationF: this.state.situationF,
+      hospital:this.state.hospital
 
     }
     axios.put(`http://localhost:9091/api/users/update`, user)
       .then(res => {
-        
-       
+
+
         window.location.reload(false);
-       
+
       }).catch(error => {
         alert("Remplissez tous les champs!");
 
@@ -125,7 +137,7 @@ class TablesTableRowUser extends React.Component {
     });
   }
   render() {
-    const { firstname, lastname, phone, age, email, birthday, gender, situationF, id } = this.props;
+    const { firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital} = this.props;
     return (
       <>
         <Tr>
@@ -233,60 +245,110 @@ class TablesTableRowUser extends React.Component {
           <ModalOverlay />
           <ModalContent>
 
-            <form  onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
               <ModalHeader>Modifier la réservation</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={8}>
                 <FormControl>
-                <FormLabel>Prénom & Nom</FormLabel>
-                   <Flex
-                            direction={{ sm: "column", md: "row" }}
-                            align="center"
-                            w="100%"
-                            justify="center"
-                            py="1rem"
-                            padding="2px"
-                        >
-                  <Input defaultValue={firstname} onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
-                  
-                  <Input defaultValue={lastname} onChange={(event) => this.handleChange(event, "lastname")} placeholder="Nom" />
+                  <FormLabel>Prénom & Nom</FormLabel>
+                  <Flex
+                    direction={{ sm: "column", md: "row" }}
+                    align="center"
+                    w="100%"
+                    justify="center"
+                    py="1rem"
+                    padding="2px"
+                  >
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents='none'
+                        children={<AiOutlineFontColors color='gray.300' />}
+                      />
+                      <Input defaultValue={firstname} onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
+                    </InputGroup>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents='none'
+                        children={<AiOutlineFontColors color='gray.300' />}
+                      />
+                      <Input defaultValue={lastname} onChange={(event) => this.handleChange(event, "lastname")} placeholder="Nom" />
+                    </InputGroup>
                   </Flex>
                   <FormLabel>Phone</FormLabel>
-                  <Input defaultValue={phone} onChange={(event) => this.handleChange(event, "phone")} placeholder="phone" />
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiFillPhone color='gray.300' />}
+                    />
+                    <Input defaultValue={phone} onChange={(event) => this.handleChange(event, "phone")} placeholder="phone" />
+                  </InputGroup>
                   <FormLabel>age</FormLabel>
                   <Input defaultValue={age} onChange={(event) => this.handleChange(event, "age")} placeholder="age" />
                   <FormLabel>email</FormLabel>
-                  <Input defaultValue={email} onChange={(event) => this.handleChange(event, "email")} placeholder="email" />
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiOutlineMail color='gray.300' />}
+                    />
+                    <Input defaultValue={email} onChange={(event) => this.handleChange(event, "email")} placeholder="email" />
+                  </InputGroup>
                   <FormLabel>birthday</FormLabel>
-                  <Input defaultValue={birthday} onChange={(event) => this.handleChange(event, "birthday")} placeholder="birthday" />
-                  <FormLabel>gender</FormLabel>
-                  <Select fontSize="sm"
-                            ms="4px"
-                            borderRadius="15px"
-                            mb="4px"
-                            size="lg"
-                            onChange={(event) => this.handleChange(event, "gender")}>
-                            <option value="homme">Homme</option>
-                            <option value="femme">Femme</option>
-                          
-                        </Select>
-                  <FormLabel>situationF</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiTwotoneCalendar color='gray.300' />}
+                    />
+                    <Input defaultValue={birthday} onChange={(event) => this.handleChange(event, "birthday")} placeholder="birthday" />
+                  </InputGroup>
+                  <Flex
+                    direction={{ sm: "column", md: "row" }}
+                    align="center"
+                    w="100%"
+                    justify="center"
+                    py="1rem"
+                    padding="2px"
+                  >
+                    <FormLabel></FormLabel>
 
-                  <Select fontSize="sm"
-                            ms="4px"
-                            borderRadius="15px"
-                            mb="4px"
-                            size="lg"
-                            onChange={(event) => this.handleChange(event, "situationF")}>
-                            <option value="célibataire">Célibataire</option>
-                            <option value="veuve">Veuve</option>
-                            <option value="mariée">Mariée</option>
-                            <option value="dévorcée">Dévorcée</option>
-                        </Select>
-                  </FormControl>
+                  </Flex>
+                  <Flex
+                    direction={{ sm: "column", md: "row" }}
+                    align="center"
+                    w="100%"
+                    justify="center"
+                    py="1rem"
+                    padding="2px"
+                  >
+                    <Select fontSize="sm"
+                      ms="4px"
+                      borderRadius="15px"
+                      mb="4px"
+                      size="lg"
+                      onChange={(event) => this.handleChange(event, "gender")}>
+                        
+                      <option value="homme">Homme</option>
+                      <option value="femme">Femme</option>
+
+                    </Select>
+
+
+                    <Select fontSize="sm"
+                      ms="4px"
+                      borderRadius="15px"
+                      mb="4px"
+                      size="lg"
+                      onChange={(event) => this.handleChange(event, "situationF")}>
+                      <option value="célibataire">Célibataire</option>
+                      <option value="veuve">Veuve</option>
+                      <option value="mariée">Mariée</option>
+                      <option value="dévorcée">Dévorcée</option>
+                    </Select>
+                  </Flex>
+                </FormControl>
               </ModalBody>
               <ModalFooter>
-                <Button type="submit" colorScheme="blue" mr={4}>
+                <Button type="submit" bg="teal.300"
+                color="white" mr={4}>
                   Valider
                 </Button>
                 <Button onClick={() => { this.closeModal() }} >Annuler</Button>

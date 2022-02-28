@@ -66,7 +66,7 @@ function Profile() {
   const [faxHospital, setFaxHospital] = useState("");
   
   const Name = sessionStorage.getItem("nomHospital")
-  const emailH = sessionStorage.getItem("emailHospital")
+  const emailH = sessionStorage.getItem("email")
   const Addresse = sessionStorage.getItem("addresseHospital")
   const Phone = sessionStorage.getItem("phoneHospital")
   const Fix = sessionStorage.getItem("faxHospital")

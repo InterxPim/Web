@@ -29,12 +29,14 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
 
+import { useHistory } from "react-router-dom";
 export default function HeaderLinks(props) {
 
 
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
 
   // Chakra Color Mode
+  const history = useHistory();
   let mainTeal = useColorModeValue("teal.300", "teal.300");
   let inputBg = useColorModeValue("white", "gray.800");
   let mainText = useColorModeValue("gray.700", "gray.200");
@@ -50,6 +52,8 @@ export default function HeaderLinks(props) {
    
   
      sessionStorage.clear()
+     history.push("/auth/singup");
+
   };
   
   return (
