@@ -34,7 +34,6 @@ const login = () => {
 
     if (!response.data.message) {
 
-      // setLoginStatus( response.data.message);
       if (response.data.role == "Admin") {
         sessionStorage.setItem("email", response.data.email)
         sessionStorage.setItem("password", response.data.password)
@@ -47,9 +46,6 @@ const login = () => {
         console.log(response);
         history.push("/dashboard");
       }
-
-      // sessionStorage.setItem("email",response.data.email)
-      // sessionStorage.setItem("firstname",response.data.firstname)
 
 
 

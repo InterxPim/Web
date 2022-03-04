@@ -55,7 +55,6 @@ function SignUp() {
 
       if (!response.data.message && isMail()) {
 
-        // setLoginStatus( response.data.message);
         if (response.data.role == "Admin" ) {
           sessionStorage.setItem("emailHospital", response.data.emailHospital)
           sessionStorage.setItem("passwordHospital", response.data.passwordHospital)
