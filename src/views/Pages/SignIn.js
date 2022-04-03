@@ -1,27 +1,41 @@
+
+import React, { useState } from "react";
+import { useToast } from '@chakra-ui/react'
+// Chakra imports
 import {
-  Box, Button, Flex, FormControl,
+  Box,
+  Flex,
+  Button,
+  FormControl,
   FormLabel,
   Heading,
-  Input, InputGroup, InputRightElement, Link, Text, useColorModeValue, useToast
-} from '@chakra-ui/react';
-import signInImage from "assets/img/signInImage.png";
-import Axios from "axios";
-import { Formik } from 'formik';
-import React, { useState } from "react";
+  Input,
+  Link,
+  Switch,
+  Text,
+  InputGroup,
+
+  FormErrorMessage,
+  FormHelperText,
+  InputRightElement,
+  useColorModeValue,
+} from "@chakra-ui/react";
 // Assets
 import { useHistory } from "react-router-dom";
-import { resolveModuleName } from 'typescript';
-
+import Axios from "axios";
+import signInImage from "assets/img/BgSignUp.png";
 function SignIn() {
   // Chakra color mode
-  
+
   const history = useHistory();
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast()
-  const toastIdRef = React.useRef();
+
+  const toastIdRef = React.useRef()
+
 
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
@@ -34,24 +48,20 @@ function SignIn() {
     history.push("/auth/signup");
   }
   const login = () => {
-   
-    //console.log(isMail)
-     if(email=="")
-    {
-      console.log("email vide")
-    }else if(password=="")
-    {
-      console.log("password vide")
-    }else {
+
+    console.log(isMail)
     Axios.post("http://localhost:9091/api/users/login", {
+
       email: email,
+
       password: password,
     }).then((response) => {
-      console.log("satus"+response.status)
+
       if (!response.data.message) {
-        console.log("satus"+response.status)
+
         // setLoginStatus( response.data.message);
-        if (response.data.role == "Admin" ) {
+        if (response.data.role == "Admin" && isMail) {
+
           sessionStorage.setItem("email", response.data.email)
           sessionStorage.setItem("password", response.data.password)
           sessionStorage.setItem("nomHospital", response.data.nomHospital)
@@ -61,31 +71,37 @@ function SignIn() {
           sessionStorage.setItem("id", response.data._id)
           sessionStorage.setItem("role", response.data.role)
           console.log(response);
-          history.push("/admin/dashboard");
+
+          history.push("/admin/reservations");
+
         }
 
         // sessionStorage.setItem("email",response.data.email)
-        // sessionStorage.setItem("firstname",response.data.firstname)
+        // sessionStorage.setItem("firstname",response.data.firstname
+
+
       } else {
-     //  console.log("eroor")
+       // setLoginStatus(response.data[0].message);
+        console.log(isMail)
       }
-    }).catch(function (error) {
-    	if (error.response) {
-      		console.log(error.response.status);
-    	}
-	});;
-  }
+    });
   };
+  const isMail = () => {
+    
+    let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    if (email.match(regex)){
+      return true;
+    }else{
+      
+      return false;
+    }
+  }
   
+console.log(isMail)
   return (
     <>
-    <Formik
-        initialValues={{ email: "", password: "" }}
-        onSubmit={async (values) => {
-          await new Promise((resolve) => setTimeout(resolve, 500));
-          alert(JSON.stringify(values, null, 2));
-        }}
-      >
+
       <Flex position="relative" mb="40px">
         <Flex
           h={{ sm: "initial", md: "75vh", lg: "85vh" }}
@@ -135,8 +151,7 @@ function SignIn() {
                   placeholder="Your email adress"
                   size="lg"
                 /> 
-               
-                
+
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                   Password
                 </FormLabel>
@@ -215,7 +230,6 @@ function SignIn() {
           </Box>
         </Flex>
       </Flex>
-      </Formik>
     </>
   );
 }

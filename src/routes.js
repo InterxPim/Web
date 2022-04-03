@@ -2,9 +2,12 @@
 import Dashboard from "views/Dashboard/Dashboard.js";
 import Tables from "views/Dashboard/Tables.js";
 import Profile from "views/Dashboard/Profile.js";
+
+import Resevation from "views/Dashboard/Reservation";
 import Users from "views/Dashboard/Users.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
+import { CalendarIcon } from '@chakra-ui/icons'
 
 import {
   HomeIcon,
@@ -15,6 +18,8 @@ import {
 } from "components/Icons/Icons";
 
 var dashRoutes = [
+
+  /*
   {
     path: "/dashboard",
     name: "Dashboard",
@@ -23,11 +28,23 @@ var dashRoutes = [
     component: Dashboard,
     layout: "/admin",
   },
+
+  */
+  {
+    path: "/reservations",
+    name: "Réservations",
+    rtlName: "المريض",
+    icon: <CalendarIcon color="inherit" />,
+    component: Resevation,
+    layout: "/admin",
+  },
   {
     path: "/tables",
     name: "Patient",
     rtlName: "المريض",
-    icon: <StatsIcon color="inherit" />,
+
+    icon: <PersonIcon color="inherit" />,
+
     component: Tables,
     layout: "/admin",
   },
@@ -35,7 +52,9 @@ var dashRoutes = [
     path: "/user",
     name: "User",
     rtlName: "المريض",
-    icon: <StatsIcon color="inherit" />,
+
+    icon: <PersonIcon color="inherit" />,
+
     component: Users,
     layout: "/admin",
   },
@@ -47,23 +66,7 @@ var dashRoutes = [
         component: Profile,
         layout: "/admin",
       },
-      {
-        path: "/signin",
-        name: "Sign In",
-        rtlName: "لوحة القيادة",
-        icon: <DocumentIcon color="inherit" />,
-        component: SignIn,
-        layout: "/auth",
-      },
-      {
-        path: "/signup",
-        name: "Sign Up",
-        rtlName: "لوحة القيادة",
-        icon: <RocketIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: SignUp,
-        layout: "/auth",
-      },
+
      
 ];
 export default dashRoutes;
