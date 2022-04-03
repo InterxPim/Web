@@ -16,6 +16,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import logo from "assets/img/logo.png";
 import IconBox from "components/Icons/IconBox";
 import { CreativeTimLogo } from "components/Icons/Icons";
 import { Separator } from "components/Separator/Separator";
@@ -213,7 +214,7 @@ function Sidebar(props) {
   var brand = (
     <Box pt={"25px"} mb="12px">
       <Link
-        href={`${process.env.PUBLIC_URL}/#/`}
+        href={`/#/admin/reservations`}
         target="_blank"
         display="flex"
         lineHeight="100%"
@@ -223,10 +224,10 @@ function Sidebar(props) {
         alignItems="center"
         fontSize="11px"
       >
-        <CreativeTimLogo w="32px" h="32px" me="10px" />
-        <Text fontSize="sm" mt="3px">
-          {logoText}
-        </Text>
+        < IconBox  h="200px"
+                    w="200px"
+                  >   <img src={logo} height="10px"  /></IconBox>
+     
       </Link>
       <Separator></Separator>
     </Box>
@@ -257,7 +258,7 @@ function Sidebar(props) {
           <Stack direction="column" mb="40px">
             <Box>{links}</Box>
           </Stack>
-          <SidebarHelp></SidebarHelp>
+        
         </Box>
       </Box>
     </Box>
@@ -499,7 +500,6 @@ export function SidebarResponsive(props) {
               <Stack direction="column" mb="40px">
                 <Box>{links}</Box>
               </Stack>
-              <SidebarHelp></SidebarHelp>
             </Box>
           </DrawerBody>
         </DrawerContent>

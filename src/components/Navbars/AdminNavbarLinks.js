@@ -29,12 +29,14 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
 
+import { useHistory } from "react-router-dom";
 export default function HeaderLinks(props) {
 
 
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
 
   // Chakra Color Mode
+  const history = useHistory();
   let mainTeal = useColorModeValue("teal.300", "teal.300");
   let inputBg = useColorModeValue("white", "gray.800");
   let mainText = useColorModeValue("gray.700", "gray.200");
@@ -50,6 +52,8 @@ export default function HeaderLinks(props) {
    
   
      sessionStorage.clear()
+     history.push("/auth/singup");
+
   };
   
   return (
@@ -144,42 +148,7 @@ export default function HeaderLinks(props) {
         w="18px"
         h="18px"
       />
-      <Menu>
-        <MenuButton>
-          <BellIcon color={navbarIcon} w="18px" h="18px" />
-        </MenuButton>
-        <MenuList p="16px 8px">
-          <Flex flexDirection="column">
-            <MenuItem borderRadius="8px" mb="10px">
-              <ItemContent
-                time="13 minutes ago"
-                info="from Alicia"
-                boldInfo="New Message"
-                aName="Alicia"
-                aSrc={avatar1}
-              />
-            </MenuItem>
-            <MenuItem borderRadius="8px" mb="10px">
-              <ItemContent
-                time="2 days ago"
-                info="by Josh Henry"
-                boldInfo="New Album"
-                aName="Josh Henry"
-                aSrc={avatar2}
-              />
-            </MenuItem>
-            <MenuItem borderRadius="8px">
-              <ItemContent
-                time="3 days ago"
-                info="Payment succesfully completed!"
-                boldInfo=""
-                aName="Kara"
-                aSrc={avatar3}
-              />
-            </MenuItem>
-          </Flex>
-        </MenuList>
-      </Menu>
+   
     </Flex>
   );
 }
