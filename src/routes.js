@@ -3,10 +3,11 @@ import Dashboard from "views/Dashboard/Dashboard.js";
 import Tables from "views/Dashboard/Tables.js";
 import Profile from "views/Dashboard/Profile.js";
 import Resevation from "views/Dashboard/Reservation";
+import Diagnostique from "views/Dashboard/Diagnosis";
 import Users from "views/Dashboard/Users.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
-import { CalendarIcon } from '@chakra-ui/icons'
+import { CalendarIcon,CheckIcon } from '@chakra-ui/icons'
 import {
   HomeIcon,
   StatsIcon,
@@ -32,6 +33,14 @@ var dashRoutes = [
     rtlName: "المريض",
     icon: <CalendarIcon color="inherit" />,
     component: Resevation,
+    layout: "/admin",
+  },
+  {
+    path: "/diagnostiques",
+    name: "Diagnostiques",
+    rtlName: "المريض",
+    icon: <CalendarIcon color="inherit" />,
+    component: Diagnostique,
     layout: "/admin",
   },
   {
