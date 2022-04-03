@@ -41,7 +41,9 @@ function SignUp() {
     const conf=sessionStorage.getItem("conf")
     if (value == conf )
     {
+
       history.push("/admin/reservations");
+
 
     }else 
     {
@@ -106,10 +108,6 @@ function SignUp() {
   };
 
 
-
-
-
-
   return (
     <>
       <Flex
@@ -146,6 +144,7 @@ function SignUp() {
             Welcome!
           </Text>
        
+
         </Flex>
         <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
           <Flex
@@ -236,7 +235,7 @@ function SignUp() {
                 mb="24px"
                 size="lg"
               />
-              
+
               <Button
                 onClick={register}
                 type="submit"

@@ -99,7 +99,9 @@ export default function Dashboard(props) {
       <RtlProvider>
         <Sidebar
           routes={routes}
+
           logoText={"InterX"}
+
           display="none"
           sidebarVariant={sidebarVariant}
           {...rest}
@@ -115,7 +117,9 @@ export default function Dashboard(props) {
           <Portal>
             <AdminNavbar
               onOpen={onOpen}
+
               logoText={"InterX"}
+
               brandText={getActiveRoute(routes)}
               secondary={getActiveNavbar(routes)}
               fixed={fixed}

@@ -2,11 +2,13 @@
 import Dashboard from "views/Dashboard/Dashboard.js";
 import Tables from "views/Dashboard/Tables.js";
 import Profile from "views/Dashboard/Profile.js";
+
 import Resevation from "views/Dashboard/Reservation";
 import Users from "views/Dashboard/Users.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
 import { CalendarIcon } from '@chakra-ui/icons'
+
 import {
   HomeIcon,
   StatsIcon,
@@ -16,6 +18,7 @@ import {
 } from "components/Icons/Icons";
 
 var dashRoutes = [
+
   /*
   {
     path: "/dashboard",
@@ -25,6 +28,7 @@ var dashRoutes = [
     component: Dashboard,
     layout: "/admin",
   },
+
   */
   {
     path: "/reservations",
@@ -38,7 +42,9 @@ var dashRoutes = [
     path: "/tables",
     name: "Patient",
     rtlName: "المريض",
+
     icon: <PersonIcon color="inherit" />,
+
     component: Tables,
     layout: "/admin",
   },
@@ -46,7 +52,9 @@ var dashRoutes = [
     path: "/user",
     name: "User",
     rtlName: "المريض",
+
     icon: <PersonIcon color="inherit" />,
+
     component: Users,
     layout: "/admin",
   },
@@ -58,7 +66,7 @@ var dashRoutes = [
         component: Profile,
         layout: "/admin",
       },
-    
+
      
 ];
 export default dashRoutes;

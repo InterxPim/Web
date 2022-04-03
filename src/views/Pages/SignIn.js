@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useToast } from '@chakra-ui/react'
 // Chakra imports
@@ -25,13 +26,16 @@ import Axios from "axios";
 import signInImage from "assets/img/BgSignUp.png";
 function SignIn() {
   // Chakra color mode
+
   const history = useHistory();
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const toast = useToast()
+
   const toastIdRef = React.useRef()
+
 
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
@@ -44,6 +48,7 @@ function SignIn() {
     history.push("/auth/signup");
   }
   const login = () => {
+
     console.log(isMail)
     Axios.post("http://localhost:9091/api/users/login", {
 
@@ -56,6 +61,7 @@ function SignIn() {
 
         // setLoginStatus( response.data.message);
         if (response.data.role == "Admin" && isMail) {
+
           sessionStorage.setItem("email", response.data.email)
           sessionStorage.setItem("password", response.data.password)
           sessionStorage.setItem("nomHospital", response.data.nomHospital)
@@ -65,12 +71,13 @@ function SignIn() {
           sessionStorage.setItem("id", response.data._id)
           sessionStorage.setItem("role", response.data.role)
           console.log(response);
+
           history.push("/admin/reservations");
+
         }
 
         // sessionStorage.setItem("email",response.data.email)
-        // sessionStorage.setItem("firstname",response.data.firstname)
-
+        // sessionStorage.setItem("firstname",response.data.firstname
 
 
       } else {
@@ -94,6 +101,7 @@ function SignIn() {
 console.log(isMail)
   return (
     <>
+
       <Flex position="relative" mb="40px">
         <Flex
           h={{ sm: "initial", md: "75vh", lg: "85vh" }}
@@ -143,6 +151,7 @@ console.log(isMail)
                   placeholder="Your email adress"
                   size="lg"
                 /> 
+
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                   Password
                 </FormLabel>
@@ -221,7 +230,6 @@ console.log(isMail)
           </Box>
         </Flex>
       </Flex>
-     
     </>
   );
 }
