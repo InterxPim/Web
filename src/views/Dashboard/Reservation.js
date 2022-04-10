@@ -1,5 +1,12 @@
 import React from "react";
 import moment from "moment";
+//Schedule imports
+import format from "date-fns/format";
+import getDay from "date-fns/getDay";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 // Chakra imports
 import {
   Flex,
@@ -37,7 +44,15 @@ class Tables extends React.Component {
     .then(res => {
       const resdata = res.data;
       this.setState({ resdata });
-}) }
+      const date=[]
+      {
+        resdata.map((row) => {
+          date.push({title:row.firstname+" "+row.lastname,start:moment(new Date(row.date) + ' ' + row.heure),end:new Date(row.date)});
+})
+this.setState({ date });      
+}
+})  
+  } 
 constructor() {
  super()
 
@@ -49,7 +64,9 @@ this.state = {
   heure: '',
   hospital: '',
   modalIsOpen: false,
-  resdata:[]
+  resdata:[],
+  date:[]
+  
 }
 }
 handleChange(evt, field) {
@@ -91,8 +108,22 @@ closeModal() {
 }
 render(){
 
+  const locales = {
+    "en-US": require("date-fns/locale/en-US"),
+};
+const localizer = dateFnsLocalizer({
+    format,
+    parse,
+    startOfWeek,
+    getDay,
+    locales,
+});
   return (
     <>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
     <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
       <Card overflowX={{ sm: "scroll", xl: "hidden" }}>
         <CardHeader p="6px 0px 22px 0px">
@@ -113,6 +144,8 @@ render(){
               </Button>
             </Flex>
         </CardHeader>
+        <Calendar localizer={localizer} events={this.state.date} startAccessor="start" endAccessor="end" style={{ height: 500, margin: "50px" }} />
+
         <CardBody>
           <Table variant="simple" color="gray.700">
             <Thead>

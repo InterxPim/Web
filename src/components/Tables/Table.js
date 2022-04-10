@@ -142,7 +142,7 @@ import {
             <Td>
               <Flex direction="column">
                 <Text fontSize="md" color="gray.700" fontWeight="bold">
-                  {moment(date).utc().format('DD/MM/YYYY').toString()}
+                  {moment(date).format('DD/MM/YYYY').toString()}
                 </Text>
               </Flex>
             </Td>
