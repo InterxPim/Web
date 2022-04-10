@@ -11,6 +11,7 @@ import {
   Select,
   Tr,
 } from "@chakra-ui/react";
+import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 import React from "react";
 import {
   AiOutlineFontColors,
@@ -47,7 +48,7 @@ import {
 } from "@chakra-ui/react"
 class TablesTableRowUser extends React.Component {
   componentDidMount() {
-    const { firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital } = this.props;
+    const { sendsms,sendemail,firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital } = this.props;
     this.setState({ firstname });
     this.setState({ lastname });
     this.setState({ phone });
@@ -57,6 +58,8 @@ class TablesTableRowUser extends React.Component {
     this.setState({ gender });
     this.setState({ situationF });
     this.setState({ id });
+    this.setState({sendemail});
+    this.setState({sendsms});
     this.setState({hospital})
   }
 
@@ -74,12 +77,14 @@ class TablesTableRowUser extends React.Component {
       gender: '',
       situationF: '',
       hospital:'',
+      sendemail:true,
+      sendsms:true,
       modalIsOpen: false,
     }
   }
   handleChange(evt, field) {
     this.setState({ [field]: evt.target.value });
-
+   
   }
 
   delete = async () => {
@@ -109,7 +114,10 @@ class TablesTableRowUser extends React.Component {
       birthday: this.state.birthday,
       gender: this.state.gender,
       situationF: this.state.situationF,
-      hospital:this.state.hospital
+      hospital:this.state.hospital,
+      sendemail:this.state.sendemail,
+      sendsms : this.state.sendsms,
+
 
     }
     axios.put(`http://localhost:9091/api/users/update`, user)
@@ -137,7 +145,10 @@ class TablesTableRowUser extends React.Component {
     });
   }
   render() {
-    const { firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital} = this.props;
+    const { sendemail,sendsms,firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital} = this.props;
+   // console.log(sendemail)
+    //console.log(sendsms)
+    
     return (
       <>
         <Tr>
@@ -238,6 +249,8 @@ class TablesTableRowUser extends React.Component {
               </Button>
             </Flex>
           </Td>
+          
+          
         </Tr >
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -246,7 +259,8 @@ class TablesTableRowUser extends React.Component {
           <ModalContent>
 
             <form onSubmit={this.handleSubmit}>
-              <ModalHeader>Modifier la réservation</ModalHeader>
+              
+              <ModalHeader>Modifier User</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={8}>
                 <FormControl>
@@ -292,14 +306,8 @@ class TablesTableRowUser extends React.Component {
                     />
                     <Input defaultValue={email} onChange={(event) => this.handleChange(event, "email")} placeholder="email" />
                   </InputGroup>
-                  <FormLabel>birthday</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<AiTwotoneCalendar color='gray.300' />}
-                    />
-                    <Input defaultValue={birthday} onChange={(event) => this.handleChange(event, "birthday")} placeholder="birthday" />
-                  </InputGroup>
+                 
+                  
                   <Flex
                     direction={{ sm: "column", md: "row" }}
                     align="center"
@@ -344,6 +352,7 @@ class TablesTableRowUser extends React.Component {
                       <option value="dévorcée">Dévorcée</option>
                     </Select>
                   </Flex>
+                 
                 </FormControl>
               </ModalBody>
               <ModalFooter>

@@ -1,5 +1,7 @@
-import React  , { useState}  from "react";
+import React, {useEffect, useState } from "react";
 // Chakra imports
+
+import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 import {
   Avatar,
   AvatarGroup,
@@ -47,6 +49,7 @@ import { servicesVersion } from "typescript";
 import { add } from "lodash";
 import Axios from "axios";
 function Profile() {
+  
   // Chakra color mode
   const textColor = useColorModeValue("gray.700", "white");
   const bgProfile = useColorModeValue(
@@ -60,61 +63,76 @@ function Profile() {
   const emailColor = useColorModeValue("gray.400", "gray.300");
   const history = useHistory();
   const [email, setEmail] = useState("");
-  const [nomHospital, setNomHospital] = useState("");
-  const [addresseHospital, setAddresseHospital] = useState("");
-  const [phoneHospital, setPhoneHospital] = useState("");
-  const [faxHospital, setFaxHospital] = useState("");
-  
-  const Name = sessionStorage.getItem("nomHospital")
-  const emailH = sessionStorage.getItem("email")
-  const Addresse = sessionStorage.getItem("addresseHospital")
-  const Phone = sessionStorage.getItem("phoneHospital")
-  const Fix = sessionStorage.getItem("faxHospital")
-  const id = sessionStorage.getItem("id")
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [age, setAge] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [situationF, setsituationF] = useState("");
+  const [sendsms, setsendsms] = useState(sessionStorage.getItem("sendsms"));
+  const [sendemail, setsendemail] = useState(JSON.parse(sessionStorage.getItem("sendemail"))==true);
+
+  const NameE = sessionStorage.getItem("firstname")
+  const PrenomE = sessionStorage.getItem("lastname")
+  const emailE = sessionStorage.getItem("email")
+  const AgeE = sessionStorage.getItem("age")
+  const PhoneE = sessionStorage.getItem("phone")
+  const genderE = sessionStorage.getItem("gender")
+  const situationFE = sessionStorage.getItem("situation")
+  const idE = sessionStorage.getItem("id")
+
   const update = () => {
-    Axios.post("http://localhost:9091/api/hospital/update", {
-      _id:id,
+    Axios.put("http://localhost:9091/api/users/update", {
+      _id: idE,
       email: email,
-      nomHospital:nomHospital,
-      addresseHospital:addresseHospital,
-      phoneHospital:phoneHospital,
-      faxHospital:faxHospital,
+      lastname: lastname,
+      firstname: firstname,
+      age: age,
+      phone: phone,
+      gender: gender,
+      situationF: situationF,
+      sendemail: sendemail,
+      sendsms: sendsms
     }).then((response) => {
-      
-       if (!response.data.message) {
-        
-         // setLoginStatus( response.data.message);
-          if (response.data.role=="Admin")
-          {
-            sessionStorage.setItem("email",response.data.email)
-            sessionStorage.setItem("password",response.data.password)
-            sessionStorage.setItem("nomHospital",response.data.nomHospital)
-            sessionStorage.setItem("addresseHospital",response.data.addresseHospital)
-            sessionStorage.setItem("phoneHospital",response.data.phoneHospital)
-            sessionStorage.setItem("faxHospital",response.data.faxHospital)
-            sessionStorage.setItem("id",response.data._id)
-            sessionStorage.setItem("role",response.data.role)
-            console.log(response);
+
+      if (!response.data.message) {
+
+        // setLoginStatus( response.data.message);
+        console.log("yes")
+        sessionStorage.setItem("email", email)
+        sessionStorage.setItem("firstname", firstname)
+        sessionStorage.setItem("lastname", lastname)
+        sessionStorage.setItem("age", age)
+        sessionStorage.setItem("phone", phone)
+        sessionStorage.setItem("gender", gender)
+        sessionStorage.setItem("situation", situationF)
+        sessionStorage.setItem("sendsms", sendsms)
+        sessionStorage.setItem("sendemail", sendemail)
+        console.log(response);
         history.push("/admin/profile");
         window.location.reload(false);
-          }
-         
-         // sessionStorage.setItem("email",response.data.email)
-         // sessionStorage.setItem("firstname",response.data.firstname)
 
-          
-     
-        
-       } else {
-          setLoginStatus (response.data[0].message);
-          
-       }
+
+        // sessionStorage.setItem("email",response.data.email)
+        // sessionStorage.setItem("firstname",response.data.firstname)
+
+
+
+
+      } else {
+        setLoginStatus(response.data[0].message);
+
+      }
     });
-    };
-    function handleSubmit(event) {
-      event.preventDefault();
-     // event.login(email , password)
-    }
+  };
+  function handleSubmit(event) {
+    event.preventDefault();
+    // event.login(email , password)
+  }
+  useEffect(() => {
+   // console.log(semail)
+   
+ }, []);
   return (
     <Flex direction="column">
       <Box
@@ -127,7 +145,7 @@ function Profile() {
         align="center"
       >
         <Box
-          
+
           w="100%"
           h="300px"
           borderRadius="25px"
@@ -167,7 +185,7 @@ function Profile() {
             >
               <Avatar
                 me={{ md: "22px" }}
-               
+
                 w="80px"
                 h="80px"
                 borderRadius="15px"
@@ -179,14 +197,14 @@ function Profile() {
                   fontWeight="bold"
                   ms={{ sm: "8px", md: "0px" }}
                 >
-                  {Name}
+                  {NameE}
                 </Text>
                 <Text
                   fontSize={{ sm: "sm", md: "md" }}
                   color={emailColor}
                   fontWeight="semibold"
                 >
-                 {emailH}
+                  {emailE}
                 </Text>
               </Flex>
             </Flex>
@@ -194,22 +212,22 @@ function Profile() {
               direction={{ sm: "column", lg: "row" }}
               w={{ sm: "100%", md: "50%", lg: "auto" }}
             >
-              
+
             </Flex>
           </Flex>
         </Box>
       </Box>
       <Grid templateColumns={{ sm: "1fr", xl: "repeat(2, 1fr)" }} gap="30px">
-        
+
         <Card p="20px" ml={{ sm: "50px", xl: "0px" }}>
           <CardHeader p="12px 5px" mb="12px">
             <Text fontSize="lg" color={textColor} fontWeight="bold">
-              Profile Information
+              Profile Information Emplye
             </Text>
           </CardHeader>
           <CardBody px="5px">
             <Flex direction="column">
-              
+
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
@@ -220,10 +238,10 @@ function Profile() {
                   Full Name:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Name}
+                  {NameE} {PrenomE}
                 </Text>
               </Flex>
-              
+
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
@@ -234,7 +252,7 @@ function Profile() {
                   Email:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {emailH}
+                  {emailE}
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
@@ -244,10 +262,10 @@ function Profile() {
                   fontWeight="bold"
                   me="10px"
                 >
-                  Location:{" "}
+                  Age:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Addresse}
+                  {AgeE}
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
@@ -260,7 +278,7 @@ function Profile() {
                   Mobile:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Phone}
+                  {PhoneE}
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
@@ -270,12 +288,38 @@ function Profile() {
                   fontWeight="bold"
                   me="10px"
                 >
-                  Fix:{" "}
+                  Gender:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Fix}
+                  {genderE}
                 </Text>
               </Flex>
+              <Flex align="center" mb="18px">
+                <Text
+                  fontSize="md"
+                  color={textColor}
+                  fontWeight="bold"
+                  me="10px"
+                >
+                  situation Familiale:{" "}
+                </Text>
+                <Text fontSize="md" color="gray.500" fontWeight="400">
+                  {situationFE}
+                </Text>
+              </Flex>
+              <Flex>
+
+           {/*   {sendemail
+                 <input type= "checkbox" 
+
+                  checked={sendemail
+                  />
+   
+                 */} 
+            
+                
+              </Flex>
+             
             </Flex>
           </CardBody>
         </Card>
@@ -287,63 +331,84 @@ function Profile() {
           </CardHeader>
           <CardBody px="5px">
             <Flex direction="column" w="100%">
-            <FormControl>
-            <Input
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="text"
-              placeholder="hospital name "
-              value={nomHospital}
-                onChange={(e) => setNomHospital(e.target.value)}
-              mb="24px"
-              size="lg"
-            />
-              <Input
-                borderRadius="15px"
-                mb="24px"
-                fontSize="sm"
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email adress"
-                size="lg"
-               
-              />
-              <Input
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="text"
-              placeholder="hospital adresse "
-              value={addresseHospital}
-                onChange={(e) => setAddresseHospital(e.target.value)}
-              mb="24px"
-              size="lg"
-            />
-             <Input
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="text"
-              placeholder="hospital phone "
-              value={phoneHospital}
-                onChange={(e) => setPhoneHospital(e.target.value)}
-              mb="24px"
-              size="lg"
-            />
-             <Input
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="text"
-              placeholder="hospital fax "
-              value={faxHospital}
-                onChange={(e) => setFaxHospital(e.target.value)}
-              mb="24px"
-              size="lg"
-            />
-             
+              <FormControl>
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type="text"
+                  placeholder="first name "
+                  value={firstname}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  mb="24px"
+                  size="lg"
+                />
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type="text"
+                  placeholder="last name "
+                  value={lastname}
+                  onChange={(e) => setLastName(e.target.value)}
+                  mb="24px"
+                  size="lg"
+                />
+                <Input
+                  borderRadius="15px"
+                  mb="24px"
+                  fontSize="sm"
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Your email adress"
+                  size="lg"
+
+                />
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type="text"
+                  placeholder="employe age  "
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  mb="24px"
+                  size="lg"
+                />
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type="text"
+                  placeholder="Empolye phone "
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  mb="24px"
+                  size="lg"
+                />
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type="text"
+                  placeholder="gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                  mb="24px"
+                  size="lg"
+                />
+                <Input
+                  fontSize="sm"
+                  ms="4px"
+                  borderRadius="15px"
+                  type="text"
+                  placeholder="situation familiale"
+                  value={situationF}
+                  onChange={(e) => setsituationF(e.target.value)}
+                  mb="24px"
+                  size="lg"
+                />
               </FormControl>
 
               <Button p="0px" bg="transparent" onClick={update} >
@@ -361,7 +426,7 @@ function Profile() {
                     Modify
                   </Text>
                 </Flex>
-              </Button>             
+              </Button>
             </Flex>
           </CardBody>
         </Card>

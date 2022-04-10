@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BellIcon, SearchIcon, PhoneIcon, AtSignIcon, CalendarIcon } from "@chakra-ui/icons";
 import axios from 'axios';
-
+import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 // Chakra imports
 import {
   Flex,
@@ -59,11 +59,19 @@ class Patients extends React.Component {
 
 
   componentDidMount() {
+    axios.get(`http://localhost:9091/api/reservations/allReser`)
+      .then(res => {
+        const resdataR = res.data;
+        this.setState({ resdataR });
+      })
+     
     axios.get(`http://localhost:9091/api/patient/all`)
       .then(res => {
-        const resdata = res.data;
-        this.setState({ resdata });
+
+        const resdataP = res.data;
+        this.setState({ resdataP });
       })
+
   }
   constructor() {
     super()
@@ -79,13 +87,31 @@ class Patients extends React.Component {
       GroupeSanguine: '',
       password: '',
       search: '',
-      hospital:'',
+      hospital: '',
+      sendsms: false,
+      sendemail: false,
       modalIsOpen: false,
-      resdata: []
+      resdataR: [],
+      resdataP: [],
+      liste: [],
+      l: [],
+      la: [],
     }
   }
   handleChange(evt, field) {
     this.setState({ [field]: evt.target.value });
+    if (field == "sendemail") {
+      this.state.sendemail = evt.target.checked
+      this.setState({sendemail:evt.target.checked})
+      console.log(this.state.email)
+     // let isChecked = e.target.checked;
+    }
+    if (field == "sendsms")
+    {
+      this.state.sendsms = evt.target.checked
+      this.setState({sendsms:evt.target.checked})
+      console.log(this.state.sendsms)
+    }
 
   }
   handleSubmit = async (event) => {
@@ -101,9 +127,20 @@ class Patients extends React.Component {
       password: this.state.password,
       situationF: this.state.situationF,
       GroupeSanguine: this.state.GroupeSanguine,
-      hospital:sessionStorage.getItem("id")
+      sendemail :this.state.sendemail,
+      sendsms : this.state.sendsms,
+      //hospital: sessionStorage.getItem("id")
     }
-    axios.post("http://localhost:9091/api/patient/register", patient)
+    const reservation = {
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
+      phone: this.state.phone,
+      date: this.state.date,
+      heure: this.state.heure,
+      hospital: this.state.hospital,
+      user: this.state.user,
+    }
+    axios.post("http://localhost:9091/api/patient/registerWeb", patient)
       .then(res => {
         //alert(user.firstname)
         window.location.reload(false);
@@ -127,6 +164,27 @@ class Patients extends React.Component {
     });
   }
   render() {
+
+  
+
+    this.state.resdataR.forEach(elementr => {
+      this.state.resdataP.forEach(element => {
+        if (elementr.hospital == sessionStorage.getItem("id") && element._id == elementr.user) {
+          this.state.l.push(element)
+          this.state.la = Array.from(new Set(this.state.l))
+          // console.log(Array.from(new Set(this.state.l)))
+
+
+        }else if (sessionStorage.getItem("hospital")==elementr.hospital && element._id == elementr.user)
+        {
+          this.state.l.push(element)
+          this.state.la = Array.from(new Set(this.state.l))
+        }
+      })
+
+    })
+
+
     return (
       <>
         <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -134,12 +192,12 @@ class Patients extends React.Component {
             <CardHeader p="6px 0px 22px 0px">
               <Flex justify="space-between" align="center" mb="1rem" w="100%">
                 <Text fontSize="xl" color={"gray.700"} fontWeight="bold">
-                  Your patients
+                  Liste des patients
                 </Text>
                 <Button
-                  colorScheme="teal"
-                  borderColor="teal.300"
-                  color="teal.300"
+                  colorScheme="#1daa3f"
+                  borderColor="#1daa3f"
+                  color="#1daa3f"
                   variant="outline"
                   fontSize="xs"
                   p="8px 32px"
@@ -160,31 +218,43 @@ class Patients extends React.Component {
                     </Th>
                     <Th color="gray.400">Phone</Th>
                     <Th color="gray.400">Addresse</Th>
-                    
+
                     <Th color="gray.400">Groupe Sanguine</Th>
                     <Th color="gray.400">Situation Familialle</Th>
-                    <Th color="gray.400">Action</Th>
+                    <Th color="gray.400f">Action</Th>
 
                   </Tr>
                 </Thead>
-                
-                <Tbody>
-                  {this.state.resdata.map((row) => {
-                    return (
-                      <TablesTableRow
-                        id={row._id}
-                        firstname={row.firstname}
-                        lastname={row.lastname}
-                        email={row.email}
-                        birthday={row.birthday}
-                        phone={row.phone}
-                        adresse={row.adresse}
-                        GroupeSanguine={row.GroupeSanguine}
-                        situationF={row.situationF}
 
-                      />
-                    );
-                  })}
+                <Tbody>
+
+                  {
+                    this.state.la.map((roww) => {
+
+
+
+                      return (
+                        <TablesTableRow
+                          id={roww._id}
+                          firstname={roww.firstname}
+                          lastname={roww.lastname}
+                          email={roww.email}
+                          birthday={roww.birthday}
+                          phone={roww.phone}
+                          adresse={roww.adresse}
+                          GroupeSanguine={roww.GroupeSanguine}
+                          situationF={roww.situationF}
+
+                        />
+                      )
+
+
+                    }
+                    )
+
+
+                  }
+
                 </Tbody>
               </Table>
             </CardBody>
@@ -200,6 +270,7 @@ class Patients extends React.Component {
         <Modal
           isOpen={this.state.modalIsOpen}
           onClose={() => { this.closeModal() }}
+
         >
           <ModalOverlay />
           <ModalContent>
@@ -217,6 +288,7 @@ class Patients extends React.Component {
                     justify="center"
                     py="1rem"
                     padding="2px"
+
                   >
 
 
@@ -226,14 +298,24 @@ class Patients extends React.Component {
                         children={<AiOutlineFontColors color='gray.300' />}
                       />
 
-                      <Input onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
+                      <Input
+                        onChange={(event) => this.handleChange(event, "firstname")}
+                        placeholder="Prénom"
+                        borderColor="gray.400"
+                        focusBorderColor="#1daa3f"
+                      />
                     </InputGroup>
                     <InputGroup>
                       <InputLeftElement
                         pointerEvents='none'
                         children={<AiOutlineFontColors color='gray.300' />}
                       />
-                      <Input onChange={(event) => this.handleChange(event, "lastname")} placeholder="Nom" />
+                      <Input
+                        onChange={(event) => this.handleChange(event, "lastname")}
+                        placeholder="Nom"
+                        borderColor="gray.400"
+                        focusBorderColor="#1daa3f"
+                      />
                     </InputGroup>
                   </Flex>
 
@@ -244,7 +326,12 @@ class Patients extends React.Component {
                       pointerEvents='none'
                       children={<AiFillPhone color='gray.300' />}
                     />
-                    <Input onChange={(event) => this.handleChange(event, "phone")} placeholder="Téléphone" />
+                    <Input
+                      onChange={(event) => this.handleChange(event, "phone")}
+                      placeholder="Téléphone"
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f"
+                    />
                   </InputGroup>
                   <FormLabel>Email</FormLabel>
                   <InputGroup>
@@ -252,7 +339,13 @@ class Patients extends React.Component {
                       pointerEvents='none'
                       children={<AiOutlineMail color='gray.300' />}
                     />
-                    <Input type="email" onChange={(event) => this.handleChange(event, "email")} placeholder="email" />
+                    <Input
+                      type="email"
+                      onChange={(event) => this.handleChange(event, "email")}
+                      placeholder="email"
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f"
+                    />
                   </InputGroup>
 
 
@@ -262,7 +355,12 @@ class Patients extends React.Component {
                       pointerEvents='none'
                       children={<AiTwotoneCalendar color='gray.300' />}
                     />
-                    <Input onChange={(event) => this.handleChange(event, "birthday")} placeholder="birthday" />
+                    <Input
+                    type="date"
+                      onChange={(event) => this.handleChange(event, "birthday")}
+                      placeholder="birthday"
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f" />
                   </InputGroup>
                   <FormLabel>Adresse</FormLabel>
                   <InputGroup>
@@ -270,7 +368,12 @@ class Patients extends React.Component {
                       pointerEvents='none'
                       children={<AiOutlineEnvironment color='gray.300' />}
                     />
-                    <Input onChange={(event) => this.handleChange(event, "adresse")} placeholder="adresse" />
+                    <Input
+                      onChange={(event) => this.handleChange(event, "adresse")}
+                      placeholder="adresse"
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f"
+                    />
                   </InputGroup>
                   <Flex
                     direction={{ sm: "column", md: "row" }}
@@ -296,6 +399,8 @@ class Patients extends React.Component {
                       borderRadius="15px"
                       mb="4px"
                       size="lg"
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f"
                       onChange={(event) => this.handleChange(event, "situationF")}>
                       <option value="célibataire">Célibataire</option>
                       <option value="veuve">Veuve</option>
@@ -307,6 +412,8 @@ class Patients extends React.Component {
                       ms="4px"
                       borderRadius="15px"
                       mb="4px"
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f"
                       size="lg"
                       onChange={(event) => this.handleChange(event, "GroupeSanguine")}>
                       <option value="O-">O-</option>
@@ -319,15 +426,37 @@ class Patients extends React.Component {
                       <option value="AB+">AB+</option>
                     </Select>
                   </Flex>
-                 
+
+                  <Checkbox 
+                    onChange={(event) => {
+                      this.handleChange(event, "sendemail")
+                    }}
+                    
+                  />
+                  send email
+                  <Checkbox 
+                    onChange={(event) => {
+                      this.handleChange(event, "sendsms")
+                    }}
+                    
+                  />
+                  send sms
+
                 </FormControl>
               </ModalBody>
               <ModalFooter>
-                <Button type="submit" bg="teal.300"
-                color="white" mr={3}>
+                <Button type="submit" bg="#1daa3f"
+                  color="white" mr={3}
+                  _hover={{
+                    bg: "#147a2c",
+                  }}
+                  _active={{
+                    bg: "#1daa3f",
+                  }}
+                >
                   Valider
                 </Button>
-                <Button onClick={() => { this.closeModal() }} >Annuler</Button>
+                <Button onClick={() => { this.closeModal() }} bg="gray.400">Annuler</Button>
 
               </ModalFooter>
             </form>
