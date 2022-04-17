@@ -220,10 +220,14 @@ name = sessionStorage.getItem("nomHospital")
   }else if(sessionStorage.getItem("role")=="user")
   {
     name = sessionStorage.getItem("firstname") + ' ' + sessionStorage.getItem("lastname")
+<<<<<<< HEAD
   }else if(sessionStorage.getItem("role")=="SupAdmin"){
     name = "Admin"
   }
   else{
+=======
+  }else {
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     name = sessionStorage.getItem("firstname") + ' ' + sessionStorage.getItem("lastname")
   }
   var brand = (

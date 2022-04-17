@@ -6,7 +6,11 @@ import Resevation from "views/Dashboard/Reservation";
 import Users from "views/Dashboard/Users.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
+<<<<<<< HEAD
 import ForgetPassword from "views/Pages/ForgetPassword.js";
+=======
+
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
 import {
   HomeIcon,
   StatsIcon,
@@ -25,6 +29,7 @@ var dashRoutes = [
         layout: "/auth",
       },
       {
+<<<<<<< HEAD
         path: "/forgetPasword",
         name: "ForgetPassword",
         rtlName: "لوحة القيادة",
@@ -33,6 +38,8 @@ var dashRoutes = [
         layout: "/auth",
       },
       {
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
         path: "/signup",
         name: "Sign Up",
         rtlName: "لوحة القيادة",

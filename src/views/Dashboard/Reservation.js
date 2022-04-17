@@ -136,6 +136,7 @@ class Tables extends React.Component {
           this.state.la = Array.from(new Set(this.state.l))
           // console.log(Array.from(new Set(this.state.l)))
         }
+<<<<<<< HEAD
       }else if (sessionStorage.getItem("role") == "SupAdmin"){
         this.state.resdata.forEach(elementr => {
          
@@ -144,6 +145,8 @@ class Tables extends React.Component {
               this.state.la = Array.from(new Set(this.state.l))
         })
     
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
       }
       else {
         if (elementr.user == sessionStorage.getItem("id")) {

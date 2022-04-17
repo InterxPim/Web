@@ -4,6 +4,7 @@ import Tables from "views/Dashboard/Tables.js";
 import Profile from "views/Dashboard/Profile.js";
 import ProfileE from "views/Dashboard/ProfileEmploye.js"
 import ProfileP from "views/Dashboard/ProfilePatient.js"
+<<<<<<< HEAD
 
 import Resevation from "views/Dashboard/Reservation";
 import ResevationP from "views/Dashboard/ReservationP";
@@ -12,6 +13,12 @@ import Users from "views/Dashboard/Users.js";
 import PatientsH from "views/Dashboard/PatientH.js";
 import UsersSA from "views/Dashboard/UsersSA.js";
 
+=======
+
+import Resevation from "views/Dashboard/Reservation";
+import ResevationP from "views/Dashboard/ReservationP";
+import Users from "views/Dashboard/Users.js";
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
 import { CalendarIcon } from '@chakra-ui/icons'
 import { FaSlideshare ,FaRestroom} from "react-icons/fa";
 import {
@@ -36,7 +43,11 @@ if (sessionStorage.getItem("role")=="Admin")
     name: "Patient",
     rtlName: "المريض",
     icon: <FaRestroom color="#1daa3f" />,
+<<<<<<< HEAD
     component: PatientsH,
+=======
+    component: Tables,
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     layout: "/admin",
   },
   
@@ -88,6 +99,7 @@ else if (sessionStorage.getItem("role")=="user"){
       
        
   ];
+<<<<<<< HEAD
 }else if (sessionStorage.getItem("role")=="SupAdmin")
 {
   var dashRoutes = [
@@ -131,6 +143,9 @@ else if (sessionStorage.getItem("role")=="user"){
 }
 
 else 
+=======
+}else 
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
 {
   var dashRoutes = [
     {

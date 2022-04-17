@@ -73,10 +73,14 @@ class Users extends React.Component {
       sendsms: false,
       sendemail: false,
       modalIsOpen: false,
+<<<<<<< HEAD
       resdata: [],
 
       l: [],
       la: [],
+=======
+      resdata: []
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     }
   }
   handleChange(evt, field) {
@@ -84,6 +88,7 @@ class Users extends React.Component {
 
     if (field == "sendemail") {
       this.state.sendemail = evt.target.checked
+<<<<<<< HEAD
       this.setState({ sendemail: evt.target.checked })
       console.log(this.state.email)
       // let isChecked = e.target.checked;
@@ -96,6 +101,21 @@ class Users extends React.Component {
 
     // this.state.sendemail  = evt.target.value 
 
+=======
+      this.setState({sendemail:evt.target.checked})
+      console.log(this.state.email)
+     // let isChecked = e.target.checked;
+    }
+    if (field == "sendsms")
+    {
+      this.state.sendsms = evt.target.checked
+      this.setState({sendsms:evt.target.checked})
+      console.log(this.state.sendsms)
+    }
+   
+    // this.state.sendemail  = evt.target.value 
+    
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
 
   }
   handleSubmit = async (event) => {
@@ -141,6 +161,7 @@ class Users extends React.Component {
   }
 
   render() {
+<<<<<<< HEAD
     if (sessionStorage.getItem("role") == "SupAdmin") {
       this.state.resdata.forEach(elementr => {
         this.state.l.push(elementr)
@@ -162,6 +183,10 @@ class Users extends React.Component {
 
     }
 
+=======
+
+
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     return (
       <>
         <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -202,6 +227,7 @@ class Users extends React.Component {
                   </Tr>
                 </Thead>
                 <Tbody>
+<<<<<<< HEAD
                   {this.state.la.map((row) => {
                     //  if (row.hospital == sessionStorage.getItem("id")) {
                     return (
@@ -222,6 +248,27 @@ class Users extends React.Component {
                     );
 
 
+=======
+                  {this.state.resdata.map((row) => {
+                    if (row.hospital == sessionStorage.getItem("id")) {
+                      return (
+                        <TablesTableRow
+                          id={row._id}
+                          firstname={row.firstname}
+                          lastname={row.lastname}
+                          phone={row.phone}
+                          age={row.age}
+                          email={row.email}
+                          password={row.password}
+                          birthday={row.birthday}
+                          gender={row.gender}
+                          situationF={row.situationF}
+                          sendemail = {row.sendemail}
+                          sendsms = {row.sendsms}
+                        />
+                      );
+                    }
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
                   })}
                 </Tbody>
               </Table>
@@ -312,6 +359,8 @@ class Users extends React.Component {
                     focusBorderColor="#1daa3f" />
 
                   <Flex
+<<<<<<< HEAD
+=======
                     direction={{ sm: "column", md: "row" }}
                     align="center"
                     w="100%"
@@ -323,6 +372,7 @@ class Users extends React.Component {
 
                   </Flex>
                   <Flex
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
                     direction={{ sm: "column", md: "row" }}
                     align="center"
                     w="100%"
@@ -330,6 +380,20 @@ class Users extends React.Component {
                     py="1rem"
                     padding="2px"
                   >
+<<<<<<< HEAD
+                    <FormLabel></FormLabel>
+
+                  </Flex>
+                  <Flex
+                    direction={{ sm: "column", md: "row" }}
+                    align="center"
+                    w="100%"
+                    justify="center"
+                    py="1rem"
+                    padding="2px"
+                  >
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
                     <Select fontSize="sm"
                       ms="4px"
                       borderRadius="15px"
@@ -358,6 +422,7 @@ class Users extends React.Component {
                     </Select>
                   </Flex>
 
+<<<<<<< HEAD
                   <Checkbox
                     onChange={(event) => {
                       this.handleChange(event, "sendemail")
@@ -370,6 +435,20 @@ class Users extends React.Component {
                       this.handleChange(event, "sendsms")
                     }}
 
+=======
+                  <Checkbox 
+                    onChange={(event) => {
+                      this.handleChange(event, "sendemail")
+                    }}
+                    
+                  />
+                  send email
+                  <Checkbox 
+                    onChange={(event) => {
+                      this.handleChange(event, "sendsms")
+                    }}
+                    
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
                   />
                   send sms
 

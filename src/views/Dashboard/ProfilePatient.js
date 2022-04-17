@@ -1,6 +1,9 @@
 import React  , { useState}  from "react";
+<<<<<<< HEAD
 
 import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
 // Chakra imports
 import {
   Avatar,
@@ -69,6 +72,7 @@ function Profile() {
   const [situationF, setsituationF] = useState("");
   const [GroupeSanguine, setGroupeSanguine] = useState("");
   const [adresse, setAdresse] = useState("");
+<<<<<<< HEAD
   const [sendsms, setsendsms] = useState(false);
   const [sendemail, setsendemail] = useState(false);
   const [sendsms1, setsendsms1] = useState(JSON.parse(sessionStorage.getItem("sendsms"))==true);
@@ -78,6 +82,10 @@ function Profile() {
 
 
 console.log(sendemail)
+=======
+
+
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
   const NameP = sessionStorage.getItem("firstname")
   const PrenomP = sessionStorage.getItem("lastname")
   const emailP = sessionStorage.getItem("email")
@@ -86,6 +94,10 @@ console.log(sendemail)
   const adresseP = sessionStorage.getItem("adresse")
   const situationFP = sessionStorage.getItem("situation")
   const GroupeSanguineP = sessionStorage.getItem("GroupeSanguine")
+<<<<<<< HEAD
+=======
+ 
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
   const idE = sessionStorage.getItem("id")
   const update = () => {
     Axios.put("http://localhost:9091/api/patient/update", {
@@ -97,9 +109,13 @@ console.log(sendemail)
       phone:phone,
       adresse:adresse,
       situationF:situationF,
+<<<<<<< HEAD
       GroupeSanguine:GroupeSanguine,
       sendemail:sendemail,
       sendsms:sendsms
+=======
+      GroupeSanguine:GroupeSanguine
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     }).then((response) => {
       
        if (!response.data.message) {
@@ -114,14 +130,27 @@ console.log(sendemail)
             sessionStorage.setItem("adresse",adresse)
             sessionStorage.setItem("situation",situationF)
             sessionStorage.setItem("GroupeSanguine",GroupeSanguine)
+<<<<<<< HEAD
             sessionStorage.setItem("sendemail",sendemail)
             sessionStorage.setItem("sensms",sendsms)
 
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
             console.log(response);
         history.push("/admin/profile");
         window.location.reload(false);
           
+<<<<<<< HEAD
       
+=======
+         
+         // sessionStorage.setItem("email",response.data.email)
+         // sessionStorage.setItem("firstname",response.data.firstname)
+
+          
+     
+        
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
        } else {
           setLoginStatus (response.data[0].message);
           
@@ -318,6 +347,7 @@ console.log(sendemail)
                 <Text fontSize="md" color="gray.500" fontWeight="400">
                   {GroupeSanguineP}
                 </Text>
+<<<<<<< HEAD
                 
               </Flex>
               <Flex align="center" mb="18px">
@@ -335,6 +365,9 @@ console.log(sendemail)
                   send sms
                   </Flex>
                   
+=======
+              </Flex>
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
             </Flex>
           </CardBody>
         </Card>
@@ -435,6 +468,7 @@ console.log(sendemail)
               mb="24px"
               size="lg"
             />
+<<<<<<< HEAD
             <input type="checkbox" 
             
             onChange={(e) => setsendemail(e.target.checked)}/>
@@ -443,6 +477,8 @@ console.log(sendemail)
             
             onChange={(e) => setsendsms(e.target.checked)}/>
                   send sms
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
               </FormControl>
 
               <Button p="0px" bg="transparent" onClick={update} >

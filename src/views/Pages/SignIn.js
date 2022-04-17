@@ -86,6 +86,7 @@ function SignIn() {
           sessionStorage.setItem("sendemail",response.data.sendemail)
           console.log(response);
           history.push("/admin/reservations");
+<<<<<<< HEAD
 
           window.location.reload(false);
         }else if (response.data.role=="SupAdmin"){
@@ -98,6 +99,10 @@ function SignIn() {
         }
         
         else {
+=======
+          window.location.reload(false);
+        }else {
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
           sessionStorage.setItem("email", response.data.email)
           sessionStorage.setItem("password", response.data.password)
           sessionStorage.setItem("firstname", response.data.firstname)
@@ -108,8 +113,11 @@ function SignIn() {
           sessionStorage.setItem("birthday", response.data.birthday)
           sessionStorage.setItem("situation", response.data.situationF)
           sessionStorage.setItem("GroupeSanguine", response.data.GroupeSanguine)
+<<<<<<< HEAD
           sessionStorage.setItem("sendsms",response.data.sendsms)
           sessionStorage.setItem("sendemail",response.data.sendemail)
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
          
           console.log(response);
           history.push("/admin/reservations");
@@ -214,6 +222,7 @@ function SignIn() {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
+<<<<<<< HEAD
                 <Text color={textColor} fontWeight="medium">
                  
                   <Link color={"#1daa3f"} as="span" ms="5px" fontWeight="bold"
@@ -221,6 +230,9 @@ function SignIn() {
                     Forget Password ?
                   </Link>
                 </Text>
+=======
+
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
                 <Button
                   onClick={login}
                   fontSize="10px"

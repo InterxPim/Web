@@ -184,6 +184,7 @@ class Patients extends React.Component {
 
     })
 
+<<<<<<< HEAD
     if (sessionStorage.getItem("role")=="SupAdmin")
     {
       this.state.resdataP.forEach(element => {
@@ -191,6 +192,9 @@ class Patients extends React.Component {
           this.state.la = Array.from(new Set(this.state.l))
         })
     }
+=======
+
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     return (
       <>
         <Flex direction="column" pt={{ base: "120px", md: "75px" }}>

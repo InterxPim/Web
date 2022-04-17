@@ -85,10 +85,13 @@ class TablesTableRowUser extends React.Component {
   handleChange(evt, field) {
     this.setState({ [field]: evt.target.value });
    
+<<<<<<< HEAD
   }
   handleCheck(evt, field) {
     this.setState({ [field]: evt.target.checked });
    console.log(evt.target.checked)
+=======
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
   }
   delete = async () => {
     const user = {
@@ -118,6 +121,13 @@ class TablesTableRowUser extends React.Component {
       gender: this.state.gender,
       situationF: this.state.situationF,
       hospital:this.state.hospital,
+<<<<<<< HEAD
+=======
+      sendemail:this.state.sendemail,
+      sendsms : this.state.sendsms,
+
+
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     }
     axios.put(`http://localhost:9091/api/users/update`, user)
       .then(res => {
@@ -145,8 +155,13 @@ class TablesTableRowUser extends React.Component {
   }
   render() {
     const { sendemail,sendsms,firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital} = this.props;
+<<<<<<< HEAD
   //console.log(sendemail)
    // console.log(sendsms)
+=======
+   // console.log(sendemail)
+    //console.log(sendsms)
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
     
     return (
       <>
@@ -350,7 +365,11 @@ class TablesTableRowUser extends React.Component {
                       <option value="dévorcée">Dévorcée</option>
                     </Select>
                   </Flex>
+<<<<<<< HEAD
                 
+=======
+                 
+>>>>>>> 3b8063524ab39ec3bec6f9e78c67302de91aae85
                 </FormControl>
               </ModalBody>
               <ModalFooter>
