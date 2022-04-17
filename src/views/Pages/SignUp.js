@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { PinInput, PinInputField } from '@chakra-ui/react'
 // Assets
-import BgSignUp from "assets/img/BgSignUp.png";
+import BgSignUp from "assets/img/BgSignUpd.png";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
@@ -41,8 +41,8 @@ function SignUp() {
     const conf=sessionStorage.getItem("conf")
     if (value == conf )
     {
-      history.push("/admin/dashboard");
-
+      history.push("/admin/reservations");
+      window.location.reload(false);
     }else 
     {
       alert("please try again")
@@ -96,6 +96,7 @@ function SignUp() {
          
           console.log(response);
           //
+         
         }
 
       } else {
@@ -145,17 +146,7 @@ function SignUp() {
           <Text fontSize="4xl" color="white" fontWeight="bold">
             Welcome!
           </Text>
-          <Text
-            fontSize="md"
-            color="white"
-            fontWeight="normal"
-            mt="10px"
-            mb="26px"
-            w={{ base: "90%", sm: "60%", lg: "40%", xl: "30%" }}
-          >
-            Use these awesome forms to login or create new account in your project
-            for free.
-          </Text>
+       
         </Flex>
         <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
           <Flex
@@ -186,6 +177,8 @@ function SignUp() {
                 type="text"
                 placeholder="Name Hospital"
                 value={nomHospital}
+                borderColor="gray.400"
+                focusBorderColor="#1daa3f"
                 onChange={(e) => setNomHospital(e.target.value)}
                 mb="24px"
                 size="lg"
@@ -197,6 +190,8 @@ function SignUp() {
                 borderRadius="15px"
                 type="email"
                 value={email}
+                borderColor="gray.400"
+                focusBorderColor="#1daa3f"
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Your email address"
                 mb="24px"
@@ -208,6 +203,8 @@ function SignUp() {
                 borderRadius="15px"
                 type="text"
                 value={addresseHospital}
+                borderColor="gray.400"
+                focusBorderColor="#1daa3f"
                 onChange={(e) => setAddresseHospital(e.target.value)}
                 placeholder="Addresse Hospital"
                 mb="24px"
@@ -219,6 +216,8 @@ function SignUp() {
                 borderRadius="15px"
                 type="number"
                 value={phoneHospital}
+                borderColor="gray.400"
+                focusBorderColor="#1daa3f"
                 onChange={(e) => setPhoneHospital(e.target.value)}
                 placeholder="Hospital Phone "
                 mb="24px"
@@ -230,6 +229,8 @@ function SignUp() {
                 borderRadius="15px"
                 type="number"
                 value={faxHospital}
+                borderColor="gray.400"
+                focusBorderColor="#1daa3f"
                 onChange={(e) => setFaxHospital(e.target.value)}
                 placeholder="Fax Number Hospital"
                 mb="24px"
@@ -241,21 +242,18 @@ function SignUp() {
                 borderRadius="15px"
                 type="password"
                 value={password}
+                borderColor="gray.400"
+                focusBorderColor="#1daa3f"
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Your password"
                 mb="24px"
                 size="lg"
               />
-              <FormControl display="flex" alignItems="center" mb="24px">
-                <Switch id="remember-login" colorScheme="teal" me="10px" />
-                <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
-                  Remember me
-                </FormLabel>
-              </FormControl>
+              
               <Button
                 onClick={register}
                 type="submit"
-                bg="teal.300"
+                bg="#1daa3f"
                 fontSize="10px"
                 color="white"
                 fontWeight="bold"
@@ -263,10 +261,10 @@ function SignUp() {
                 h="45"
                 mb="24px"
                 _hover={{
-                  bg: "teal.200",
+                  bg: "#147a2c",
                 }}
                 _active={{
-                  bg: "teal.400",
+                  bg: "#1daa3f",
                 }}
               >
                 SIGN UP
@@ -282,12 +280,13 @@ function SignUp() {
               <Text color={textColor} fontWeight="medium">
                 Already have an account?
                 <Link
-                  color={titleColor}
+                  
                   as="span"
                   ms="5px"
                   href="#"
                   fontWeight="bold"
                   onClick={Signin}
+                  color={"#1daa3f"}
                 >
                   Sign In
                 </Link>

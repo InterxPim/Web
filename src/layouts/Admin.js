@@ -8,6 +8,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import React, { useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
+//import routesEmployes from "routesEmploye.js"
 // Custom Chakra theme
 import theme from "theme/theme.js";
 import FixedPlugin from "../components/FixedPlugin/FixedPlugin";
@@ -26,29 +27,58 @@ export default function Dashboard(props) {
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
-  const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(routes[i].views);
-        if (collapseActiveRoute !== activeRoute) {
-          return collapseActiveRoute;
+ 
+ 
+    const getActiveRoute = () => {
+     
+      let activeRoute = "Default Brand Text";
+      for (let i = 0; i < routes.length; i++) {
+        if (routes[i].collapse) {
+          let collapseActiveRoute = getActiveRoute(routes[i].views);
+          if (collapseActiveRoute !== activeRoute) {
+            return collapseActiveRoute;
+          }
+        } else if (routes[i].category) {
+          let categoryActiveRoute = getActiveRoute(routes[i].views);
+          if (categoryActiveRoute !== activeRoute) {
+            return categoryActiveRoute;
+          }
+        } else {
+          if (
+            window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+          ) {
+            return routes[i].name;
+          }
         }
-      } else if (routes[i].category) {
-        let categoryActiveRoute = getActiveRoute(routes[i].views);
-        if (categoryActiveRoute !== activeRoute) {
-          return categoryActiveRoute;
-        }
-      } else {
-        if (
-          window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          return routes[i].name;
-        }
-      }
     }
     return activeRoute;
-  };
+    };
+  /*else {
+    const getActiveRoute = () => {
+      let activeRoute = "Default Brand Text";
+      for (let i = 0; i < routesEmployes.length; i++) {
+        if (routesEmployes[i].collapse) {
+          let collapseActiveRoute = getActiveRoute(routesEmployes[i].views);
+          if (collapseActiveRoute !== activeRoute) {
+            return collapseActiveRoute;
+          }
+        } else if (routesEmployes[i].category) {
+          let categoryActiveRoute = getActiveRoute(routesEmployes[i].views);
+          if (categoryActiveRoute !== activeRoute) {
+            return categoryActiveRoute;
+          }
+        } else {
+          if (
+            window.location.href.indexOf(routesEmployes[i].layout + routesEmployes[i].path) !== -1
+          ) {
+            return routesEmployes[i].name;
+          }
+        }
+      }
+      return activeRoute;
+    };
+  }*/
+ 
   // This changes navbar state(fixed or not)
   const getActiveNavbar = (routes) => {
     let activeNavbar = false;
@@ -98,7 +128,7 @@ export default function Dashboard(props) {
     <ChakraProvider theme={theme} resetCss={false}>
       <Sidebar
         routes={routes}
-        logoText={"PURITY UI DASHBOARD"}
+        logoText={"InterX"}
         display="none"
         sidebarVariant={sidebarVariant}
         {...rest}
@@ -113,8 +143,8 @@ export default function Dashboard(props) {
         <Portal>
           <AdminNavbar
             onOpen={onOpen}
-            logoText={"PURITY UI DASHBOARD"}
-            brandText={getActiveRoute(routes)}
+            logoText={"DASHBOARD"}
+            brandText={getActiveRoute()}
             secondary={getActiveNavbar(routes)}
             fixed={fixed}
             {...rest}

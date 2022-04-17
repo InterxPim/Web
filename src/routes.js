@@ -1,11 +1,19 @@
 // import
-import Dashboard from "views/Dashboard/Dashboard.js";
+
 import Tables from "views/Dashboard/Tables.js";
 import Profile from "views/Dashboard/Profile.js";
-import Users from "views/Dashboard/Users.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
+import ProfileE from "views/Dashboard/ProfileEmploye.js"
+import ProfileP from "views/Dashboard/ProfilePatient.js"
 
+import Resevation from "views/Dashboard/Reservation";
+import ResevationP from "views/Dashboard/ReservationP";
+import Hospital from "views/Dashboard/Hospitals";
+import Users from "views/Dashboard/Users.js";
+import PatientsH from "views/Dashboard/PatientH.js";
+import UsersSA from "views/Dashboard/UsersSA.js";
+
+import { CalendarIcon } from '@chakra-ui/icons'
+import { FaSlideshare ,FaRestroom} from "react-icons/fa";
 import {
   HomeIcon,
   StatsIcon,
@@ -13,29 +21,30 @@ import {
   DocumentIcon,
   RocketIcon,
 } from "components/Icons/Icons";
-
-var dashRoutes = [
+if (sessionStorage.getItem("role")=="Admin")
+{var dashRoutes = [
   {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
-    component: Dashboard,
+    path: "/reservations",
+    name: "Réservations",
+    rtlName: "المريض",
+    icon: <CalendarIcon color="#1daa3f" />,
+    component: Resevation,
     layout: "/admin",
   },
   {
     path: "/tables",
     name: "Patient",
     rtlName: "المريض",
-    icon: <StatsIcon color="inherit" />,
-    component: Tables,
+    icon: <FaRestroom color="#1daa3f" />,
+    component: PatientsH,
     layout: "/admin",
   },
+  
   {
     path: "/user",
     name: "User",
     rtlName: "المريض",
-    icon: <StatsIcon color="inherit" />,
+    icon: <FaSlideshare color="#1daa3f" />,
     component: Users,
     layout: "/admin",
   },
@@ -43,27 +52,106 @@ var dashRoutes = [
         path: "/profile",
         name: "Profile",
         rtlName: "لوحة القيادة",
-        icon: <PersonIcon color="inherit" />,
+        icon: <PersonIcon color="#1daa3f" />,
         component: Profile,
         layout: "/admin",
       },
-      {
-        path: "/signin",
-        name: "Sign In",
-        rtlName: "لوحة القيادة",
-        icon: <DocumentIcon color="inherit" />,
-        component: SignIn,
-        layout: "/auth",
-      },
-      {
-        path: "/signup",
-        name: "Sign Up",
-        rtlName: "لوحة القيادة",
-        icon: <RocketIcon color="inherit" />,
-        secondaryNavbar: true,
-        component: SignUp,
-        layout: "/auth",
-      },
+    
      
-];
+];}
+else if (sessionStorage.getItem("role")=="user"){
+  var dashRoutes = [
+    {
+      path: "/reservations",
+      name: "Réservations",
+      rtlName: "المريض",
+      icon: <CalendarIcon color="#1daa3f" />,
+      component: Resevation,
+      layout: "/admin",
+    },
+    {
+      path: "/tables",
+      name: "Patient",
+      rtlName: "المريض",
+      icon: <FaRestroom color="#1daa3f" />,
+      component: Tables,
+      layout: "/admin",
+    },
+    {
+          path: "/profile",
+          name: "Profile",
+          rtlName: "لوحة القيادة",
+          icon: <PersonIcon color="#1daa3f" />,
+          component: ProfileE,
+          layout: "/admin",
+        },
+      
+       
+  ];
+}else if (sessionStorage.getItem("role")=="SupAdmin")
+{
+  var dashRoutes = [
+    {
+      path: "/reservations",
+      name: "Réservations",
+      rtlName: "المريض",
+      icon: <CalendarIcon color="#1daa3f" />,
+      component: Resevation,
+      layout: "/admin",
+    },
+    {
+      path: "/hospital",
+      name: "Hospitals",
+      rtlName: "المريض",
+      icon: <CalendarIcon color="#1daa3f" />,
+      component: Hospital,
+      layout: "/admin",
+    },
+    {
+      path: "/tables",
+      name: "Patient",
+      rtlName: "المريض",
+      icon: <FaRestroom color="#1daa3f" />,
+      component: Tables,
+      layout: "/admin",
+    },
+    
+    {
+      path: "/user",
+      name: "User",
+      rtlName: "المريض",
+      icon: <FaSlideshare color="#1daa3f" />,
+      component: UsersSA,
+      layout: "/admin",
+    },
+    
+      
+       
+  ];
+}
+
+else 
+{
+  var dashRoutes = [
+    {
+      path: "/reservations",
+      name: "Réservations",
+      rtlName: "المريض",
+      icon: <CalendarIcon color="#1daa3f" />,
+      component: ResevationP,
+      layout: "/admin",
+    },
+    {
+          path: "/profile",
+          name: "Profile",
+          rtlName: "لوحة القيادة",
+          icon: <PersonIcon color="#1daa3f" />,
+          component: ProfileP,
+          layout: "/admin",
+        },
+      
+       
+  ];
+}
+
 export default dashRoutes;

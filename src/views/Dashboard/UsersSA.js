@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { BellIcon, SearchIcon, PhoneIcon, AtSignIcon, CalendarIcon } from "@chakra-ui/icons";
-import axios from 'axios';
+
+import React from "react";
+import axios from "axios";
 import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 // Chakra imports
 import {
   Flex,
@@ -11,23 +12,15 @@ import {
   Th,
   Thead,
   Tr,
-  Icon,
-  Button,
-
+  Input,
   InputGroup,
   Select,
-  IconButton,
   InputLeftElement,
+  Icon,
+  Button,
 } from "@chakra-ui/react";
 import {
-  FaCube,
-  FaFacebook,
-  FaInstagram,
-  FaPenFancy,
   FaPlus,
-
-
-  FaTwitter,
 } from "react-icons/fa";
 import {
   AiOutlineFontColors,
@@ -46,32 +39,22 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
-  Input
 } from "@chakra-ui/react"
 // Custom components
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import TablesTableRow from "components/Tables/TablePatient";
+import TablesTableRow from "components/Tables/TablesTableRow";
 
-
-class Patients extends React.Component {
+class UsersSA extends React.Component {
 
 
   componentDidMount() {
-    axios.get(`http://localhost:9091/api/reservations/allReser`)
+    axios.get(`http://localhost:9091/api/users/all`)
       .then(res => {
-        const resdataR = res.data;
-        this.setState({ resdataR });
+        const resdata = res.data;
+        this.setState({ resdata });
       })
-     
-    axios.get(`http://localhost:9091/api/patient/all`)
-      .then(res => {
-
-        const resdataP = res.data;
-        this.setState({ resdataP });
-      })
-
   }
   constructor() {
     super()
@@ -82,69 +65,63 @@ class Patients extends React.Component {
       phone: '',
       email: '',
       birthday: '',
-      adresse: '',
+      gender: '',
       situationF: '',
-      GroupeSanguine: '',
-      password: '',
-      search: '',
+      age: '',
+      //password:'',
       hospital: '',
       sendsms: false,
       sendemail: false,
       modalIsOpen: false,
-      resdataR: [],
-      resdataP: [],
-      liste: [],
+      resdata: [],
+
       l: [],
       la: [],
     }
   }
   handleChange(evt, field) {
     this.setState({ [field]: evt.target.value });
+
     if (field == "sendemail") {
       this.state.sendemail = evt.target.checked
-      this.setState({sendemail:evt.target.checked})
+      this.setState({ sendemail: evt.target.checked })
       console.log(this.state.email)
-     // let isChecked = e.target.checked;
+      // let isChecked = e.target.checked;
     }
-    if (field == "sendsms")
-    {
+    if (field == "sendsms") {
       this.state.sendsms = evt.target.checked
-      this.setState({sendsms:evt.target.checked})
+      this.setState({ sendsms: evt.target.checked })
       console.log(this.state.sendsms)
     }
+
+    // this.state.sendemail  = evt.target.value 
+
 
   }
   handleSubmit = async (event) => {
 
     event.preventDefault();
-    const patient = {
+    const user = {
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       phone: this.state.phone,
       email: this.state.email,
-      birthday: this.state.birthday,
-      adresse: this.state.adresse,
-      password: this.state.password,
+      age: this.state.age,
+      //password:this.state.password,
       situationF: this.state.situationF,
-      GroupeSanguine: this.state.GroupeSanguine,
-      sendemail :this.state.sendemail,
-      sendsms : this.state.sendsms,
-      //hospital: sessionStorage.getItem("id")
+      gender: this.state.gender,
+      hospital: sessionStorage.getItem("id"),
+      sendemail: this.state.sendemail,
+      sendsms: this.state.sendsms
+
     }
-    const reservation = {
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
-      phone: this.state.phone,
-      date: this.state.date,
-      heure: this.state.heure,
-      hospital: this.state.hospital,
-      user: this.state.user,
-    }
-    axios.post("http://localhost:9091/api/patient/registerWeb", patient)
+    console.log(this.state.sendemail)
+    axios.post("http://localhost:9091/api/users/createUsers", user)
       .then(res => {
         //alert(user.firstname)
         window.location.reload(false);
       }).catch(error => {
+        console.log(user)
         alert("Remplissez tous les champs!");
 
       })
@@ -153,7 +130,6 @@ class Patients extends React.Component {
     this.setState({
       modalIsOpen: true,
     });
-    //alert(this.state.search)
 
   }
 
@@ -163,34 +139,29 @@ class Patients extends React.Component {
 
     });
   }
+
   render() {
-
-  
-
-    this.state.resdataR.forEach(elementr => {
-      this.state.resdataP.forEach(element => {
-        if (elementr.hospital == sessionStorage.getItem("id") && element._id == elementr.user) {
-          this.state.l.push(element)
-          this.state.la = Array.from(new Set(this.state.l))
-          // console.log(Array.from(new Set(this.state.l)))
+    if (sessionStorage.getItem("role") == "SupAdmin") {
+      this.state.resdata.forEach(elementr => {
+        this.state.l.push(elementr)
+        this.state.la = Array.from(new Set(this.state.l))
 
 
-        }else if (sessionStorage.getItem("hospital")==elementr.hospital && element._id == elementr.user)
-        {
-          this.state.l.push(element)
-          this.state.la = Array.from(new Set(this.state.l))
-        }
       })
 
-    })
-
-    if (sessionStorage.getItem("role")=="SupAdmin")
-    {
-      this.state.resdataP.forEach(element => {
-          this.state.l.push(element)
+    } else if (sessionStorage.getItem("role") == "Admin") {
+      this.state.resdata.forEach(elementr => {
+        if (elementr.hospital == sessionStorage.getItem("id")) {
+          this.state.l.push(elementr)
           this.state.la = Array.from(new Set(this.state.l))
-        })
+  
+        }
+
+
+      })
+
     }
+
     return (
       <>
         <Flex direction="column" pt={{ base: "120px", md: "75px" }}>
@@ -198,7 +169,7 @@ class Patients extends React.Component {
             <CardHeader p="6px 0px 22px 0px">
               <Flex justify="space-between" align="center" mb="1rem" w="100%">
                 <Text fontSize="xl" color={"gray.700"} fontWeight="bold">
-                  Liste des patients
+                  Liste des employés
                 </Text>
                 <Button
                   colorScheme="#1daa3f"
@@ -210,57 +181,48 @@ class Patients extends React.Component {
                   onClick={() => { this.openModal() }}
                 >
                   <Icon as={FaPlus} me="6px" />
-                  Ajouter un patient
+                  Ajouter un user
                 </Button>
               </Flex>
+
             </CardHeader>
 
             <CardBody>
               <Table variant="simple" color={"gray.700"}>
                 <Thead>
                   <Tr my=".8rem" pl="0px" color="gray.400">
-                    <Th pl="0px" color="gray.400">
-                      Patient
+                    <Th pl="0px" color="#1daa3">
+                      Utilisateur
                     </Th>
-                    <Th color="gray.400">Phone</Th>
-                    <Th color="gray.400">Addresse</Th>
-
-                    <Th color="gray.400">Groupe Sanguine</Th>
-                    <Th color="gray.400">Situation Familialle</Th>
-                    <Th color="gray.400f">Action</Th>
-
+                    <Th color="#1daa3">Phone</Th>
+                    <Th color="#1daa3">Birthday</Th>
+                    <Th color="#1daa3">Gender</Th>
+                    <Th color="#1daa3">Situation Familialle</Th>
+                    <Th color="#1daa3">Action</Th>
                   </Tr>
                 </Thead>
-
                 <Tbody>
-
-                  {
-                    this.state.la.map((roww) => {
-
-
-
-                      return (
-                        <TablesTableRow
-                          id={roww._id}
-                          firstname={roww.firstname}
-                          lastname={roww.lastname}
-                          email={roww.email}
-                          birthday={roww.birthday}
-                          phone={roww.phone}
-                          adresse={roww.adresse}
-                          GroupeSanguine={roww.GroupeSanguine}
-                          situationF={roww.situationF}
-
-                        />
-                      )
+                  {this.state.la.map((row) => {
+                    //  if (row.hospital == sessionStorage.getItem("id")) {
+                    return (
+                      <TablesTableRow
+                        id={row._id}
+                        firstname={row.firstname}
+                        lastname={row.lastname}
+                        phone={row.phone}
+                        age={row.age}
+                        email={row.email}
+                        password={row.password}
+                        birthday={row.birthday}
+                        gender={row.gender}
+                        situationF={row.situationF}
+                        sendemail={row.sendemail}
+                        sendsms={row.sendsms}
+                      />
+                    );
 
 
-                    }
-                    )
-
-
-                  }
-
+                  })}
                 </Tbody>
               </Table>
             </CardBody>
@@ -269,20 +231,17 @@ class Patients extends React.Component {
             my="22px"
             overflowX={{ sm: "scroll", xl: "hidden" }}
           >
-
-
           </Card>
         </Flex>
         <Modal
           isOpen={this.state.modalIsOpen}
           onClose={() => { this.closeModal() }}
-
         >
           <ModalOverlay />
           <ModalContent>
 
             <form id="form" onSubmit={this.handleSubmit}>
-              <ModalHeader>Ajouter un patient</ModalHeader>
+              <ModalHeader>Ajouter un user</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={8}>
                 <FormControl>
@@ -294,22 +253,17 @@ class Patients extends React.Component {
                     justify="center"
                     py="1rem"
                     padding="2px"
-
                   >
-
-
                     <InputGroup>
                       <InputLeftElement
                         pointerEvents='none'
                         children={<AiOutlineFontColors color='gray.300' />}
                       />
-
                       <Input
                         onChange={(event) => this.handleChange(event, "firstname")}
                         placeholder="Prénom"
                         borderColor="gray.400"
-                        focusBorderColor="#1daa3f"
-                      />
+                        focusBorderColor="#1daa3f" />
                     </InputGroup>
                     <InputGroup>
                       <InputLeftElement
@@ -320,24 +274,22 @@ class Patients extends React.Component {
                         onChange={(event) => this.handleChange(event, "lastname")}
                         placeholder="Nom"
                         borderColor="gray.400"
-                        focusBorderColor="#1daa3f"
-                      />
+                        focusBorderColor="#1daa3f" />
                     </InputGroup>
                   </Flex>
-
-
                   <FormLabel>Téléphone</FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents='none'
                       children={<AiFillPhone color='gray.300' />}
                     />
+
+
                     <Input
                       onChange={(event) => this.handleChange(event, "phone")}
                       placeholder="Téléphone"
                       borderColor="gray.400"
-                      focusBorderColor="#1daa3f"
-                    />
+                      focusBorderColor="#1daa3f" />
                   </InputGroup>
                   <FormLabel>Email</FormLabel>
                   <InputGroup>
@@ -350,37 +302,15 @@ class Patients extends React.Component {
                       onChange={(event) => this.handleChange(event, "email")}
                       placeholder="email"
                       borderColor="gray.400"
-                      focusBorderColor="#1daa3f"
-                    />
-                  </InputGroup>
-
-
-                  <FormLabel>birthday</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<AiTwotoneCalendar color='gray.300' />}
-                    />
-                    <Input
-                    type="date"
-                      onChange={(event) => this.handleChange(event, "birthday")}
-                      placeholder="birthday"
-                      borderColor="gray.400"
                       focusBorderColor="#1daa3f" />
                   </InputGroup>
-                  <FormLabel>Adresse</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<AiOutlineEnvironment color='gray.300' />}
-                    />
-                    <Input
-                      onChange={(event) => this.handleChange(event, "adresse")}
-                      placeholder="adresse"
-                      borderColor="gray.400"
-                      focusBorderColor="#1daa3f"
-                    />
-                  </InputGroup>
+                  <FormLabel>age</FormLabel>
+                  <Input
+                    onChange={(event) => this.handleChange(event, "age")}
+                    placeholder="age"
+                    borderColor="gray.400"
+                    focusBorderColor="#1daa3f" />
+
                   <Flex
                     direction={{ sm: "column", md: "row" }}
                     align="center"
@@ -407,48 +337,44 @@ class Patients extends React.Component {
                       size="lg"
                       borderColor="gray.400"
                       focusBorderColor="#1daa3f"
-                      onChange={(event) => this.handleChange(event, "situationF")}>
-                      <option value="célibataire">Célibataire</option>
-                      <option value="veuve">Veuve</option>
-                      <option value="mariée">Mariée</option>
-                      <option value="dévorcée">Dévorcée</option>
+                      onChange={(event) => this.handleChange(event, "gender")}>
+                      <option value="homme">Homme</option>
+                      <option value="femme">Femme</option>
+
                     </Select>
 
                     <Select fontSize="sm"
                       ms="4px"
                       borderRadius="15px"
                       mb="4px"
+                      size="lg"
                       borderColor="gray.400"
                       focusBorderColor="#1daa3f"
-                      size="lg"
-                      onChange={(event) => this.handleChange(event, "GroupeSanguine")}>
-                      <option value="O-">O-</option>
-                      <option value="O+">O+</option>
-                      <option selected value="A-">A-</option>
-                      <option value="A+">A+</option>
-                      <option value="B-">B-</option>
-                      <option value="B+">B+</option>
-                      <option value="AB-">AB-</option>
-                      <option value="AB+">AB+</option>
+                      onChange={(event) => this.handleChange(event, "situationF")}>
+                      <option value="célibataire">Célibataire</option>
+                      <option value="veuve">Veuve</option>
+                      <option value="mariée">Mariée</option>
+                      <option value="dévorcée">Dévorcée</option>
                     </Select>
                   </Flex>
 
-                  <Checkbox 
+                  <Checkbox
                     onChange={(event) => {
                       this.handleChange(event, "sendemail")
                     }}
-                    
+
                   />
                   send email
-                  <Checkbox 
+                  <Checkbox
                     onChange={(event) => {
                       this.handleChange(event, "sendsms")
                     }}
-                    
+
                   />
                   send sms
 
                 </FormControl>
+
               </ModalBody>
               <ModalFooter>
                 <Button type="submit" bg="#1daa3f"
@@ -473,4 +399,4 @@ class Patients extends React.Component {
   }
 }
 
-export default Patients;
+export default UsersSA;
