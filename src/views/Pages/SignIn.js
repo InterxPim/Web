@@ -53,7 +53,6 @@ function SignIn() {
     }).then((response) => {
 
       if (!response.data.message) {
-
         // setLoginStatus( response.data.message);
         if (response.data.role == "Admin" && isMail) {
           sessionStorage.setItem("email", response.data.email)
@@ -64,34 +63,64 @@ function SignIn() {
           sessionStorage.setItem("faxHospital", response.data.faxHospital)
           sessionStorage.setItem("id", response.data._id)
           sessionStorage.setItem("role", response.data.role)
+         // window.location.reload(false);
           console.log(response);
           history.push("/admin/reservations");
+          window.location.reload(false);
+        }else if (response.data.role=="user"){
+          sessionStorage.setItem("email", response.data.email)
+          sessionStorage.setItem("password", response.data.password)
+          sessionStorage.setItem("firstname", response.data.firstname)
+          sessionStorage.setItem("lastname", response.data.lastname)
+          sessionStorage.setItem("phone", response.data.phone)
+          sessionStorage.setItem("gender", response.data.gender)
+          sessionStorage.setItem("id", response.data._id)
+          sessionStorage.setItem("age", response.data.age)
+          sessionStorage.setItem("situation", response.data.situationF)
+          sessionStorage.setItem("role", response.data.role)
+          sessionStorage.setItem("hospital",response.data.hospital)
+          sessionStorage.setItem("sendsms",response.data.sendsms)
+          sessionStorage.setItem("sendemail",response.data.sendemail)
+          console.log(response);
+          history.push("/admin/reservations");
+          window.location.reload(false);
+        }else {
+          sessionStorage.setItem("email", response.data.email)
+          sessionStorage.setItem("password", response.data.password)
+          sessionStorage.setItem("firstname", response.data.firstname)
+          sessionStorage.setItem("lastname", response.data.lastname)
+          sessionStorage.setItem("phone", response.data.phone)
+          sessionStorage.setItem("adresse", response.data.adresse)
+          sessionStorage.setItem("id", response.data._id)
+          sessionStorage.setItem("birthday", response.data.birthday)
+          sessionStorage.setItem("situation", response.data.situationF)
+          sessionStorage.setItem("GroupeSanguine", response.data.GroupeSanguine)
+         
+          console.log(response);
+          history.push("/admin/reservations");
+          window.location.reload(false);
         }
-
-        // sessionStorage.setItem("email",response.data.email)
-        // sessionStorage.setItem("firstname",response.data.firstname)
-
-
+        
 
       } else {
-       // setLoginStatus(response.data[0].message);
+       
         console.log(isMail)
       }
     });
   };
   const isMail = () => {
-    
+
     let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-    if (email.match(regex)){
+    if (email.match(regex)) {
       return true;
-    }else{
-      
+    } else {
+
       return false;
     }
   }
-  
-console.log(isMail)
+
+  console.log(isMail)
   return (
     <>
       <Flex position="relative" mb="40px">
@@ -114,10 +143,11 @@ console.log(isMail)
               direction="column"
               w="100%"
               background="transparent"
+
               p="48px"
               mt={{ md: "150px", lg: "80px" }}
             >
-              <Heading color={titleColor} fontSize="32px" mb="10px">
+              <Heading color="#1daa3f" fontSize="32px" mb="10px">
                 Welcome Back
               </Heading>
               <Text
@@ -139,46 +169,52 @@ console.log(isMail)
                   fontSize="sm"
                   type="text"
                   value={email}
+                  borderColor="gray.400"
+                  focusBorderColor="#1daa3f"
+                 // _hover={"#1daa3f"}
+                  //onClick={"#1daa3f"}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email adress"
                   size="lg"
-                /> 
+                />
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                   Password
                 </FormLabel>
                 <InputGroup size='md'>
-                <Input
-                  borderRadius="15px"
-                  mb="36px"
-                  fontSize="sm"
-                  type={show ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Your password"
-                  size="lg"
-                />
-                <InputRightElement width='4.5rem'>
-        <Button h='1.75rem' size='sm' onClick={handleClick}>
-          {show ? 'Hide' : 'Show'}
-        </Button>
-      </InputRightElement>
-      </InputGroup>
-                
+                  <Input
+                    borderRadius="15px"
+                    mb="36px"
+                    fontSize="sm"
+                    type={show ? 'text' : 'password'}
+                    value={password}
+                    borderColor="gray.400"
+                    focusBorderColor="#1daa3f"
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Your password"
+                    size="lg"
+                  />
+                  <InputRightElement width='4.5rem'>
+                    <Button h='1.75rem' size='sm' onClick={handleClick}>
+                      {show ? 'Hide' : 'Show'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+
                 <Button
                   onClick={login}
                   fontSize="10px"
                   type="submit"
-                  bg="teal.300"
+                  bg="#1daa3f"
                   w="100%"
                   h="45"
                   mb="20px"
                   color="white"
                   mt="20px"
                   _hover={{
-                    bg: "teal.200",
+                    bg: "#147a2c",
                   }}
                   _active={{
-                    bg: "teal.400",
+                    bg: "#1daa3f",
                   }}
                 >
                   SIGN IN
@@ -193,7 +229,7 @@ console.log(isMail)
               >
                 <Text color={textColor} fontWeight="medium">
                   Don't have an account?
-                  <Link color={titleColor} as="span" ms="5px" fontWeight="bold"
+                  <Link color={"#1daa3f"} as="span" ms="5px" fontWeight="bold"
                     onClick={Signup}>
                     Sign Up
                   </Link>
@@ -203,25 +239,25 @@ console.log(isMail)
           </Flex>
           <Box
             display={{ base: "none", md: "block" }}
-            overflowX="hidden"
-            h="100%"
-            w="40vw"
+           
+            h="900px"
+            w="600px"
             position="absolute"
-            right="0px"
+            right="10px"
+            top="200px"
           >
             <Box
               bgImage={signInImage}
-              w="100%"
-              h="100%"
+              w="500px"
+              h="490px"
               bgSize="cover"
-              bgPosition="50%"
-              position="absolute"
+              bgPosition="0px"
               borderBottomLeftRadius="20px"
             ></Box>
           </Box>
         </Flex>
       </Flex>
-     
+
     </>
   );
 }

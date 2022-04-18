@@ -23,15 +23,28 @@ import { useHistory } from "react-router-dom";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
+
 // Assets
-
+import avatar2 from "assets/img/avatars/avatar2.png";
+import avatar3 from "assets/img/avatars/avatar3.png";
+import avatar4 from "assets/img/avatars/avatar4.png";
+import avatar5 from "assets/img/avatars/avatar5.png";
+import avatar6 from "assets/img/avatars/avatar6.png";
+import ImageArchitect1 from "assets/img/ImageArchitect1.png";
+import ImageArchitect2 from "assets/img/ImageArchitect2.png";
+import ImageArchitect3 from "assets/img/ImageArchitect3.png";
+import ProfileBgImage from "assets/img/ProfileBackground.png";
 import {
-
+  FaCube,
+  FaFacebook,
+  FaInstagram,
   FaPenFancy,
   FaPlus,
   FaTwitter,
 } from "react-icons/fa";
-
+import { IoDocumentsSharp } from "react-icons/io5";
+import { servicesVersion } from "typescript";
+import { add } from "lodash";
 import Axios from "axios";
 function Profile() {
   // Chakra color mode
@@ -47,54 +60,54 @@ function Profile() {
   const emailColor = useColorModeValue("gray.400", "gray.300");
   const history = useHistory();
   const [email, setEmail] = useState("");
-  const [nomHospital, setNomHospital] = useState("");
-  const [addresseHospital, setAddresseHospital] = useState("");
-  const [phoneHospital, setPhoneHospital] = useState("");
-  const [faxHospital, setFaxHospital] = useState("");
-  const [debutHoraire, setDebutHoraire] = useState("");
-  const [finHoraire, setFinHoraire] = useState("");
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [phone, setPhone] = useState("");
+  const [situationF, setsituationF] = useState("");
+  const [GroupeSanguine, setGroupeSanguine] = useState("");
+  const [adresse, setAdresse] = useState("");
 
 
-  const Name = sessionStorage.getItem("nomHospital")
-  const emailH = sessionStorage.getItem("email")
-  const Addresse = sessionStorage.getItem("addresseHospital")
-  const Phone = sessionStorage.getItem("phoneHospital")
-  const Fix = sessionStorage.getItem("faxHospital")
-  const id = sessionStorage.getItem("id")
-  const dHoraire = sessionStorage.getItem("debutHoraire")
-  const fHoraire = sessionStorage.getItem("finHoraire")
+  const NameP = sessionStorage.getItem("firstname")
+  const PrenomP = sessionStorage.getItem("lastname")
+  const emailP = sessionStorage.getItem("email")
+  const BirthdayP  = sessionStorage.getItem("birthday")
+  const PhoneP = sessionStorage.getItem("phone")
+  const adresseP = sessionStorage.getItem("adresse")
+  const situationFP = sessionStorage.getItem("situation")
+  const GroupeSanguineP = sessionStorage.getItem("GroupeSanguine")
+ 
+  const idE = sessionStorage.getItem("id")
   const update = () => {
-    Axios.post("http://localhost:9091/api/hospital/update", {
-      _id:id,
+    Axios.put("http://localhost:9091/api/patient/update", {
+      _id:idE,
       email: email,
-      nomHospital:nomHospital,
-      addresseHospital:addresseHospital,
-      phoneHospital:phoneHospital,
-      faxHospital:faxHospital,
-      debutHoraire:debutHoraire,
-      finHoraire:finHoraire
+      lastname:lastname,
+      firstname:firstname,
+      birthday:birthday,
+      phone:phone,
+      adresse:adresse,
+      situationF:situationF,
+      GroupeSanguine:GroupeSanguine
     }).then((response) => {
       
        if (!response.data.message) {
         
          // setLoginStatus( response.data.message);
-          if (response.data.role=="Admin")
-          {
-            sessionStorage.setItem("email",response.data.email)
-            sessionStorage.setItem("password",response.data.password)
-            sessionStorage.setItem("nomHospital",response.data.nomHospital)
-            sessionStorage.setItem("addresseHospital",response.data.addresseHospital)
-            sessionStorage.setItem("phoneHospital",response.data.phoneHospital)
-            sessionStorage.setItem("faxHospital",response.data.faxHospital)
-            sessionStorage.setItem("id",response.data._id)
-            sessionStorage.setItem("role",response.data.role)
-            sessionStorage.setItem("debutHoraire",response.data.debutHoraire)
-            sessionStorage.setItem("finHoraire",response.data.finHoraire)
-
+          console.log("yes")
+            sessionStorage.setItem("email",email)
+            sessionStorage.setItem("firstname",firstname)
+            sessionStorage.setItem("lastname",lastname)
+            sessionStorage.setItem("birthday",birthday)
+            sessionStorage.setItem("phone",phone)
+            sessionStorage.setItem("adresse",adresse)
+            sessionStorage.setItem("situation",situationF)
+            sessionStorage.setItem("GroupeSanguine",GroupeSanguine)
             console.log(response);
         history.push("/admin/profile");
         window.location.reload(false);
-          }
+          
          
          // sessionStorage.setItem("email",response.data.email)
          // sessionStorage.setItem("firstname",response.data.firstname)
@@ -176,14 +189,14 @@ function Profile() {
                   fontWeight="bold"
                   ms={{ sm: "8px", md: "0px" }}
                 >
-                  {Name}
+                  {NameP}
                 </Text>
                 <Text
                   fontSize={{ sm: "sm", md: "md" }}
                   color={emailColor}
                   fontWeight="semibold"
                 >
-                 {emailH}
+                 {emailP}
                 </Text>
               </Flex>
             </Flex>
@@ -201,7 +214,7 @@ function Profile() {
         <Card p="20px" ml={{ sm: "50px", xl: "0px" }}>
           <CardHeader p="12px 5px" mb="12px">
             <Text fontSize="lg" color={textColor} fontWeight="bold">
-              Profile Information
+              Profile Information Patient 
             </Text>
           </CardHeader>
           <CardBody px="5px">
@@ -217,7 +230,7 @@ function Profile() {
                   Full Name:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Name}
+                  {NameP} {PrenomP}
                 </Text>
               </Flex>
               
@@ -231,7 +244,7 @@ function Profile() {
                   Email:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {emailH}
+                  {emailP}
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
@@ -241,10 +254,10 @@ function Profile() {
                   fontWeight="bold"
                   me="10px"
                 >
-                  Location:{" "}
+                  Birthday:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Addresse}
+                  {BirthdayP}
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
@@ -257,7 +270,7 @@ function Profile() {
                   Mobile:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Phone}
+                  {PhoneP}
                 </Text>
               </Flex>
               <Flex align="center" mb="18px">
@@ -267,13 +280,12 @@ function Profile() {
                   fontWeight="bold"
                   me="10px"
                 >
-                  Fix:{" "}
+                  Adresse:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {Fix}
+                  {adresseP}
                 </Text>
               </Flex>
-              
               <Flex align="center" mb="18px">
                 <Text
                   fontSize="md"
@@ -281,10 +293,23 @@ function Profile() {
                   fontWeight="bold"
                   me="10px"
                 >
-                  Créneau horaire:{" "}
+                  situation Familiale:{" "}
                 </Text>
                 <Text fontSize="md" color="gray.500" fontWeight="400">
-                  {dHoraire} {fHoraire}
+                  {situationFP}
+                </Text>
+              </Flex>
+              <Flex align="center" mb="18px">
+                <Text
+                  fontSize="md"
+                  color={textColor}
+                  fontWeight="bold"
+                  me="10px"
+                >
+                  Groupe Sanguine :{" "}
+                </Text>
+                <Text fontSize="md" color="gray.500" fontWeight="400">
+                  {GroupeSanguineP}
                 </Text>
               </Flex>
             </Flex>
@@ -304,9 +329,20 @@ function Profile() {
               ms="4px"
               borderRadius="15px"
               type="text"
-              placeholder="hospital name "
-              value={nomHospital}
-                onChange={(e) => setNomHospital(e.target.value)}
+              placeholder="first name "
+              value={firstname}
+                onChange={(e) => setFirstName(e.target.value)}
+              mb="24px"
+              size="lg"
+            />
+            <Input
+              fontSize="sm"
+              ms="4px"
+              borderRadius="15px"
+              type="text"
+              placeholder="last name "
+              value={lastname}
+                onChange={(e) => setLastName(e.target.value)}
               mb="24px"
               size="lg"
             />
@@ -326,9 +362,9 @@ function Profile() {
               ms="4px"
               borderRadius="15px"
               type="text"
-              placeholder="hospital adresse "
-              value={addresseHospital}
-                onChange={(e) => setAddresseHospital(e.target.value)}
+              placeholder="employe birthday  "
+              value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
               mb="24px"
               size="lg"
             />
@@ -337,21 +373,20 @@ function Profile() {
               ms="4px"
               borderRadius="15px"
               type="text"
-              placeholder="hospital phone "
-              value={phoneHospital}
-                onChange={(e) => setPhoneHospital(e.target.value)}
+              placeholder="Empolye phone "
+              value={phone}
+                onChange={(e) => setPhone(e.target.value)}
               mb="24px"
               size="lg"
             />
-          
              <Input
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
               type="text"
-              placeholder="hospital fax "
-              value={faxHospital}
-                onChange={(e) => setFaxHospital(e.target.value)}
+              placeholder="Adresse "
+              value={adresse}
+                onChange={(e) => setAdresse(e.target.value)}
               mb="24px"
               size="lg"
             />
@@ -359,25 +394,25 @@ function Profile() {
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
-              type="time"
-              placeholder="debut Horaire "
-              value={debutHoraire}
-                onChange={(e) => setDebutHoraire(e.target.value)}
+              type="text"
+              placeholder="situation familiale"
+              value={situationF}
+                onChange={(e) => setsituationF(e.target.value)}
               mb="24px"
               size="lg"
             />
-              
-  <Input
+             <Input
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
-              type="time"
-              placeholder="fin Horaire "
-              value={finHoraire}
-                onChange={(e) => setFinHoraire(e.target.value)}
+              type="text"
+              placeholder="Groupe Sanguine"
+              value={GroupeSanguine}
+                onChange={(e) => setGroupeSanguine(e.target.value)}
               mb="24px"
               size="lg"
-            />              </FormControl>
+            />
+              </FormControl>
 
               <Button p="0px" bg="transparent" onClick={update} >
                 <Flex

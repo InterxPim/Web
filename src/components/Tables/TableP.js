@@ -334,25 +334,7 @@ class TablesTableRow extends React.Component {
               </Button>
             </Flex>
           </Td>
-          <Td>
-           
-
-            <Button onClick={() => { this.openModal2(idp) }} p="0px" bg="transparent">
-
-              <Flex cursor="pointer" align="center" p="12px"
-              borderRadius={"10px"}
-                bg={etat === true ? "green.400" : "gray.400"}
-                color={etat === false ? "white" : "gray.700"}
-              >
-                <Icon as={GiLoveInjection} me="4px" />
-
-              </Flex>
-
-
-
-
-            </Button>
-          </Td>
+         
         </Tr>
         <Modal
           isOpen={this.state.modalIsOpen}

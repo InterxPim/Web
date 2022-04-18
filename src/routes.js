@@ -1,13 +1,15 @@
 // import
-import Dashboard from "views/Dashboard/Dashboard.js";
+
 import Tables from "views/Dashboard/Tables.js";
 import Profile from "views/Dashboard/Profile.js";
+import ProfileE from "views/Dashboard/ProfileEmploye.js"
+import ProfileP from "views/Dashboard/ProfilePatient.js"
+
 import Resevation from "views/Dashboard/Reservation";
-import Diagnostique from "views/Dashboard/Diagnosis";
+import ResevationP from "views/Dashboard/ReservationP";
 import Users from "views/Dashboard/Users.js";
-import SignIn from "views/Pages/SignIn.js";
-import SignUp from "views/Pages/SignUp.js";
-import { CalendarIcon,CheckIcon } from '@chakra-ui/icons'
+import { CalendarIcon } from '@chakra-ui/icons'
+import { FaSlideshare ,FaRestroom} from "react-icons/fa";
 import {
   HomeIcon,
   StatsIcon,
@@ -15,47 +17,30 @@ import {
   DocumentIcon,
   RocketIcon,
 } from "components/Icons/Icons";
-
-var dashRoutes = [
-  /*
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    rtlName: "لوحة القيادة",
-    icon: <HomeIcon color="inherit" />,
-    component: Dashboard,
-    layout: "/admin",
-  },
-  */
+if (sessionStorage.getItem("role")=="Admin")
+{var dashRoutes = [
   {
     path: "/reservations",
     name: "Réservations",
     rtlName: "المريض",
-    icon: <CalendarIcon color="inherit" />,
+    icon: <CalendarIcon color="#1daa3f" />,
     component: Resevation,
-    layout: "/admin",
-  },
-  {
-    path: "/diagnostiques",
-    name: "Diagnostiques",
-    rtlName: "المريض",
-    icon: <CalendarIcon color="inherit" />,
-    component: Diagnostique,
     layout: "/admin",
   },
   {
     path: "/tables",
     name: "Patient",
     rtlName: "المريض",
-    icon: <PersonIcon color="inherit" />,
+    icon: <FaRestroom color="#1daa3f" />,
     component: Tables,
     layout: "/admin",
   },
+  
   {
     path: "/user",
-    name: "User",
+    name: "Utilisateur",
     rtlName: "المريض",
-    icon: <PersonIcon color="inherit" />,
+    icon: <FaSlideshare color="#1daa3f" />,
     component: Users,
     layout: "/admin",
   },
@@ -63,11 +48,64 @@ var dashRoutes = [
         path: "/profile",
         name: "Profile",
         rtlName: "لوحة القيادة",
-        icon: <PersonIcon color="inherit" />,
+        icon: <PersonIcon color="#1daa3f" />,
         component: Profile,
         layout: "/admin",
       },
     
      
-];
+];}
+else if (sessionStorage.getItem("role")=="user"){
+  var dashRoutes = [
+    {
+      path: "/reservations",
+      name: "Réservations",
+      rtlName: "المريض",
+      icon: <CalendarIcon color="#1daa3f" />,
+      component: Resevation,
+      layout: "/admin",
+    },
+    {
+      path: "/tables",
+      name: "Patient",
+      rtlName: "المريض",
+      icon: <FaRestroom color="#1daa3f" />,
+      component: Tables,
+      layout: "/admin",
+    },
+    {
+          path: "/profile",
+          name: "Profile",
+          rtlName: "لوحة القيادة",
+          icon: <PersonIcon color="#1daa3f" />,
+          component: ProfileE,
+          layout: "/admin",
+        },
+      
+       
+  ];
+}else 
+{
+  var dashRoutes = [
+    {
+      path: "/reservations",
+      name: "Réservations",
+      rtlName: "المريض",
+      icon: <CalendarIcon color="#1daa3f" />,
+      component: ResevationP,
+      layout: "/admin",
+    },
+    {
+          path: "/profile",
+          name: "Profile",
+          rtlName: "لوحة القيادة",
+          icon: <PersonIcon color="#1daa3f" />,
+          component: ProfileP,
+          layout: "/admin",
+        },
+      
+       
+  ];
+}
+
 export default dashRoutes;

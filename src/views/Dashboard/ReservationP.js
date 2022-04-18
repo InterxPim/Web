@@ -22,6 +22,7 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
+  Select,
   Input,
   Icon
 } from "@chakra-ui/react"
@@ -32,7 +33,7 @@ import {
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import TablesTableRow from "components/Tables/Table";
+import TablesTableRow from "components/Tables/TableP";
 //const textColor = useColorModeValue("gray.700", "white");
 class Tables extends React.Component {
 
@@ -48,37 +49,32 @@ class Tables extends React.Component {
         const resdataU = res.data;
         this.setState({ resdataU });
       })
-    axios.get(`http://localhost:9091/api/prelevements/all`)
+      axios.get(`http://localhost:9091/api/hospital/all`)
       .then(res => {
-        const resdataP = res.data;
-        this.setState({ resdataP });
+        const resdataH = res.data;
+        this.setState({ resdataH });
       })
-      
   }
   constructor() {
     super()
 
     this.state = {
+      _id:'',
       firstname: '',
       lastname: '',
       phone: '',
       date: '',
       heure: '',
       hospital: '',
-      etata: '',
-      etat: '',
-      prelevement: '',
+      nomHospital:'',
       modalIsOpen: false,
       resdata: [],
       resdataR: [],
       resdataH: [],
+      
       l: [],
       la: [],
       resdataU: [],
-      resdataP: [],
-      yes: '',
-      no: '',
-      etatt: []
     }
   }
   handleChange(evt, field) {
@@ -95,7 +91,6 @@ class Tables extends React.Component {
       date: this.state.date,
       heure: this.state.heure,
       hospital: this.state.hospital,
-      prelevement: this.state.prelevement,
     }
     axios.post(`http://localhost:9091/api/reservations/createReser`, reservation)
       .then(res => {
@@ -120,13 +115,15 @@ class Tables extends React.Component {
     });
   }
   render() {
-   
+    this.state.resdataH.forEach(element => {
+      console.log(element);
+    })
+
     this.state.resdata.forEach(elementr => {
       if (sessionStorage.getItem("role") == "Admin") {
         if (elementr.hospital == sessionStorage.getItem("id")) {
           this.state.l.push(elementr)
           this.state.la = Array.from(new Set(this.state.l))
-
           // console.log(Array.from(new Set(this.state.l)))
         }
       }
@@ -146,14 +143,7 @@ class Tables extends React.Component {
       }
     })
 
-    this.state.resdataP.forEach(elemtentp => {
-      console.log(elemtentp)
-      if (elemtentp.etat) {
-        this.state.etat = "true"
-      } else {
-        this.state.etat = "false"
-      }
-    })
+
 
     return (
       <>
@@ -164,7 +154,7 @@ class Tables extends React.Component {
                 <Text fontSize="xl" color="gray.700" fontWeight="bold">
                   Liste des réservations
                 </Text>
-               {/*  <Button
+                <Button
                   colorScheme="#1daa3f"
                   borderColor="#1daa3f"
                   color="#1daa3f"
@@ -176,7 +166,6 @@ class Tables extends React.Component {
                   <Icon as={FaPlus} me="6px" />
                   Ajouter une réservation
                 </Button>
-                */}
               </Flex>
             </CardHeader>
             <CardBody>
@@ -191,39 +180,28 @@ class Tables extends React.Component {
                     <Th color="gray.400">Téléphone</Th>
                     <Th color="gray.400">Statue</Th>
                     <Th color="gray.400">Actions</Th>
-                    <Th color="gray.400">Prelevement</Th>
+                    <Th></Th>
 
                   </Tr>
                 </Thead>
                 <Tbody>
+
                   {this.state.la.map((row) => {
-                   
 
-
-                      return (
-
-                        <TablesTableRow
-                          id={row._id}
-                          firstname={row.firstname}
-                          lastname={row.lastname}
-                          date={row.date}
-                          heure={row.heure}
-                          phone={row.phone}
-                          result={row.result}
-                          etat={row.etat}
-                          idp={row.prelevement}
-
-                        />
-
-                      );
-                    
-
-
+                    return (
+                      <TablesTableRow
+                        id={row._id}
+                        firstname={row.firstname}
+                        lastname={row.lastname}
+                        date={row.date}
+                        heure={row.heure}
+                        phone={row.phone}
+                        result={row.result}
+                      />
+                    );
 
                   })}
-
                 </Tbody>
-
               </Table>
             </CardBody>
           </Card>
@@ -242,15 +220,16 @@ class Tables extends React.Component {
               <ModalBody pb={6}>
                 <FormControl>
                   <FormLabel>Prénom</FormLabel>
-                  <Input onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
+                  <Input onChange={(event) => this.handleChange(event, "firstname")} defaultValue={sessionStorage.getItem("firstname")} placeholder="Prénom" />
                   <FormLabel>Nom</FormLabel>
-                  <Input onChange={(event) => this.handleChange(event, "lastname")} placeholder="Nom" />
+                  <Input onChange={(event) => this.handleChange(event, "lastname")} defaultValue={sessionStorage.getItem("lastname")} placeholder="Nom" />
                   <FormLabel>Téléphone</FormLabel>
-                  <Input onChange={(event) => this.handleChange(event, "phone")} placeholder="Téléphone" />
+                  <Input onChange={(event) => this.handleChange(event, "phone")} defaultValue={sessionStorage.getItem("phone")} placeholder="Téléphone" />
                   <FormLabel>Date</FormLabel>
                   <Input type="date" onChange={(event) => this.handleChange(event, "date")} placeholder="Date" />
                   <FormLabel>Heure</FormLabel>
                   <Input onChange={(event) => this.handleChange(event, "heure")} placeholder="Heure" />
+                  
                 </FormControl>
               </ModalBody>
               <ModalFooter>

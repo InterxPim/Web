@@ -59,6 +59,9 @@ function DashboardTableRow(props) {
         <Button p="0px" bg="transparent">
           <Icon as={FaEllipsisV} color="gray.400" cursor="pointer" />
         </Button>
+        <Button p="0px" bg="transparent">
+          <Icon as={FaEllipsisV} color="gray.400" cursor="pointer" />
+        </Button>
       </Td>
     </Tr>
   );

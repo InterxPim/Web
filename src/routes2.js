@@ -1,5 +1,5 @@
 // import
-import Dashboard from "views/Dashboard/Dashboard.js";
+
 import Tables from "views/Dashboard/Tables.js";
 import Profile from "views/Dashboard/Profile.js";
 import Resevation from "views/Dashboard/Reservation";
