@@ -1,7 +1,7 @@
 export const barChartData = [
   {
-    name: "Sales",
-    data: [330, 250, 110, 300, 490, 350, 270, 130, 425],
+    name: "Réservations",
+    data: [2, 0, 0, 0, 0, 0, 0, 0, 0],
   },
 ];
 
@@ -24,7 +24,7 @@ export const barChartOptions = {
         fontFamily: undefined,
       },
     },
-    theme: "dark",
+    theme: "light",
   },
   xaxis: {
     categories: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
@@ -101,7 +101,7 @@ export const lineChartOptions = {
     },
   },
   tooltip: {
-    theme: "dark",
+    theme: "light",
   },
   dataLabels: {
     enabled: false,

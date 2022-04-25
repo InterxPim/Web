@@ -1,5 +1,15 @@
 import React from "react";
 import moment from "moment";
+import { Calendar, dateFnsLocalizer ,momentLocalizer} from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import {
+  IconButton,
+  InputGroup,
+  InputLeftElement,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
+
 // Chakra imports
 import {
   Flex,
@@ -41,6 +51,13 @@ class Tables extends React.Component {
       .then(res => {
         const resdata = res.data;
         this.setState({ resdata });
+        const date=[]
+        {
+          this.state.la.map((row) => {
+            date.push({title:row.firstname+" "+row.lastname,start:moment(new Date(row.date)).format("YYYY-MM-DD"),end:moment(new Date(row.date) ).format("YYYY-MM-DD")});
+  })
+  this.setState({ date });      
+  }
       })
     //window.location.reload(false);
     axios.get(`http://localhost:9091/api/users/all`)
@@ -70,6 +87,7 @@ class Tables extends React.Component {
       prelevement: '',
       modalIsOpen: false,
       resdata: [],
+      date:[],
       resdataR: [],
       resdataH: [],
       l: [],
@@ -78,7 +96,10 @@ class Tables extends React.Component {
       resdataP: [],
       yes: '',
       no: '',
-      etatt: []
+      etatt: [],
+      keyWord: "",
+      statuuus:""
+
     }
   }
   handleChange(evt, field) {
@@ -112,12 +133,44 @@ class Tables extends React.Component {
     });
 
   }
+  handleChange(evt, field) {
+    this.setState({ [field]: evt.target.value });
 
+}
+
+  handleSubmit = event => {
+    event.preventDefault();
+
+    const keyWord = this.state.keyWord;
+    localStorage.setItem('keyWord', keyWord);
+    console.log(keyWord);
+    console.log(this.state.la);
+     const la= this.state.la.filter((datta)=>
+    datta.firstname.toLowerCase().includes(this.state.keyWord)
+    ||
+    datta.lastname.toLowerCase().includes(this.state.keyWord)
+    // datta.firstname.toLowerCase().includes(this.state.keyWord)
+    )
+      console.log(la)
+      if(la.length==0){
+        this.setState({ la });
+         const statuuus = 'full'
+        this.setState({ statuuus });
+      } 
+      else{
+        const statuuus = 'empty'
+        this.setState({ statuuus });
+      }
+     
+};
   closeModal() {
     this.setState({
       modalIsOpen: false,
 
     });
+  }
+  affichage(){
+
   }
   render() {
    
@@ -136,6 +189,14 @@ class Tables extends React.Component {
           this.state.la = Array.from(new Set(this.state.l))
           // console.log(Array.from(new Set(this.state.l)))
         }
+      }else if (sessionStorage.getItem("role") == "SupAdmin"){
+        this.state.resdata.forEach(elementr => {
+         
+           
+              this.state.l.push(elementr)
+              this.state.la = Array.from(new Set(this.state.l))
+        })
+    
       }
       else {
         if (elementr.user == sessionStorage.getItem("id")) {
@@ -154,6 +215,9 @@ class Tables extends React.Component {
         this.state.etat = "false"
       }
     })
+    const localizer = momentLocalizer(moment)
+ 
+
 
     return (
       <>
@@ -164,6 +228,51 @@ class Tables extends React.Component {
                 <Text fontSize="xl" color="gray.700" fontWeight="bold">
                   Liste des réservations
                 </Text>
+                <InputGroup
+      bg={"gray.200"}
+      borderRadius="15px"
+      w="200px"
+      _focus={{
+        borderColor: "teal.300",
+      }}
+      _active={{
+        borderColor: "teal.300",
+      }}
+    >
+      <InputLeftElement
+        children={
+          <IconButton
+            bg="inherit"
+            borderRadius="inherit"
+            _hover="none"
+            _active={{
+              bg: "inherit",
+              transform: "none",
+              borderColor: "transparent",
+            }}
+            _focus={{
+              boxShadow: "none",
+            }}
+            icon={<SearchIcon color={"gray.800"} w="15px" h="15px" />}
+          ></IconButton>
+        }
+      />
+      <form style={{marginLeft: "15px"}}  onSubmit={this.handleSubmit}>
+        
+                  <Input
+                  onChange={(event) => this.handleChange(event, "keyWord")}
+                  type="text"
+        fontSize="xs"
+        py="11px"
+        placeholder="         Rechercher"
+      />
+    
+         
+               
+
+            </form>
+     
+    </InputGroup>
                {/*  <Button
                   colorScheme="#1daa3f"
                   borderColor="#1daa3f"
@@ -179,7 +288,15 @@ class Tables extends React.Component {
                 */}
               </Flex>
             </CardHeader>
+            <Calendar localizer={localizer} events={this.state.date} startAccessor="start"   eventPropGetter={(event, start, end, isSelected) => ({
+          event,
+          start,
+          end,
+          isSelected,
+          style: { backgroundColor: "green" }
+        })} style={{ colorRendering :"green", height: 500, margin: "50px" }} />
             <CardBody>
+            {this.state.statuuus != 'full'  ? 
               <Table variant="simple" color="gray.700">
                 <Thead>
                   <Tr my=".8rem" pl="0px" color="gray.400">
@@ -225,6 +342,9 @@ class Tables extends React.Component {
                 </Tbody>
 
               </Table>
+              :
+              <Text>Aucune réservation trouvé</Text>
+                }
             </CardBody>
           </Card>
 

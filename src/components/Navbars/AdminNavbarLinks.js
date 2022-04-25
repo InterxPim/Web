@@ -26,36 +26,12 @@ import { ItemContent } from "components/Menu/ItemContent";
 import { SidebarResponsive } from "components/Sidebar/Sidebar";
 import PropTypes from "prop-types";
 import React from "react";
-import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import routes from "routes.js";
 
 import { useHistory } from "react-router-dom";
-export default function HeaderLinks({props,socket}) {
-  const [notifications, setNotifications] = useState([]);
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    socket.on("getNotification", (data) => {
-      setNotifications((prev) => [...prev, data]);
-    });
-  }, [socket]);
+export default function HeaderLinks(props) {
 
-  const displayNotification = ({ senderName, type }) => {
-    let action;
-
-    if (type === 1) {
-      action = "nouvelle reservation";
-    } else {
-      action = "supprimer reservation";
-    }
-    return (
-      <span className="notification">{`${senderName} a ajouté une novelle résévation`}</span>
-    );
-  };
-  const handleRead = () => {
-    setNotifications([]);
-    setOpen(false);
-  };
 
   const { variant, children, fixed, secondary, onOpen, ...rest } = props;
 
@@ -87,48 +63,8 @@ export default function HeaderLinks({props,socket}) {
       alignItems="center"
       flexDirection="row"
     >
-      <InputGroup
-        cursor="pointer"
-        bg={inputBg}
-        borderRadius="15px"
-        w={{
-          sm: "128px",
-          md: "200px",
-        }}
-        me={{ sm: "auto", md: "20px" }}
-        _focus={{
-          borderColor: { mainTeal },
-        }}
-        _active={{
-          borderColor: { mainTeal },
-        }}
-      >
-        <InputLeftElement
-          children={
-            <IconButton
-              bg="inherit"
-              borderRadius="inherit"
-              _hover="none"
-              _active={{
-                bg: "inherit",
-                transform: "none",
-                borderColor: "transparent",
-              }}
-              _focus={{
-                boxShadow: "none",
-              }}
-              icon={<SearchIcon color={searchIcon} w="15px" h="15px" />}
-            ></IconButton>
-          }
-        />
-        <Input
-          fontSize="xs"
-          py="11px"
-          color={mainText}
-          placeholder="Type here..."
-          borderRadius="inherit"
-        />
-      </InputGroup>
+
+     
       <NavLink to="/auth/signin">
         <Button
           ms="0px"
@@ -137,35 +73,24 @@ export default function HeaderLinks({props,socket}) {
           color={navbarIcon}
           onClick={logout}
           variant="transparent-with-icon"
-        
+          rightIcon={
+            document.documentElement.dir ? (
+              ""
+            ) : (
+              <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+            )
+          }
+          leftIcon={
+            document.documentElement.dir ? (
+              <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
+            ) : (
+              ""
+            )
+          }
         >
           <Text display={{ sm: "none", md: "flex" }}>Logout</Text>
         </Button>
-    
-        
       </NavLink>
-      <div className="icon" onClick={() => setOpen(!open)}>
-     <ProfileIcon color={navbarIcon} w="22px" h="22px" me="0px" />
-     {
-notifications.length >0 &&
-            <div className="counter">{notifications.length}</div>
-          }</div>
-           <div className="icon" onClick={() => setOpen(!open)}>
-          <img src={Message} className="iconImg" alt="" />
-        </div>
-        <div className="icon" onClick={() => setOpen(!open)}>
-          <img src={Settings} className="iconImg" alt="" />
-        </div>
-  
-      {open && (
-        <div className="notifications">
-          {notifications.map((n) => displayNotification(n))}
-          <button className="nButton" onClick={handleRead}>
-            Mark as read
-          </button>
-        </div>
-      )}
-    
       <SidebarResponsive
         logoText={props.logoText}
         secondary={props.secondary}

@@ -1,3 +1,4 @@
+
 import {
   Avatar,
   Badge,
@@ -46,21 +47,19 @@ import {
   FormLabel,
   Input
 } from "@chakra-ui/react"
-class TablesTableRowUser extends React.Component {
+class TablesTableRowHospital extends React.Component {
+
+
+
   componentDidMount() {
-    const { sendsms,sendemail,firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital } = this.props;
-    this.setState({ firstname });
-    this.setState({ lastname });
-    this.setState({ phone });
-    this.setState({ age });
+    const { nomHospital, addresseHospital, phoneHospital, faxHospital, email, id } = this.props;
+    this.setState({ nomHospital });
+    this.setState({ addresseHospital });
+    this.setState({ phoneHospital });
+    this.setState({ faxHospital });
     this.setState({ email });
-    this.setState({ birthday });
-    this.setState({ gender });
-    this.setState({ situationF });
     this.setState({ id });
-    this.setState({sendemail});
-    this.setState({sendsms});
-    this.setState({hospital})
+
   }
 
   constructor(props) {
@@ -68,33 +67,25 @@ class TablesTableRowUser extends React.Component {
 
     super(props);
     this.state = {
-      firstname: '',
-      lastname: '',
-      phone: '',
-      age: '',
+      nomHospital: '',
+      addresseHospital: '',
+      phoneHospital: '',
+      faxHospital: '',
       email: '',
-      birthday: '',
-      gender: '',
-      situationF: '',
-      hospital:'',
-      sendemail:true,
-      sendsms:true,
+      id: '',
       modalIsOpen: false,
     }
   }
   handleChange(evt, field) {
     this.setState({ [field]: evt.target.value });
-   
+
   }
-  handleCheck(evt, field) {
-    this.setState({ [field]: evt.target.checked });
-   console.log(evt.target.checked)
-  }
+
   delete = async () => {
-    const user = {
+    const hospital = {
       _id: this.props.id
     }
-    axios.post(`http://localhost:9091/api/users/delete`, user)
+    axios.post(`http://localhost:9091/api/hospital/delete`, hospital)
       .then(res => {
 
         /*alert("user supprimé!")*/
@@ -107,19 +98,17 @@ class TablesTableRowUser extends React.Component {
   handleSubmit = async (event) => {
 
     event.preventDefault();
-    const user = {
+    const hospital = {
       _id: this.props.id,
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
-      phone: this.state.phone,
-      age: this.state.age,
+      nomHospital: this.state.nomHospital,
+      addresseHospital: this.state.addresseHospital,
+      phoneHospital: this.state.phoneHospital,
+      faxHospital: this.state.faxHospital,
       email: this.state.email,
-      birthday: this.state.birthday,
-      gender: this.state.gender,
-      situationF: this.state.situationF,
-      hospital:this.state.hospital,
+
+
     }
-    axios.put(`http://localhost:9091/api/users/update`, user)
+    axios.post(`http://localhost:9091/api/hospital/update`, hospital)
       .then(res => {
 
 
@@ -144,10 +133,10 @@ class TablesTableRowUser extends React.Component {
     });
   }
   render() {
-    const { sendemail,sendsms,firstname, lastname, phone, age, email, birthday, gender, situationF, id ,hospital} = this.props;
-  //console.log(sendemail)
-   // console.log(sendsms)
-    
+    const { nomHospital, addresseHospital, phoneHospital, faxHospital, email, id } = this.props;
+    // console.log(sendemail)
+    //console.log(sendsms)
+
     return (
       <>
         <Tr>
@@ -161,7 +150,7 @@ class TablesTableRowUser extends React.Component {
                   fontWeight="bold"
                   minWidth="100%"
                 >
-                  {firstname} {lastname}
+                  {nomHospital}
                 </Text>
                 <Text fontSize="sm" color="gray.400" fontWeight="normal">
                   {email}
@@ -170,34 +159,35 @@ class TablesTableRowUser extends React.Component {
             </Flex>
           </Td>
 
+
+
           <Td>
             <Flex direction="column">
               <Text fontSize="md" color={"gray.700"} fontWeight="bold">
-                {phone}
+                {phoneHospital}
               </Text>
 
             </Flex>
           </Td>
           <Td>
-            <Text fontSize="md" color={"gray.700"} fontWeight="bold" pb=".5rem">
-              {birthday}
-            </Text>
-            <Text fontSize="sm" color="gray.400" fontWeight="normal">
-              {age} ans
-            </Text>
+            <Flex direction="column">
+              <Text fontSize="md" color={"gray.700"} fontWeight="bold">
+                {faxHospital}
+              </Text>
+
+            </Flex>
+          </Td>
+          <Td>
+            <Flex direction="column">
+              <Text fontSize="md" color={"gray.700"} fontWeight="bold">
+                {addresseHospital}
+              </Text>
+
+            </Flex>
           </Td>
 
-          <Td>
-            <Text fontSize="md" color={"gray.700"} fontWeight="bold" pb=".5rem">
-              {gender}
-            </Text>
-          </Td>
-          <Td>
-            <Text fontSize="md" color={"gray.700"} fontWeight="bold" pb=".5rem">
-              {situationF}
-            </Text>
-          </Td>
-          
+
+
 
           <Td>
             <Flex
@@ -247,22 +237,21 @@ class TablesTableRowUser extends React.Component {
               </Button>
             </Flex>
           </Td>
-          
-          
+
+
         </Tr >
         <Modal
           isOpen={this.state.modalIsOpen}
           onClose={() => { this.closeModal() }}>
           <ModalOverlay />
           <ModalContent>
-
             <form onSubmit={this.handleSubmit}>
-              
-              <ModalHeader>Modifier User</ModalHeader>
+
+              <ModalHeader>Modifier Hospital</ModalHeader>
               <ModalCloseButton />
-              <ModalBody pb={8}>
+              <ModalBody pb={5}>
                 <FormControl>
-                  <FormLabel>Prénom & Nom</FormLabel>
+                  <FormLabel>Nom Hospital :</FormLabel>
                   <Flex
                     direction={{ sm: "column", md: "row" }}
                     align="center"
@@ -276,36 +265,29 @@ class TablesTableRowUser extends React.Component {
                         pointerEvents='none'
                         children={<AiOutlineFontColors color='gray.300' />}
                       />
-                      <Input defaultValue={firstname} onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
+                      <Input defaultValue={nomHospital} onChange={(event) => this.handleChange(event, "nomHospital")} placeholder="Nom Hospital" />
                     </InputGroup>
+                  </Flex>
+                  <FormLabel>Email Hospital :</FormLabel>
+                  <Flex
+                    direction={{ sm: "column", md: "row" }}
+                    align="center"
+                    w="100%"
+                    justify="center"
+                    py="1rem"
+                    padding="2px"
+                  >
                     <InputGroup>
                       <InputLeftElement
                         pointerEvents='none'
-                        children={<AiOutlineFontColors color='gray.300' />}
+                        children={<AiFillPhone color='gray.300' />}
                       />
-                      <Input defaultValue={lastname} onChange={(event) => this.handleChange(event, "lastname")} placeholder="Nom" />
+                      <Input defaultValue={email} onChange={(event) => this.handleChange(event, "email")} placeholder="Email Hospital" />
                     </InputGroup>
+
+
                   </Flex>
-                  <FormLabel>Phone</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<AiFillPhone color='gray.300' />}
-                    />
-                    <Input defaultValue={phone} onChange={(event) => this.handleChange(event, "phone")} placeholder="phone" />
-                  </InputGroup>
-                  <FormLabel>age</FormLabel>
-                  <Input defaultValue={age} onChange={(event) => this.handleChange(event, "age")} placeholder="age" />
-                  <FormLabel>email</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents='none'
-                      children={<AiOutlineMail color='gray.300' />}
-                    />
-                    <Input defaultValue={email} onChange={(event) => this.handleChange(event, "email")} placeholder="email" />
-                  </InputGroup>
-                 
-                  
+                  <FormLabel>Phone Hospital :</FormLabel>
                   <Flex
                     direction={{ sm: "column", md: "row" }}
                     align="center"
@@ -314,9 +296,17 @@ class TablesTableRowUser extends React.Component {
                     py="1rem"
                     padding="2px"
                   >
-                    <FormLabel></FormLabel>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents='none'
+                        children={<AiFillPhone color='gray.300' />}
+                      />
+                      <Input defaultValue={phoneHospital} onChange={(event) => this.handleChange(event, "phoneHospital")} placeholder="Phone Hospital" />
+                    </InputGroup>
+
 
                   </Flex>
+                  <FormLabel>Fax Hospital :</FormLabel>
                   <Flex
                     direction={{ sm: "column", md: "row" }}
                     align="center"
@@ -325,43 +315,48 @@ class TablesTableRowUser extends React.Component {
                     py="1rem"
                     padding="2px"
                   >
-                    <Select fontSize="sm"
-                      ms="4px"
-                      borderRadius="15px"
-                      mb="4px"
-                      size="lg"
-                      onChange={(event) => this.handleChange(event, "gender")}>
-                        
-                      <option value="homme">Homme</option>
-                      <option value="femme">Femme</option>
-
-                    </Select>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents='none'
+                        children={<AiFillPhone color='gray.300' />}
+                      />
+                      <Input defaultValue={faxHospital} onChange={(event) => this.handleChange(event, "faxHospital")} placeholder="Fax Hospital" />
+                    </InputGroup>
 
 
-                    <Select fontSize="sm"
-                      ms="4px"
-                      borderRadius="15px"
-                      mb="4px"
-                      size="lg"
-                      onChange={(event) => this.handleChange(event, "situationF")}>
-                      <option value="célibataire">Célibataire</option>
-                      <option value="veuve">Veuve</option>
-                      <option value="mariée">Mariée</option>
-                      <option value="dévorcée">Dévorcée</option>
-                    </Select>
                   </Flex>
-                
+                  <FormLabel>Adresse Hospital :</FormLabel>
+                  <Flex
+                    direction={{ sm: "column", md: "row" }}
+                    align="center"
+                    w="100%"
+                    justify="center"
+                    py="1rem"
+                    padding="2px"
+                  >
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents='none'
+                        children={<AiFillPhone color='gray.300' />}
+                      />
+                      <Input defaultValue={addresseHospital} onChange={(event) => this.handleChange(event, "addresseHospital")} placeholder="Adresse Hospital" />
+                    </InputGroup>
+
+
+                  </Flex>
+
                 </FormControl>
               </ModalBody>
               <ModalFooter>
                 <Button type="submit" bg="teal.300"
-                color="white" mr={4}>
+                  color="white" mr={4}>
                   Valider
                 </Button>
                 <Button onClick={() => { this.closeModal() }} >Annuler</Button>
 
               </ModalFooter>
             </form>
+
           </ModalContent>
         </Modal>
 
@@ -370,4 +365,4 @@ class TablesTableRowUser extends React.Component {
   }
 }
 
-export default TablesTableRowUser;
+export default TablesTableRowHospital;

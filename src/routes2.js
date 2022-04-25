@@ -6,7 +6,7 @@ import Resevation from "views/Dashboard/Reservation";
 import Users from "views/Dashboard/Users.js";
 import SignIn from "views/Pages/SignIn.js";
 import SignUp from "views/Pages/SignUp.js";
-
+import ForgetPassword from "views/Pages/ForgetPassword.js";
 import {
   HomeIcon,
   StatsIcon,
@@ -22,6 +22,14 @@ var dashRoutes = [
         rtlName: "لوحة القيادة",
         icon: <DocumentIcon color="inherit" />,
         component: SignIn,
+        layout: "/auth",
+      },
+      {
+        path: "/forgetPasword",
+        name: "ForgetPassword",
+        rtlName: "لوحة القيادة",
+        icon: <DocumentIcon color="inherit" />,
+        component: ForgetPassword,
         layout: "/auth",
       },
       {

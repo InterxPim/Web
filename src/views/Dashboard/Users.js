@@ -73,7 +73,10 @@ class Users extends React.Component {
       sendsms: false,
       sendemail: false,
       modalIsOpen: false,
-      resdata: []
+      resdata: [],
+
+      l: [],
+      la: [],
     }
   }
   handleChange(evt, field) {
@@ -81,19 +84,18 @@ class Users extends React.Component {
 
     if (field == "sendemail") {
       this.state.sendemail = evt.target.checked
-      this.setState({sendemail:evt.target.checked})
+      this.setState({ sendemail: evt.target.checked })
       console.log(this.state.email)
-     // let isChecked = e.target.checked;
+      // let isChecked = e.target.checked;
     }
-    if (field == "sendsms")
-    {
+    if (field == "sendsms") {
       this.state.sendsms = evt.target.checked
-      this.setState({sendsms:evt.target.checked})
+      this.setState({ sendsms: evt.target.checked })
       console.log(this.state.sendsms)
     }
-   
+
     // this.state.sendemail  = evt.target.value 
-    
+
 
   }
   handleSubmit = async (event) => {
@@ -139,7 +141,26 @@ class Users extends React.Component {
   }
 
   render() {
+    if (sessionStorage.getItem("role") == "SupAdmin") {
+      this.state.resdata.forEach(elementr => {
+        this.state.l.push(elementr)
+        this.state.la = Array.from(new Set(this.state.l))
 
+
+      })
+
+    } else if (sessionStorage.getItem("role") == "Admin") {
+      this.state.resdata.forEach(elementr => {
+        if (elementr.hospital == sessionStorage.getItem("id")) {
+          this.state.l.push(elementr)
+          this.state.la = Array.from(new Set(this.state.l))
+  
+        }
+
+
+      })
+
+    }
 
     return (
       <>
@@ -181,25 +202,26 @@ class Users extends React.Component {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {this.state.resdata.map((row) => {
-                    if (row.hospital == sessionStorage.getItem("id")) {
-                      return (
-                        <TablesTableRow
-                          id={row._id}
-                          firstname={row.firstname}
-                          lastname={row.lastname}
-                          phone={row.phone}
-                          age={row.age}
-                          email={row.email}
-                          password={row.password}
-                          birthday={row.birthday}
-                          gender={row.gender}
-                          situationF={row.situationF}
-                          sendemail = {row.sendemail}
-                          sendsms = {row.sendsms}
-                        />
-                      );
-                    }
+                  {this.state.la.map((row) => {
+                    //  if (row.hospital == sessionStorage.getItem("id")) {
+                    return (
+                      <TablesTableRow
+                        id={row._id}
+                        firstname={row.firstname}
+                        lastname={row.lastname}
+                        phone={row.phone}
+                        age={row.age}
+                        email={row.email}
+                        password={row.password}
+                        birthday={row.birthday}
+                        gender={row.gender}
+                        situationF={row.situationF}
+                        sendemail={row.sendemail}
+                        sendsms={row.sendsms}
+                      />
+                    );
+
+
                   })}
                 </Tbody>
               </Table>
@@ -336,18 +358,18 @@ class Users extends React.Component {
                     </Select>
                   </Flex>
 
-                  <Checkbox 
+                  <Checkbox
                     onChange={(event) => {
                       this.handleChange(event, "sendemail")
                     }}
-                    
+
                   />
                   send email
-                  <Checkbox 
+                  <Checkbox
                     onChange={(event) => {
                       this.handleChange(event, "sendsms")
                     }}
-                    
+
                   />
                   send sms
 

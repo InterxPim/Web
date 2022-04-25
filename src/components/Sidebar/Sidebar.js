@@ -220,13 +220,16 @@ name = sessionStorage.getItem("nomHospital")
   }else if(sessionStorage.getItem("role")=="user")
   {
     name = sessionStorage.getItem("firstname") + ' ' + sessionStorage.getItem("lastname")
-  }else {
+  }else if(sessionStorage.getItem("role")=="SupAdmin"){
+    name = "Admin"
+  }
+  else{
     name = sessionStorage.getItem("firstname") + ' ' + sessionStorage.getItem("lastname")
   }
   var brand = (
     <Box pt={"25px"} mb="12px">
-  <br/><br/>
-  
+     <br/>
+     <br/>
       <Separator></Separator>
       <Center>
       <Stack spacing={3}>
@@ -234,7 +237,8 @@ name = sessionStorage.getItem("nomHospital")
      </Stack>
      </Center>
      <Separator></Separator>
-     <br/><br/>
+     <br/>
+     <br/>
     </Box>
   );
 

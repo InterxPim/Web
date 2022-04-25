@@ -1,4 +1,6 @@
 import React  , { useState}  from "react";
+
+import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
 // Chakra imports
 import {
   Avatar,
@@ -67,8 +69,15 @@ function Profile() {
   const [situationF, setsituationF] = useState("");
   const [GroupeSanguine, setGroupeSanguine] = useState("");
   const [adresse, setAdresse] = useState("");
+  const [sendsms, setsendsms] = useState(false);
+  const [sendemail, setsendemail] = useState(false);
+  const [sendsms1, setsendsms1] = useState(JSON.parse(sessionStorage.getItem("sendsms"))==true);
+  const [sendemail1, setsendemail1] = useState(JSON.parse(sessionStorage.getItem("sendemail"))==true);
 
 
+
+
+console.log(sendemail)
   const NameP = sessionStorage.getItem("firstname")
   const PrenomP = sessionStorage.getItem("lastname")
   const emailP = sessionStorage.getItem("email")
@@ -77,7 +86,6 @@ function Profile() {
   const adresseP = sessionStorage.getItem("adresse")
   const situationFP = sessionStorage.getItem("situation")
   const GroupeSanguineP = sessionStorage.getItem("GroupeSanguine")
- 
   const idE = sessionStorage.getItem("id")
   const update = () => {
     Axios.put("http://localhost:9091/api/patient/update", {
@@ -89,7 +97,9 @@ function Profile() {
       phone:phone,
       adresse:adresse,
       situationF:situationF,
-      GroupeSanguine:GroupeSanguine
+      GroupeSanguine:GroupeSanguine,
+      sendemail:sendemail,
+      sendsms:sendsms
     }).then((response) => {
       
        if (!response.data.message) {
@@ -104,17 +114,14 @@ function Profile() {
             sessionStorage.setItem("adresse",adresse)
             sessionStorage.setItem("situation",situationF)
             sessionStorage.setItem("GroupeSanguine",GroupeSanguine)
+            sessionStorage.setItem("sendemail",sendemail)
+            sessionStorage.setItem("sensms",sendsms)
+
             console.log(response);
         history.push("/admin/profile");
         window.location.reload(false);
           
-         
-         // sessionStorage.setItem("email",response.data.email)
-         // sessionStorage.setItem("firstname",response.data.firstname)
-
-          
-     
-        
+      
        } else {
           setLoginStatus (response.data[0].message);
           
@@ -311,7 +318,23 @@ function Profile() {
                 <Text fontSize="md" color="gray.500" fontWeight="400">
                   {GroupeSanguineP}
                 </Text>
+                
               </Flex>
+              <Flex align="center" mb="18px">
+                <input type="checkbox"
+                    checked={sendemail1}
+                    disabled={true}
+                  />
+                  send email
+                  </Flex>
+                  <Flex align="center" mb="18px">
+                  <input type="checkbox"
+                    checked={sendsms1}
+                    disabled={true}
+                  />
+                  send sms
+                  </Flex>
+                  
             </Flex>
           </CardBody>
         </Card>
@@ -412,6 +435,14 @@ function Profile() {
               mb="24px"
               size="lg"
             />
+            <input type="checkbox" 
+            
+            onChange={(e) => setsendemail(e.target.checked)}/>
+                  send email
+                  <input type="checkbox" 
+            
+            onChange={(e) => setsendsms(e.target.checked)}/>
+                  send sms
               </FormControl>
 
               <Button p="0px" bg="transparent" onClick={update} >

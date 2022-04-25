@@ -12,17 +12,25 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { FaPencilAlt} from "react-icons/fa";
-import { BsClipboardPlus  } from "react-icons/bs";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import {
-  
   AiOutlineFontColors,
   AiFillPhone,
   AiOutlineEnvironment,
   AiOutlineMail,
   AiTwotoneCalendar
 } from "react-icons/ai";
-
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  ButtonGroup,
+} from '@chakra-ui/react'
 
 import axios from 'axios';
 import {
@@ -51,11 +59,6 @@ class TablesTableRow extends React.Component {
     this.setState({ GroupeSanguine });
     this.setState({ situationF });
     this.setState({ id });
-    const dHoraire = sessionStorage.getItem("debutHoraire")
-  const fHoraire = sessionStorage.getItem("finHoraire")
-  this.setState({ dHoraire });
-    this.setState({ fHoraire });
- 
   }
 
   constructor(props) {
@@ -73,32 +76,10 @@ class TablesTableRow extends React.Component {
       situationF: '',
       password: '',
       modalIsOpen: false,
-      modalIsOpen1:false,
-      dHoraire:1,
-      fHoraire:30
     }
   }
 
-  addReservation = async (event) => {
 
-    event.preventDefault();
-    const reservation = {
-      firstname: this.state.firstname,
-      lastname: this.state.lastname,
-      phone: this.state.phone,
-      date: this.state.date,
-      heure: this.state.heure,
-      hospital: this.state.hospital,
-    }
-    axios.post(`http://localhost:9091/api/reservations/createReser`, reservation)
-      .then(res => {
-        alert("Réservation Ajouté!")
-        window.location.reload(false);
-      }).catch(error => {
-        alert("Remplissez tous les champs!");
-  
-      })
-  }
 
   handleChange(evt, field) {
     this.setState({ [field]: evt.target.value });
@@ -145,25 +126,8 @@ class TablesTableRow extends React.Component {
 
     });
   }
-  openModal1(id1) {
-    this.setState({
-      modalIsOpen1: true,
-      id: id1
-    });
-
-  }
-  closeModal1() {
-    this.setState({
-      modalIsOpen1: false,
-
-    });
-  }
   render() {
     const { firstname, lastname, email, birthday, phone, adresse, GroupeSanguine, situationF, id } = this.props;
-    const runCallback = (cb) => {
-      return cb();
-    };
-    console.log(this.state.fHoraire)
     return (
       <>
         <Tr>
@@ -220,75 +184,19 @@ class TablesTableRow extends React.Component {
             <Flex
               direction={{ sm: "column", md: "row" }}
               align="flex-start"
-             
+              p={{ md: "24px" }}
             >
 
 
-<tr>
-  <td>
+
               <Button onClick={() => { this.openModal(id) }} p="0px" bg="transparent">
-               
                 <Flex color="gray.700" cursor="pointer" align="center" p="12px">
                   <Icon as={FaPencilAlt} me="4px" />
                 </Flex>
-                Modifier patient
               </Button>
-              </td>
-              <br></br>
-              <Button onClick={() => { this.openModal1(id) }} p="0px" bg="transparent">
-             
-                <Flex color="gray.700" cursor="pointer" align="center" p="12px">
-                  <Icon as={BsClipboardPlus} me="4px" />
-                </Flex>
-                Ajouter une réservation
-              </Button>
-            </tr>
             </Flex>
           </Td>
         </Tr >
-        <Modal
-          isOpen={this.state.modalIsOpen1}
-          onClose={() => { this.closeModal1() }}
-        >
-          <ModalOverlay />
-          <ModalContent>
-
-            <form id="form" onSubmit={this.addReservation}>
-              <ModalHeader>Ajouter une réservation</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody pb={6}>
-                <FormControl>
-                  <FormLabel>Date</FormLabel>
-                  <Input type="date"  onChange={(event) => this.handleChange(event, "date")} placeholder="Date" />
-                  <FormLabel>Heure</FormLabel>
-                  <select value={this.state.value} onChange={(event) => this.handleChange(event, "heure")}>
-                  {
-        runCallback(() => {
-          
-          const row = [];
-          for(var i=parseInt(this.state.dHoraire)*60; i<parseInt(this.state.fHoraire)*60; i+30){
-            console.log(i)
-            row.push(<option value={i}>{i}</option>);
-          }
-          
-          return row;
-        })
-      }
-               
-          </select>
-                  {/*<Input onChange={(event) => this.handleChange(event, "heure")} placeholder="Heure" />*/}
-                </FormControl>
-              </ModalBody>
-              <ModalFooter>
-                <Button type="submit" colorScheme="blue" mr={3}>
-                  Valider
-                </Button>
-                <Button onClick={() => { this.closeModal1() }} >Annuler</Button>
-
-              </ModalFooter>
-            </form>
-          </ModalContent>
-        </Modal>
         <Modal
           isOpen={this.state.modalIsOpen}
           onClose={() => { this.closeModal() }}>
@@ -370,29 +278,8 @@ class TablesTableRow extends React.Component {
                     <FormLabel></FormLabel>
 
                   </Flex>
-                  <Flex
-                    direction={{ sm: "column", md: "row" }}
-                    align="center"
-                    w="100%"
-                    justify="center"
-                    py="1rem"
-                    padding="2px"
-                  >
-                    <Select fontSize="sm"
-                      ms="4px"
-                      borderRadius="15px"
-                      mb="4px"
-                      size="lg"
-                      onChange={(event) => this.handleChange(event, "GroupeSanguine")}>
-                      <option value="O-">O-</option>
-                      <option value="O+">O+</option>
-                      <option selected value="A-">A-</option>
-                      <option value="A+">A+</option>
-                      <option value="B-">B-</option>
-                      <option value="B+">B+</option>
-                      <option value="AB-">AB-</option>
-                      <option value="AB+">AB+</option>
-                    </Select>
+                  
+                   <FormLabel>Situation Familialle</FormLabel>
 
 
                     <Select fontSize="sm"
@@ -406,7 +293,6 @@ class TablesTableRow extends React.Component {
                       <option value="mariée">Mariée</option>
                       <option value="dévorcée">Dévorcée</option>
                     </Select>
-                  </Flex>
                 </FormControl>
               </ModalBody>
               <ModalFooter>
