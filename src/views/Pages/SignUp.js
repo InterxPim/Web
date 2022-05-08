@@ -100,7 +100,7 @@ class SignUp extends Component {
   }
    register = async (event) => {
     //event.preventDefault();
-    Axios.post("http://localhost:9091/api/hospital/register", {
+    Axios.post("http://172.17.1.223:9091/api/hospital/register", {
       latitude:this.state.latitude,
       longitude:this.state.longitude,
       email: this.state.email,

@@ -82,7 +82,7 @@ function Profile() {
   const idE = sessionStorage.getItem("id")
 
   const update = () => {
-    Axios.put("http://localhost:9091/api/users/update", {
+    Axios.put("http://172.17.1.223:9091/api/users/update", {
       _id: idE,
       email: email,
       lastname: lastname,

@@ -50,7 +50,7 @@ class UsersSA extends React.Component {
 
 
   componentDidMount() {
-    axios.get(`http://localhost:9091/api/users/all`)
+    axios.get(`http://172.17.1.223:9091/api/users/all`)
       .then(res => {
         const resdata = res.data;
         this.setState({ resdata });
@@ -116,7 +116,7 @@ class UsersSA extends React.Component {
 
     }
     console.log(this.state.sendemail)
-    axios.post("http://localhost:9091/api/users/createUsers", user)
+    axios.post("http://172.17.1.223:9091/api/users/createUsers", user)
       .then(res => {
         //alert(user.firstname)
         window.location.reload(false);

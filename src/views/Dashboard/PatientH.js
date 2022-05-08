@@ -59,13 +59,13 @@ class PatientsH extends React.Component {
 
 
   componentDidMount() {
-    axios.get(`http://localhost:9091/api/reservations/allReser`)
+    axios.get(`http://172.17.1.223:9091/api/reservations/allReser`)
       .then(res => {
         const resdataR = res.data;
         this.setState({ resdataR });
       })
      
-    axios.get(`http://localhost:9091/api/patient/all`)
+    axios.get(`http://172.17.1.223:9091/api/patient/all`)
       .then(res => {
 
         const resdataP = res.data;
@@ -140,7 +140,7 @@ class PatientsH extends React.Component {
       hospital: this.state.hospital,
       user: this.state.user,
     }
-    axios.post("http://localhost:9091/api/patient/registerWeb", patient)
+    axios.post("http://172.17.1.223:9091/api/patient/registerWeb", patient)
       .then(res => {
         //alert(user.firstname)
         window.location.reload(false);

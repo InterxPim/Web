@@ -85,7 +85,7 @@ class TablesTableRowHospital extends React.Component {
     const hospital = {
       _id: this.props.id
     }
-    axios.post(`http://localhost:9091/api/hospital/delete`, hospital)
+    axios.post(`http://172.17.1.223:9091/api/hospital/delete`, hospital)
       .then(res => {
 
         /*alert("user supprimé!")*/
@@ -108,7 +108,7 @@ class TablesTableRowHospital extends React.Component {
 
 
     }
-    axios.post(`http://localhost:9091/api/hospital/update`, hospital)
+    axios.post(`http://172.17.1.223:9091/api/hospital/update`, hospital)
       .then(res => {
 
 

@@ -88,7 +88,7 @@ console.log(sendemail)
   const GroupeSanguineP = sessionStorage.getItem("GroupeSanguine")
   const idE = sessionStorage.getItem("id")
   const update = () => {
-    Axios.put("http://localhost:9091/api/patient/update", {
+    Axios.put("http://172.17.1.223:9091/api/patient/update", {
       _id:idE,
       email: email,
       lastname:lastname,

@@ -37,18 +37,18 @@ import TablesTableRow from "components/Tables/Table";
 class Tables extends React.Component {
 
   componentDidMount() {
-    axios.get(`http://localhost:9091/api/reservations/allReser`)
+    axios.get(`http://172.17.1.223:9091/api/reservations/allReser`)
       .then(res => {
         const resdata = res.data;
         this.setState({ resdata });
       })
     //window.location.reload(false);
-    axios.get(`http://localhost:9091/api/users/all`)
+    axios.get(`http://172.17.1.223:9091/api/users/all`)
       .then(res => {
         const resdataU = res.data;
         this.setState({ resdataU });
       })
-    axios.get(`http://localhost:9091/api/prelevements/all`)
+    axios.get(`http://172.17.1.223:9091/api/prelevements/all`)
       .then(res => {
         const resdataP = res.data;
         this.setState({ resdataP });
@@ -97,7 +97,7 @@ class Tables extends React.Component {
       hospital: this.state.hospital,
       prelevement: this.state.prelevement,
     }
-    axios.post(`http://localhost:9091/api/reservations/createReser`, reservation)
+    axios.post(`http://172.17.1.223:9091/api/reservations/createReser`, reservation)
       .then(res => {
         alert("Réservation Ajouté!")
         window.location.reload(false);

@@ -102,7 +102,7 @@ class TablesTableRow extends React.Component {
       situationF: this.state.situationF,
     }
 
-    axios.put(`http://localhost:9091/api/patient/update`, patient)
+    axios.put(`http://172.17.1.223:9091/api/patient/update`, patient)
       .then(res => {
 
 

@@ -72,7 +72,7 @@ function Profile() {
   const Fix = sessionStorage.getItem("faxHospital")
   const id = sessionStorage.getItem("id")
   const update = () => {
-    Axios.post("http://localhost:9091/api/hospital/update", {
+    Axios.post("http://172.17.1.223:9091/api/hospital/update", {
       _id:id,
       email: email,
       nomHospital:nomHospital,
