@@ -38,7 +38,7 @@ import TablesTableRow from "components/Tables/TableP";
 class Tables extends React.Component {
 
   componentDidMount() {
-    axios.get(`http://localhost:9091/api/reservations/allReser`)
+    axios.get(`http://localhost:9091/api/hospital/allRes`,{_id:this.state._id})
       .then(res => {
         const resdata = res.data;
         this.setState({ resdata });
@@ -177,7 +177,6 @@ class Tables extends React.Component {
                     </Th>
                     <Th color="gray.400">Date</Th>
                     <Th color="gray.400">Heure</Th>
-                    <Th color="gray.400">Téléphone</Th>
                     <Th color="gray.400">Statue</Th>
                     <Th color="gray.400">Actions</Th>
                     <Th></Th>
@@ -186,7 +185,7 @@ class Tables extends React.Component {
                 </Thead>
                 <Tbody>
 
-                  {this.state.la.map((row) => {
+                  {this.state.resdata.map((row) => {
 
                     return (
                       <TablesTableRow
@@ -195,7 +194,6 @@ class Tables extends React.Component {
                         lastname={row.lastname}
                         date={row.date}
                         heure={row.heure}
-                        phone={row.phone}
                         result={row.result}
                       />
                     );

@@ -228,8 +228,22 @@ name = sessionStorage.getItem("nomHospital")
   }
   var brand = (
     <Box pt={"25px"} mb="12px">
-     <br/>
-     <br/>
+      <Link
+        href={`/#/admin/reservations`}
+        target="_blank"
+        display="flex"
+        lineHeight="100%"
+        mb="30px"
+        fontWeight="bold"
+        justifyContent="center"
+        alignItems="center"
+        fontSize="11px"
+      >
+        < IconBox  h="150px"
+                    w="200px"
+                  >   <img src={logo} height="10px"  /></IconBox>
+      
+      </Link>
       <Separator></Separator>
       <Center>
       <Stack spacing={3}>
@@ -237,8 +251,6 @@ name = sessionStorage.getItem("nomHospital")
      </Stack>
      </Center>
      <Separator></Separator>
-     <br/>
-     <br/>
     </Box>
   );
 

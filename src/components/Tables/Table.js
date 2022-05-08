@@ -11,6 +11,8 @@ import {
   InputGroup,
   Image
 } from "@chakra-ui/react";
+
+import ReactToPrint from "react-to-print";
 import {Grid,TextField} from '@material-ui/core';
 import QRCode from 'qrcode';
 import QrReader from 'react-qr-reader';
@@ -43,7 +45,6 @@ import React from "react";
 import { GiLoveInjection } from "react-icons/gi";
 import { FaLeaf, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { date } from "yup";
-import ReactToPrint from "react-to-print";
 class TablesTableRow extends React.Component {
 
   componentDidMount() {
@@ -269,16 +270,21 @@ class TablesTableRow extends React.Component {
     });
   }
   codeGen = async (event) => {
-    console.log("here")
     event.preventDefault();
     let response = await axios.post("http://localhost:9091/api/prelevements/geree", {})
     this.setState({
       ...this.state,
       generate: response.data
     })
-    console.log(response.data)
+
     this.generateQrCode()
   }
+  print(){
+    console.log("print")
+    print(this.generateQrCode())
+}
+
+
 
   render() {
 
@@ -319,12 +325,7 @@ class TablesTableRow extends React.Component {
 
           <Td>
             <Text fontSize="md" color="gray.700" fontWeight="bold" pb=".5rem">
-              {heure}:00
-            </Text>
-          </Td>
-          <Td>
-            <Text fontSize="md" color="gray.700" fontWeight="bold" pb=".5rem">
-              {phone}
+              {heure}
             </Text>
           </Td>
           <Td>
@@ -488,7 +489,7 @@ class TablesTableRow extends React.Component {
                           <PopoverBody>
                             Scaner le QR Code 
                             
-                            <Image ref={el => (this.componentRef = el)} src={this.state.imageUrl}  />
+                            <Image src={this.state.imageUrl} ref={el => (this.componentRef = el)} />
                             <br/>
                            
                     
@@ -498,7 +499,9 @@ class TablesTableRow extends React.Component {
                             <ReactToPrint
           trigger={() => <a>Print this QRCode!</a>}
           content={() => this.componentRef}
-        />                            </ButtonGroup>
+        />
+       
+                            </ButtonGroup>
                           </PopoverFooter>
                         </PopoverContent>
                       </Popover>

@@ -1,26 +1,27 @@
 // Chakra imports
-
-import { useDisclosure } from '@chakra-ui/react'
 import { Center, Square, Circle } from '@chakra-ui/react'
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import icon from "./constants";
+
 import {
   Box,
   Button,
   Flex,
   FormControl,
-  FormLabel,
+  InputGroup,
   HStack,
-  Icon,
+  InputRightElement,
   Input,
   Link,
   Switch,
-  Text,
-  useColorModeValue,
+  Text
 } from "@chakra-ui/react";
 import { PinInput, PinInputField } from '@chakra-ui/react'
 // Assets
 import BgSignUp from "assets/img/BgSignUpd.png";
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { Component } from "react";
+//import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import {
   Modal,
@@ -31,57 +32,87 @@ import {
   ModalBody,
   ModalCloseButton,
 } from '@chakra-ui/react'
-import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
+import L from 'leaflet';
+import { geolocated } from 'react-geolocated';
+import { map } from 'lodash';
+class SignUp extends Component {
 
-function SignUp() {
-  const Signin = () => {
-    history.push("/auth/signin");
+  constructor(props) {
+ 
+    super(props);
+    this.state = {
+      value: '',
+      size: '',
+      modalIsOpen:false,
+      modalIsOpen1:false,
+      email:"",
+      password:"",
+      nomHospital:"",
+      addresseHospital:"",
+      phoneHospital:"",
+      faxHospital:"",
+      latitude:0.0,
+      longitude:0.0
+
+    }
   }
-  const Dashboard = () => {
+ 
+  openModal() {
+    this.setState({
+      modalIsOpen: true,
+    });
+  }
+
+  closeModal(latitude,longitude) {
+    console.log(latitude)
+    this.setState({
+      modalIsOpen: false,
+    });
+  }
+
+  openModal1() {
+    this.setState({
+      modalIsOpen1: true,
+    });
+  }
+  closeModal1() {
+    this.setState({
+      modalIsOpen1: false,
+    });
+  }
+   Signin() {
+    //history.push("/auth/signin");
+  }
+  Dashboard (){
     const conf=sessionStorage.getItem("conf")
-    if (value == conf )
+    if (this.state.value == conf )
     {
-      history.push("/admin/reservations");
+      //history.push("/admin/reservations");
       window.location.reload(false);
     }else 
     {
-      alert("please try again")
+      // alert("please try again")
     }
+  }  
+  handleChange(evt, field) {
+    this.setState({ [field]: evt.target.value });
+
   }
-
-  const [value, setValue] = React.useState();
-  const titleColor = useColorModeValue("teal.300", "teal.200");
-  const textColor = useColorModeValue("gray.700", "white");
-  const bgColor = useColorModeValue("white", "gray.700");
-  const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
-
-  const history = useHistory();
-
-  const initialRef = React.useRef()
-  const finalRef = React.useRef()
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  const [size, setSize] = React.useState('md')
-
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nomHospital, setNomHospital] = useState("");
-  const [addresseHospital, setAddresseHospital] = useState("");
-  const [phoneHospital, setPhoneHospital] = useState("");
-  const [faxHospital, setFaxHospital] = useState("");
-  const register = () => {
+   register = async (event) => {
+    //event.preventDefault();
     Axios.post("http://localhost:9091/api/hospital/register", {
-
-      email: email,
-      password: password,
-      nomHospital: nomHospital,
-      addresseHospital: addresseHospital,
-      phoneHospital: phoneHospital,
-      faxHospital: faxHospital,
+      latitude:this.state.latitude,
+      longitude:this.state.longitude,
+      email: this.state.email,
+      password: this.state.password,
+      nomHospital: this.state.nomHospital,
+      addresseHospital: this.state.addresseHospital,
+      phoneHospital: this.state.phoneHospital,
+      faxHospital: this.state.faxHospital,
     }).then((response) => {
 
       if (!response.data.message) {
-        onOpen();
+        this.openModal1()
         // setLoginStatus( response.data.message);
         if (response.data.role == "Admin") {
           sessionStorage.setItem("email", response.data.email)
@@ -104,11 +135,29 @@ function SignUp() {
 
       }
     });
-  };
+  }
+  state = { map: null };
 
-
-
-
+  componentDidUpdate(prevProps, prevState) {
+    const { map } = this.state;
+    if (prevState.map !== map && map) {
+      
+      map.on("click", function (e) {
+      
+        console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+        this.setState({latitude:e.latlng.lat,
+          longitude:e.latlng.lng
+        })
+      
+      }.bind(this));
+    }
+  }
+  render() {
+    
+    const DEFAULT_LATITUDE = 36.89857107033524;
+    const DEFAULT_LONGITUDE = 10.189760711095621;
+    const latitude = this.props.coords ? this.props.coords.latitude : DEFAULT_LATITUDE;
+    const longitude = this.props.coords ? this.props.coords.longitude : DEFAULT_LONGITUDE;
 
 
   return (
@@ -156,12 +205,12 @@ function SignUp() {
             borderRadius="15px"
             p="40px"
             mx={{ base: "100px" }}
-            bg={bgColor}
+            bg="white"
             boxShadow="0 20px 27px 0 rgb(0 0 0 / 5%)"
           >
             <Text
               fontSize="xl"
-              color={textColor}
+              color="gray.700"
               fontWeight="bold"
               textAlign="center"
               mb="22px"
@@ -176,10 +225,10 @@ function SignUp() {
                 borderRadius="15px"
                 type="text"
                 placeholder="Name Hospital"
-                value={nomHospital}
+               value={this.state.nomHospital}
                 borderColor="gray.400"
                 focusBorderColor="#1daa3f"
-                onChange={(e) => setNomHospital(e.target.value)}
+                onChange={(event) => this.handleChange(event, "nomHospital")}
                 mb="24px"
                 size="lg"
               />
@@ -189,23 +238,47 @@ function SignUp() {
                 ms="4px"
                 borderRadius="15px"
                 type="email"
-                value={email}
+                value={this.state.email}
                 borderColor="gray.400"
                 focusBorderColor="#1daa3f"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => this.handleChange(event, "email")}
                 placeholder="Your email address"
                 mb="24px"
                 size="lg"
               />
+             <InputGroup size='md'>
               <Input
+              disabled
                 fontSize="sm"
                 ms="4px"
                 borderRadius="15px"
                 type="text"
-                value={addresseHospital}
+                value={
+                  this.state.latitude ? 'Ajouté' : 'Non Ajouté'
+                }
                 borderColor="gray.400"
                 focusBorderColor="#1daa3f"
-                onChange={(e) => setAddresseHospital(e.target.value)}
+  
+                placeholder="Addresse Hospital"
+                mb="24px"
+                size="lg"
+              />
+              <InputRightElement width='4.5rem'>
+                    <Button h='1.75rem' size='sm'    onClick={() => {this.openModal()}}>
+                    Choisissez
+                    </Button>
+                  </InputRightElement>
+              </InputGroup>
+              <Input
+              
+                fontSize="sm"
+                ms="4px"
+                borderRadius="15px"
+                type="text"
+                value={this.state.addresseHospital}
+                borderColor="gray.400"
+                focusBorderColor="#1daa3f"
+                onChange={(event) => this.handleChange(event, "addresseHospital")}
                 placeholder="Addresse Hospital"
                 mb="24px"
                 size="lg"
@@ -215,10 +288,10 @@ function SignUp() {
                 ms="4px"
                 borderRadius="15px"
                 type="number"
-                value={phoneHospital}
+                value={this.state.phoneHospital}
                 borderColor="gray.400"
                 focusBorderColor="#1daa3f"
-                onChange={(e) => setPhoneHospital(e.target.value)}
+                onChange={(event) => this.handleChange(event, "phoneHospital")}
                 placeholder="Hospital Phone "
                 mb="24px"
                 size="lg"
@@ -228,10 +301,10 @@ function SignUp() {
                 ms="4px"
                 borderRadius="15px"
                 type="number"
-                value={faxHospital}
+                value={this.state.faxHospital}
                 borderColor="gray.400"
                 focusBorderColor="#1daa3f"
-                onChange={(e) => setFaxHospital(e.target.value)}
+                onChange={(event) => this.handleChange(event, "faxHospital")}
                 placeholder="Fax Number Hospital"
                 mb="24px"
                 size="lg"
@@ -241,17 +314,17 @@ function SignUp() {
                 ms="4px"
                 borderRadius="15px"
                 type="password"
-                value={password}
+                value={this.state.password}
                 borderColor="gray.400"
                 focusBorderColor="#1daa3f"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(event) => this.handleChange(event, "password")}
                 placeholder="Your password"
                 mb="24px"
                 size="lg"
               />
               
               <Button
-                onClick={register}
+               onClick={() => {this.register()}}
                 type="submit"
                 bg="#1daa3f"
                 fontSize="10px"
@@ -277,7 +350,7 @@ function SignUp() {
               maxW="100%"
               mt="0px"
             >
-              <Text color={textColor} fontWeight="medium">
+              <Text color="gray.700" fontWeight="medium">
                 Already have an account?
                 <Link
                   
@@ -285,7 +358,7 @@ function SignUp() {
                   ms="5px"
                   href="#"
                   fontWeight="bold"
-                  onClick={Signin}
+                  onClick={() => {this.Signin()}}
                   color={"#1daa3f"}
                 >
                   Sign In
@@ -296,10 +369,53 @@ function SignUp() {
         </Flex>
       </Flex>
       <Modal
-        initialFocusRef={initialRef}
-        finalFocusRef={finalRef}
-        isOpen={isOpen}
-        onClose={onClose}
+     
+        isOpen={this.state.modalIsOpen}
+        onClose={() => { this.closeModal() }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Choisissez votre addresse</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody  >
+            <Center
+            
+            >
+                     <MapContainer
+                     
+                     className="leaflet-map"
+        center={[latitude, longitude]}
+        zoom={15}
+        scrollWheelZoom={true}
+        style={{ height: "60vh" ,width:"100vh"}}
+        whenReady={(map) =>  this.setState({map:map.target})}
+        //  whenCreated={(map) => console.log(map)}
+      >
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker   position={[this.state.latitude, this.state.longitude]} icon={icon}>
+
+        </Marker>
+      </MapContainer>
+            </Center>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3} onClick={() => {this.closeModal(latitude,longitude)}}>
+              Confirmer
+            </Button>
+            <Button  onClick={() => {this.closeModal()}}>Annuler</Button>
+          </ModalFooter>
+        
+        </ModalContent>
+        
+      </Modal>
+
+      <Modal
+            isOpen={this.state.modalIsOpen1}
+            onClose={() => { this.closeModal1() }}
+      
       >
         <ModalOverlay />
         <ModalContent>
@@ -309,7 +425,8 @@ function SignUp() {
             <Center
             >
               <HStack >
-                <PinInput  mask onChange={(e)=>setValue(e)}>
+                <PinInput  mask onChange={(event) => this.handleChange(event, "value")}
+>
                   <PinInputField />
                   <PinInputField />
                   <PinInputField />
@@ -320,15 +437,15 @@ function SignUp() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={Dashboard}>
+            <Button colorScheme='blue' mr={3} onClick={() => {this.Dashboard()}}>
               Save
             </Button>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button  onClick={() => {this.closeModal1()}}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </>
   );
 }
-
+}  
 export default SignUp;

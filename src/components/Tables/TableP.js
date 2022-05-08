@@ -266,7 +266,7 @@ class TablesTableRow extends React.Component {
 
           <Td>
             <Text fontSize="md" color="gray.700" fontWeight="bold" pb=".5rem">
-              {heure}:00
+              {heure}
             </Text>
           </Td>
           <Td>
