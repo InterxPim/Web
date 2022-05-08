@@ -50,7 +50,7 @@ class TablesTableRow extends React.Component {
     this.setState({ result });
     this.setState({ idp });
     this.setState({ etat });
-    axios.get(`http://172.17.1.223:9091/api/prelevements/all`)
+    axios.get(`https://interxpim.herokuapp.com/api/prelevements/all`)
       .then(res => {
         const resdataP = res.data;
         this.setState({ resdataP });
@@ -58,7 +58,7 @@ class TablesTableRow extends React.Component {
         this.state.etat = res.data.etat
 
       })
-    axios.post("http://172.17.1.223:9091/api/prelevements/show", {
+    axios.post("https://interxpim.herokuapp.com/api/prelevements/show", {
       _id: this.props.idp,
     }).then((response) => {
 
@@ -101,7 +101,7 @@ class TablesTableRow extends React.Component {
     const reservation = {
       _id: this.props.id
     }
-    axios.put(`http://172.17.1.223:9091/api/reservations/deleteReser`, reservation)
+    axios.put(`https://interxpim.herokuapp.com/api/reservations/deleteReser`, reservation)
       .then(res => {
 
         alert("Réservation supprimé!")
@@ -126,7 +126,7 @@ class TablesTableRow extends React.Component {
       etat: this.state.etat
 
     }
-    axios.put(`http://172.17.1.223:9091/api/reservations/updateReser`, reservation)
+    axios.put(`https://interxpim.herokuapp.com/api/reservations/updateReser`, reservation)
       .then(res => {
 
         alert("Réservation modifié!")
@@ -156,7 +156,7 @@ class TablesTableRow extends React.Component {
 
     }
     // console.log(this.pref._id)
-    axios.put(`http://172.17.1.223:9091/api/prelevements/updatePrev`, prelevement)
+    axios.put(`https://interxpim.herokuapp.com/api/prelevements/updatePrev`, prelevement)
       .then(res => {
 
        // alert("prelevement modifié!")
@@ -166,7 +166,7 @@ class TablesTableRow extends React.Component {
 
       })
     reservation.etat = true
-    axios.put(`http://172.17.1.223:9091/api/reservations/updateEtat`, reservation).then(
+    axios.put(`https://interxpim.herokuapp.com/api/reservations/updateEtat`, reservation).then(
       res => {
         //  alert("prelevement modifié!")
         window.location.reload(false);
@@ -182,7 +182,7 @@ class TablesTableRow extends React.Component {
       id: id1
     });
 
-    /*axios.post("http://172.17.1.223:9091/api/prelevement/show", {
+    /*axios.post("https://interxpim.herokuapp.com/api/prelevement/show", {
 
       id: id1,
 
@@ -199,7 +199,7 @@ class TablesTableRow extends React.Component {
       modalIsOpenP: true,
       id: id2
     });
-    axios.post("http://172.17.1.223:9091/api/prelevements/show", {
+    axios.post("https://interxpim.herokuapp.com/api/prelevements/show", {
 
       _id: this.props.idp,
     }).then((response) => {

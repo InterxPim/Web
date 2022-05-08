@@ -38,18 +38,18 @@ import TablesTableRow from "components/Tables/TableP";
 class Tables extends React.Component {
 
   componentDidMount() {
-    axios.get(`http://172.17.1.223:9091/api/hospital/allRes`,{_id:this.state._id})
+    axios.get(`https://interxpim.herokuapp.com/api/hospital/allRes`,{_id:this.state._id})
       .then(res => {
         const resdata = res.data;
         this.setState({ resdata });
       })
     //window.location.reload(false);
-    axios.get(`http://172.17.1.223:9091/api/users/all`)
+    axios.get(`https://interxpim.herokuapp.com/api/users/all`)
       .then(res => {
         const resdataU = res.data;
         this.setState({ resdataU });
       })
-      axios.get(`http://172.17.1.223:9091/api/hospital/all`)
+      axios.get(`https://interxpim.herokuapp.com/api/hospital/all`)
       .then(res => {
         const resdataH = res.data;
         this.setState({ resdataH });
@@ -92,7 +92,7 @@ class Tables extends React.Component {
       heure: this.state.heure,
       hospital: this.state.hospital,
     }
-    axios.post(`http://172.17.1.223:9091/api/reservations/createReser`, reservation)
+    axios.post(`https://interxpim.herokuapp.com/api/reservations/createReser`, reservation)
       .then(res => {
         alert("Réservation Ajouté!")
         window.location.reload(false);

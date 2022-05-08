@@ -72,7 +72,7 @@ export default function Configurator(props) {
   const handleSubmit = () => {
     if (sessionStorage.getItem("role")=="Admin"){
       if (password==OldPassword&&NewPassword!=0){
-        Axios.post("http://172.17.1.223:9091/api/hospital/changePwd", {
+        Axios.post("https://interxpim.herokuapp.com/api/hospital/changePwd", {
           email: sessionStorage.getItem("email"),
           oldPwd:OldPassword,
           newpassword: NewPassword,
@@ -88,7 +88,7 @@ export default function Configurator(props) {
     }else if(sessionStorage.getItem("GroupeSanguine")!=""){
       
       if (password==OldPassword&&NewPassword!=0){
-      Axios.post("http://172.17.1.223:9091/api/patient/changePwd", {
+      Axios.post("https://interxpim.herokuapp.com/api/patient/changePwd", {
         email: sessionStorage.getItem("email"),
         oldPwd:OldPassword,
         newpassword: NewPassword,
@@ -101,7 +101,7 @@ export default function Configurator(props) {
       console.log("no")
     }}else if(sessionStorage.getItem("role")=="SupAdmin"){
       if (password==OldPassword&&NewPassword!=0){
-        Axios.post("http://172.17.1.223:9091/api/admin/changePwd", {
+        Axios.post("https://interxpim.herokuapp.com/api/admin/changePwd", {
           email: sessionStorage.getItem("email"),
           oldPwd:OldPassword,
           newpassword: NewPassword,

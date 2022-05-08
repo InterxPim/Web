@@ -50,7 +50,7 @@ class Hospitals extends React.Component {
 
 
   componentDidMount() {
-    axios.get(`http://172.17.1.223:9091/api/hospital/all`)
+    axios.get(`https://interxpim.herokuapp.com/api/hospital/all`)
       .then(res => {
         const resdata = res.data;
         this.setState({ resdata });
@@ -89,7 +89,7 @@ class Hospitals extends React.Component {
 
     }
     
-    axios.post("http://172.17.1.223:9091/api/hospital/registerAdmin", hospital)
+    axios.post("https://interxpim.herokuapp.com/api/hospital/registerAdmin", hospital)
       .then(res => {
         //alert(user.firstname)
         window.location.reload(false);

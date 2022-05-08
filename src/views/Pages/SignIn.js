@@ -22,6 +22,7 @@ import {
 // Assets
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
+
 import signInImage from "assets/img/BgSignUp.png";
 function SignIn() {
   // Chakra color mode
@@ -32,7 +33,7 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const toast = useToast()
   const toastIdRef = React.useRef()
-
+  var md5 = require('md5');
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
 
@@ -48,11 +49,11 @@ function SignIn() {
   }
   const login = () => {
     console.log(isMail)
-    Axios.post("http://172.17.1.223:9091/api/users/login", {
+    Axios.post("https://interxpim.herokuapp.com/api/users/login", {
 
       email: email,
 
-      password: password,
+      password: md5(password),
     }).then((response) => {
 
       if (!response.data.message) {

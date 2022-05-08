@@ -94,7 +94,7 @@ class TablesTableRowUser extends React.Component {
     const user = {
       _id: this.props.id
     }
-    axios.post(`http://172.17.1.223:9091/api/users/delete`, user)
+    axios.post(`https://interxpim.herokuapp.com/api/users/delete`, user)
       .then(res => {
 
         /*alert("user supprimé!")*/
@@ -119,7 +119,7 @@ class TablesTableRowUser extends React.Component {
       situationF: this.state.situationF,
       hospital:this.state.hospital,
     }
-    axios.put(`http://172.17.1.223:9091/api/users/update`, user)
+    axios.put(`https://interxpim.herokuapp.com/api/users/update`, user)
       .then(res => {
 
 
