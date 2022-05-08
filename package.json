@@ -24,6 +24,7 @@
     "leaflet": "^1.8.0",
     "mapbox-gl": "1.8.1",
     "match-sorter": "6.3.0",
+    "md5": "^2.3.0",
     "moment": "^2.29.3",
     "node-sass": "7.0.1",
     "nouislider": "15.0.0",
@@ -68,7 +69,7 @@
     "lint:check": "eslint . --ext=js,jsx;  exit 0",
     "lint:fix": "eslint . --ext=js,jsx --fix;  exit 0",
     "predeploy": "npm run build",
-"deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d build",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm start"
   },
   "optionalDependencies": {
