@@ -391,8 +391,10 @@ class TablesTableRow extends React.Component {
                   <FormLabel>Note</FormLabel>
                   <Input defaultValue={this.state.note} onChange={(event) => this.handleChange(event, "note")} placeholder="note" />
                   <FormLabel>numéro Dignostique</FormLabel>
+               
                   <Input defaultValue={this.state.numeroD} onChange={(event) => this.handleChange(event, "numeroD")} placeholder="numeroD" />
-
+                  
+             
                 </FormControl>
               </ModalBody>
               <ModalFooter>

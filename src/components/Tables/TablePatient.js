@@ -278,29 +278,8 @@ class TablesTableRow extends React.Component {
                     <FormLabel></FormLabel>
 
                   </Flex>
-                  <Flex
-                    direction={{ sm: "column", md: "row" }}
-                    align="center"
-                    w="100%"
-                    justify="center"
-                    py="1rem"
-                    padding="2px"
-                  >
-                    <Select fontSize="sm"
-                      ms="4px"
-                      borderRadius="15px"
-                      mb="4px"
-                      size="lg"
-                      onChange={(event) => this.handleChange(event, "GroupeSanguine")}>
-                      <option value="O-">O-</option>
-                      <option value="O+">O+</option>
-                      <option selected value="A-">A-</option>
-                      <option value="A+">A+</option>
-                      <option value="B-">B-</option>
-                      <option value="B+">B+</option>
-                      <option value="AB-">AB-</option>
-                      <option value="AB+">AB+</option>
-                    </Select>
+                  
+                   <FormLabel>Situation Familialle</FormLabel>
 
 
                     <Select fontSize="sm"
@@ -314,7 +293,6 @@ class TablesTableRow extends React.Component {
                       <option value="mariée">Mariée</option>
                       <option value="dévorcée">Dévorcée</option>
                     </Select>
-                  </Flex>
                 </FormControl>
               </ModalBody>
               <ModalFooter>
