@@ -66,7 +66,7 @@ class UsersSA extends React.Component {
       email: '',
       birthday: '',
       gender: '',
-      situationF: '',
+      situationF: 'Célibataire',
       age: '',
       //password:'',
       hospital: '',

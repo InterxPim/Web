@@ -23,28 +23,15 @@ import { useHistory } from "react-router-dom";
 import Card from "components/Card/Card";
 import CardBody from "components/Card/CardBody";
 import CardHeader from "components/Card/CardHeader";
-
 // Assets
-import avatar2 from "assets/img/avatars/avatar2.png";
-import avatar3 from "assets/img/avatars/avatar3.png";
-import avatar4 from "assets/img/avatars/avatar4.png";
-import avatar5 from "assets/img/avatars/avatar5.png";
-import avatar6 from "assets/img/avatars/avatar6.png";
-import ImageArchitect1 from "assets/img/ImageArchitect1.png";
-import ImageArchitect2 from "assets/img/ImageArchitect2.png";
-import ImageArchitect3 from "assets/img/ImageArchitect3.png";
-import ProfileBgImage from "assets/img/ProfileBackground.png";
+
 import {
-  FaCube,
-  FaFacebook,
-  FaInstagram,
+
   FaPenFancy,
   FaPlus,
   FaTwitter,
 } from "react-icons/fa";
-import { IoDocumentsSharp } from "react-icons/io5";
-import { servicesVersion } from "typescript";
-import { add } from "lodash";
+
 import Axios from "axios";
 function Profile() {
   // Chakra color mode
@@ -64,13 +51,18 @@ function Profile() {
   const [addresseHospital, setAddresseHospital] = useState("");
   const [phoneHospital, setPhoneHospital] = useState("");
   const [faxHospital, setFaxHospital] = useState("");
-  
+  const [debutHoraire, setDebutHoraire] = useState("");
+  const [finHoraire, setFinHoraire] = useState("");
+
+
   const Name = sessionStorage.getItem("nomHospital")
   const emailH = sessionStorage.getItem("email")
   const Addresse = sessionStorage.getItem("addresseHospital")
   const Phone = sessionStorage.getItem("phoneHospital")
   const Fix = sessionStorage.getItem("faxHospital")
   const id = sessionStorage.getItem("id")
+  const dHoraire = sessionStorage.getItem("debutHoraire")
+  const fHoraire = sessionStorage.getItem("finHoraire")
   const update = () => {
     Axios.post("https://interxpim.herokuapp.com/api/hospital/update", {
       _id:id,
@@ -79,6 +71,8 @@ function Profile() {
       addresseHospital:addresseHospital,
       phoneHospital:phoneHospital,
       faxHospital:faxHospital,
+      heureDebut:debutHoraire,
+      heureFin:finHoraire
     }).then((response) => {
       
        if (!response.data.message) {
@@ -86,14 +80,17 @@ function Profile() {
          // setLoginStatus( response.data.message);
           if (response.data.role=="Admin")
           {
-            sessionStorage.setItem("email",email)
-            //sessionStorage.setItem("password",response.data.password)
-            sessionStorage.setItem("nomHospital",nomHospital)
-            sessionStorage.setItem("addresseHospital",addresseHospital)
-            sessionStorage.setItem("phoneHospital",phoneHospital)
-            sessionStorage.setItem("faxHospital",faxHospital)
+            sessionStorage.setItem("email",response.data.email)
+            sessionStorage.setItem("password",response.data.password)
+            sessionStorage.setItem("nomHospital",response.data.nomHospital)
+            sessionStorage.setItem("addresseHospital",response.data.addresseHospital)
+            sessionStorage.setItem("phoneHospital",response.data.phoneHospital)
+            sessionStorage.setItem("faxHospital",response.data.faxHospital)
             sessionStorage.setItem("id",response.data._id)
             sessionStorage.setItem("role",response.data.role)
+            sessionStorage.setItem("debutHoraire",response.data.heureDebut)
+            sessionStorage.setItem("finHoraire",response.data.heureDebut)
+
             console.log(response);
         history.push("/admin/profile");
         window.location.reload(false);
@@ -276,6 +273,20 @@ function Profile() {
                   {Fix}
                 </Text>
               </Flex>
+              
+              <Flex align="center" mb="18px">
+                <Text
+                  fontSize="md"
+                  color={textColor}
+                  fontWeight="bold"
+                  me="10px"
+                >
+                  Créneau horaire:{" "}
+                </Text>
+                <Text fontSize="md" color="gray.500" fontWeight="400">
+                  {dHoraire} {fHoraire}
+                </Text>
+              </Flex>
             </Flex>
           </CardBody>
         </Card>
@@ -294,7 +305,6 @@ function Profile() {
               borderRadius="15px"
               type="text"
               placeholder="hospital name "
-              
               value={nomHospital}
                 onChange={(e) => setNomHospital(e.target.value)}
               mb="24px"
@@ -333,6 +343,7 @@ function Profile() {
               mb="24px"
               size="lg"
             />
+          
              <Input
               fontSize="sm"
               ms="4px"
@@ -344,8 +355,29 @@ function Profile() {
               mb="24px"
               size="lg"
             />
-             
-              </FormControl>
+              <Input
+              fontSize="sm"
+              ms="4px"
+              borderRadius="15px"
+              type="time"
+              placeholder="debut Horaire "
+              value={debutHoraire}
+                onChange={(e) => setDebutHoraire(e.target.value)}
+              mb="24px"
+              size="lg"
+            />
+              
+  <Input
+              fontSize="sm"
+              ms="4px"
+              borderRadius="15px"
+              type="time"
+              placeholder="fin Horaire "
+              value={finHoraire}
+                onChange={(e) => setFinHoraire(e.target.value)}
+              mb="24px"
+              size="lg"
+            />              </FormControl>
 
               <Button p="0px" bg="transparent" onClick={update} >
                 <Flex

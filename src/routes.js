@@ -14,6 +14,7 @@ import UsersSA from "views/Dashboard/UsersSA.js";
 
 import { CalendarIcon } from '@chakra-ui/icons'
 import { FaSlideshare ,FaRestroom} from "react-icons/fa";
+import{ImStatsDots} from "react-icons/im";
 import {
   HomeIcon,
   StatsIcon,
@@ -21,8 +22,10 @@ import {
   DocumentIcon,
   RocketIcon,
 } from "components/Icons/Icons";
+import Dashboard from "views/Dashboard/Dashboard";
 if (sessionStorage.getItem("role")=="Admin")
 {var dashRoutes = [
+ 
   {
     path: "/reservations",
     name: "Réservations",
@@ -91,6 +94,14 @@ else if (sessionStorage.getItem("role")=="user"){
 }else if (sessionStorage.getItem("role")=="SupAdmin")
 {
   var dashRoutes = [
+    {
+      path: "/dashboard",
+      name: "Statistique",
+      rtlName: "المريض",
+      icon: <ImStatsDots color="#1daa3f" />,
+      component: Dashboard,
+      layout: "/admin",
+    },
     {
       path: "/reservations",
       name: "Réservations",

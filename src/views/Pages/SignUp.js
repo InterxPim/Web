@@ -81,7 +81,8 @@ class SignUp extends Component {
     });
   }
    Signin() {
-    //history.push("/auth/signin");
+     
+    this.props.history.push("/auth/signin");
   }
   Dashboard (){
     const conf=sessionStorage.getItem("conf")
@@ -127,6 +128,7 @@ class SignUp extends Component {
          
           console.log(response);
           //
+          this.props.history.push("/admin/reservations");
          
         }
 

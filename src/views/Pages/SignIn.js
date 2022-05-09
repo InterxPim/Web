@@ -53,7 +53,7 @@ function SignIn() {
 
       email: email,
 
-      password: md5(password),
+      password:password,
     }).then((response) => {
 
       if (!response.data.message) {
