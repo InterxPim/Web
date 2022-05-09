@@ -17,7 +17,7 @@ class BarChart extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://localhost:9091/api/reservations/allReser`)
+    axios.get(`https://interxpim.herokuapp.com/api/reservations/allReser`)
     .then(res => {
       const resdata = res.data;
       this.setState({ resdata });
