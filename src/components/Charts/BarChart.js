@@ -2,19 +2,33 @@ import React, { Component } from "react";
 import Card from "components/Card/Card";
 import Chart from "react-apexcharts";
 import { barChartData, barChartOptions } from "variables/charts";
+import axios from 'axios';
 
 class BarChart extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
+      resdata:[],
+      l:2,
       chartData: [],
       chartOptions: {},
     };
   }
 
   componentDidMount() {
+    axios.get(`https://interxpim.herokuapp.com/api/reservations/allReser`)
+    .then(res => {
+      const resdata = res.data;
+      this.setState({ resdata });
+      const l = resdata.length
+      this.setState({ l });
+    })
     this.setState({
-      chartData: barChartData,
+      chartData: [ {
+        name: "Réservations",
+        data: [this.state.l , 0, 0, 0, 0, 0, 0, 0, 0],
+      },],
       chartOptions: barChartOptions,
     });
   }
@@ -25,7 +39,7 @@ class BarChart extends Component {
         py="1rem"
         height={{ sm: "200px" }}
         width="100%"
-        bg="linear-gradient(81.62deg, #313860 2.25%, #151928 79.87%)"
+        bg="linear-gradient(81.62deg, green 2.25%, white 79.87%)"
         position="relative"
       >
         <Chart

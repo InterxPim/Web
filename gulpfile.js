@@ -7,7 +7,6 @@ gulp.task("licenses", async function () {
     .src("build/static/js/*chunk.js", { base: "./" })
     .pipe(
       gap.prependText(`/*!
-
       =========================================================
       * Purity UI Dashboard - v1.0.1
       =========================================================
@@ -57,7 +56,6 @@ gulp.task("licenses", async function () {
     .src("build/static/css/*chunk.css", { base: "./" })
     .pipe(
       gap.prependText(`/*!
-
       =========================================================
       * Purity UI Dashboard - v1.0.1
       =========================================================

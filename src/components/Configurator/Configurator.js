@@ -1,4 +1,6 @@
 // Chakra Imports
+
+import Axios from "axios";
 import {
   Box,
   Button,
@@ -7,6 +9,10 @@ import {
   DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
+  FormLabel,
+  InputLeftElement,
+  InputGroup,
+  Input,
   Flex,
   Icon,
   Link,
@@ -15,6 +21,23 @@ import {
   useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  FormControl,
+} from "@chakra-ui/react";
+import {
+  AiOutlineFontColors,
+  AiFillPhone,
+  AiOutlineEnvironment,
+  AiOutlineMail,
+  AiTwotoneCalendar
+} from "react-icons/ai";
 import GitHubButton from "react-github-btn";
 import { Separator } from "components/Separator/Separator";
 import PropTypes from "prop-types";
@@ -41,6 +64,62 @@ export default function Configurator(props) {
   const secondaryButtonBorder = useColorModeValue("gray.700", "white");
   const secondaryButtonColor = useColorModeValue("gray.700", "white");
   const settingsRef = React.useRef();
+  const password = (sessionStorage.getItem("password"));
+  const [OldPassword, setOldPassword] = useState("");
+  const [NewPassword, setNewPassword] = useState("");
+
+
+  const handleSubmit = () => {
+    if (sessionStorage.getItem("role")=="Admin"){
+      if (password==OldPassword&&NewPassword!=0){
+        Axios.post("https://interxpim.herokuapp.com/api/hospital/changePwd", {
+          email: sessionStorage.getItem("email"),
+          oldPwd:OldPassword,
+          newpassword: NewPassword,
+
+        }).then((response) => {
+          sessionStorage.setItem("password",NewPassword)
+          window.location.reload(false);
+        })
+        console.log("yes")
+      }else {
+        console.log("no")
+      }
+    }else if(sessionStorage.getItem("GroupeSanguine")!=""){
+      
+      if (password==OldPassword&&NewPassword!=0){
+      Axios.post("https://interxpim.herokuapp.com/api/patient/changePwd", {
+        email: sessionStorage.getItem("email"),
+        oldPwd:OldPassword,
+        newpassword: NewPassword,
+      }).then((response) => {
+        sessionStorage.setItem("password",NewPassword)
+        window.location.reload(false);
+      })
+      console.log("yes")
+    }else {
+      console.log("no")
+    }}else if(sessionStorage.getItem("role")=="SupAdmin"){
+      if (password==OldPassword&&NewPassword!=0){
+        Axios.post("https://interxpim.herokuapp.com/api/admin/changePwd", {
+          email: sessionStorage.getItem("email"),
+          oldPwd:OldPassword,
+          newpassword: NewPassword,
+
+        }).then((response) => {
+          sessionStorage.setItem("password",NewPassword)
+          window.location.reload(false);
+        })
+        console.log("yes")
+      }else {
+        console.log("no")
+      }
+    }
+    
+
+
+
+  }
   return (
     <>
       <Drawer
@@ -63,64 +142,7 @@ export default function Configurator(props) {
           </DrawerHeader>
           <DrawerBody w="340px" ps="24px" pe="40px">
             <Flex flexDirection="column">
-              <Box>
-                <Text fontSize="md" fontWeight="600">
-                  Change menu Type
-                </Text>
-                <Text fontSize="sm" mb="16px">
-                  Choose between 2 different   types.
-                </Text>
-                <Flex>
-                  <Button
-                    w="50%"
-                    p="8px 32px"
-                    me="8px"
-                    colorScheme="teal"
-                    borderColor="teal.300"
-                    color="teal.300"
-                    variant="outline"
-                    fontSize="xs"
-                    onClick={props.onTransparent}
-                  >
-                    Transparent
-                  </Button>
-                  <Button
-                    type="submit"
-                    bg="teal.300"
-                    w="50%"
-                    p="8px 32px"
-                    mb={5}
-                    _hover="teal.300"
-                    color="white"
-                    fontSize="xs"
-                    onClick={props.onOpaque}
-                  >
-                    Clear
-                  </Button>
-                </Flex>
-              </Box>
-              <Box
-                display={fixedDisplay}
-                justifyContent="space-between "
-                mb="16px"
-              >
-                <Text fontSize="md" fontWeight="600" mb="4px">
-                  Navbar Fixed
-                </Text>
-                <Switch
-                  colorScheme="teal"
-                  isChecked={switched}
-                  onChange={(event) => {
-                    if (switched === true) {
-                      props.onSwitch(false);
-                      setSwitched(false);
-                    } else {
-                      props.onSwitch(true);
-                      setSwitched(true);
-                    }
-                  }}
-                />
-              </Box>
+             
               <Flex
                 justifyContent="space-between"
                 alignItems="center"
@@ -137,46 +159,54 @@ export default function Configurator(props) {
               <Separator />
               <Box mt="24px">
                 <Text fontSize="md" fontWeight="600">
-                    Change Languge
+                    Change password
                 </Text>
                 <Text fontSize="sm" mb="16px">
                 </Text>
                 <Box>
-                  <Link
-                    href=""
-                    w="100%"
-                    mb="16px"
-                  >
-                    <Button
-                      w="100%"
-                      mb="16px"
-                      bg={bgButton}
-                      color={colorButton}
-                      fontSize="xs"
-                      variant="no-hover"
-                      px="30px"
-                    >
-                      Arabe
-                    </Button>
-                  </Link>
-                  <Link
-                    href=""
-                    w="100%"
-                  >
-                    <Button
-                      w="100%"
-                      bg={secondaryButtonBg}
-                      border="1px solid"
-                      borderColor={secondaryButtonBorder}
-                      color={secondaryButtonColor}
-                      fontSize="xs"
-                      variant="no-hover"
-                      px="20px"
-                      mb="16px"
-                    >
-                      <Text textDecorationColor="none">English</Text>
-                    </Button>
-                  </Link>
+                <form id="form" onSubmit={handleSubmit}>
+                <ModalBody pb={2}>
+                <FormLabel>Old Password </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiOutlineMail color='gray.300' />}
+                    />
+                    <Input
+                      type="password"
+                      onChange={(e) => setOldPassword(e.target.value)}
+                      placeholder="Old Password"
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f" />
+                  </InputGroup>
+                  
+                  <FormLabel>New Password </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents='none'
+                      children={<AiOutlineMail color='gray.300' />}
+                    />
+                    <Input
+                      type="Password "
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      placeholder="New Password "
+                      borderColor="gray.400"
+                      focusBorderColor="#1daa3f" />
+                  </InputGroup>
+                  </ModalBody>
+                  <Button type="submit" bg="#1daa3f"
+                  
+                  color="white" mr={3}
+                  _hover={{
+                    bg: "#147a2c",
+                  }}
+                  _active={{
+                    bg: "#1daa3f",
+                  }}
+                >
+                  Valider
+                </Button>
+                </form>
                 </Box>
                 <Flex
                   justifyContent="center"

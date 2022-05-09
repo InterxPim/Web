@@ -1,15 +1,5 @@
 import React from "react";
 import moment from "moment";
-import { Calendar, dateFnsLocalizer ,momentLocalizer} from "react-big-calendar";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-import {
-  IconButton,
-  InputGroup,
-  InputLeftElement,
-  useColorModeValue,
-} from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
-
 // Chakra imports
 import {
   Flex,
@@ -32,6 +22,7 @@ import {
   ModalCloseButton,
   FormControl,
   FormLabel,
+  Select,
   Input,
   Icon
 } from "@chakra-ui/react"
@@ -42,22 +33,15 @@ import {
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import TablesTableRow from "components/Tables/Table";
+import TablesTableRow from "components/Tables/TableP";
 //const textColor = useColorModeValue("gray.700", "white");
 class Tables extends React.Component {
 
   componentDidMount() {
-    axios.get(`https://interxpim.herokuapp.com/api/reservations/allReser`)
+    axios.get(`https://interxpim.herokuapp.com/api/hospital/allRes`,{_id:this.state._id})
       .then(res => {
         const resdata = res.data;
         this.setState({ resdata });
-        const date=[]
-        {
-          this.state.la.map((row) => {
-            date.push({title:row.firstname+" "+row.lastname,start:moment(new Date(row.date)).format("YYYY-MM-DD"),end:moment(new Date(row.date) ).format("YYYY-MM-DD")});
-  })
-  this.setState({ date });      
-  }
       })
     //window.location.reload(false);
     axios.get(`https://interxpim.herokuapp.com/api/users/all`)
@@ -65,41 +49,32 @@ class Tables extends React.Component {
         const resdataU = res.data;
         this.setState({ resdataU });
       })
-    axios.get(`https://interxpim.herokuapp.com/api/prelevements/all`)
+      axios.get(`https://interxpim.herokuapp.com/api/hospital/all`)
       .then(res => {
-        const resdataP = res.data;
-        this.setState({ resdataP });
+        const resdataH = res.data;
+        this.setState({ resdataH });
       })
-      
   }
   constructor() {
     super()
 
     this.state = {
+      _id:'',
       firstname: '',
       lastname: '',
       phone: '',
       date: '',
       heure: '',
       hospital: '',
-      etata: '',
-      etat: '',
-      prelevement: '',
+      nomHospital:'',
       modalIsOpen: false,
       resdata: [],
-      date:[],
       resdataR: [],
       resdataH: [],
+      
       l: [],
       la: [],
       resdataU: [],
-      resdataP: [],
-      yes: '',
-      no: '',
-      etatt: [],
-      keyWord: "",
-      statuuus:""
-
     }
   }
   handleChange(evt, field) {
@@ -116,7 +91,6 @@ class Tables extends React.Component {
       date: this.state.date,
       heure: this.state.heure,
       hospital: this.state.hospital,
-      prelevement: this.state.prelevement,
     }
     axios.post(`https://interxpim.herokuapp.com/api/reservations/createReser`, reservation)
       .then(res => {
@@ -133,54 +107,23 @@ class Tables extends React.Component {
     });
 
   }
-  handleChange(evt, field) {
-    this.setState({ [field]: evt.target.value });
 
-}
-
-  handleSubmit = event => {
-    event.preventDefault();
-
-    const keyWord = this.state.keyWord;
-    localStorage.setItem('keyWord', keyWord);
-    console.log(keyWord);
-    console.log(this.state.la);
-     const la= this.state.la.filter((datta)=>{
-    datta.firstname.toLowerCase().includes(this.state.keyWord)
-    ||
-    datta.lastname.toLowerCase().includes(this.state.keyWord)
-     }
-    // datta.firstname.toLowerCase().includes(this.state.keyWord)
-    )
-      console.log(la)
-      if(la.length==0){
-        this.setState({ la });
-         const statuuus = 'full'
-        this.setState({ statuuus });
-      } 
-      else{
-        const statuuus = 'empty'
-        this.setState({ statuuus });
-      }
-     
-};
   closeModal() {
     this.setState({
       modalIsOpen: false,
 
     });
   }
-  affichage(){
-
-  }
   render() {
-   
+    this.state.resdataH.forEach(element => {
+      console.log(element);
+    })
+
     this.state.resdata.forEach(elementr => {
       if (sessionStorage.getItem("role") == "Admin") {
         if (elementr.hospital == sessionStorage.getItem("id")) {
           this.state.l.push(elementr)
           this.state.la = Array.from(new Set(this.state.l))
-
           // console.log(Array.from(new Set(this.state.l)))
         }
       }
@@ -190,14 +133,6 @@ class Tables extends React.Component {
           this.state.la = Array.from(new Set(this.state.l))
           // console.log(Array.from(new Set(this.state.l)))
         }
-      }else if (sessionStorage.getItem("role") == "SupAdmin"){
-        this.state.resdata.forEach(elementr => {
-         
-           
-              this.state.l.push(elementr)
-              this.state.la = Array.from(new Set(this.state.l))
-        })
-    
       }
       else {
         if (elementr.user == sessionStorage.getItem("id")) {
@@ -208,16 +143,6 @@ class Tables extends React.Component {
       }
     })
 
-    this.state.resdataP.forEach(elemtentp => {
-      console.log(elemtentp)
-      if (elemtentp.etat) {
-        this.state.etat = "true"
-      } else {
-        this.state.etat = "false"
-      }
-    })
-    const localizer = momentLocalizer(moment)
- 
 
 
     return (
@@ -229,52 +154,7 @@ class Tables extends React.Component {
                 <Text fontSize="xl" color="gray.700" fontWeight="bold">
                   Liste des réservations
                 </Text>
-                <InputGroup
-      bg={"gray.200"}
-      borderRadius="15px"
-      w="200px"
-      _focus={{
-        borderColor: "teal.300",
-      }}
-      _active={{
-        borderColor: "teal.300",
-      }}
-    >
-      <InputLeftElement
-        children={
-          <IconButton
-            bg="inherit"
-            borderRadius="inherit"
-            _hover="none"
-            _active={{
-              bg: "inherit",
-              transform: "none",
-              borderColor: "transparent",
-            }}
-            _focus={{
-              boxShadow: "none",
-            }}
-            icon={<SearchIcon color={"gray.800"} w="15px" h="15px" />}
-          ></IconButton>
-        }
-      />
-      <form style={{marginLeft: "15px"}}  onSubmit={this.handleSubmit}>
-        
-                  <Input
-                  onChange={(event) => this.handleChange(event, "keyWord")}
-                  type="text"
-        fontSize="xs"
-        py="11px"
-        placeholder="         Rechercher"
-      />
-    
-         
-               
-
-            </form>
-     
-    </InputGroup>
-               {/*  <Button
+                <Button
                   colorScheme="#1daa3f"
                   borderColor="#1daa3f"
                   color="#1daa3f"
@@ -286,18 +166,9 @@ class Tables extends React.Component {
                   <Icon as={FaPlus} me="6px" />
                   Ajouter une réservation
                 </Button>
-                */}
               </Flex>
             </CardHeader>
-            <Calendar localizer={localizer} events={this.state.date} startAccessor="start"   eventPropGetter={(event, start, end, isSelected) => ({
-          event,
-          start,
-          end,
-          isSelected,
-          style: { backgroundColor: "green" }
-        })} style={{ colorRendering :"green", height: 500, margin: "50px" }} />
             <CardBody>
-            {this.state.statuuus != 'full'  ? 
               <Table variant="simple" color="gray.700">
                 <Thead>
                   <Tr my=".8rem" pl="0px" color="gray.400">
@@ -308,43 +179,28 @@ class Tables extends React.Component {
                     <Th color="gray.400">Heure</Th>
                     <Th color="gray.400">Statue</Th>
                     <Th color="gray.400">Actions</Th>
-                    <Th color="gray.400">Prelevement</Th>
+                    <Th></Th>
 
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {this.state.la.map((row) => {
-                   
 
+                  {this.state.resdata.map((row) => {
 
-                      return (
-
-                        <TablesTableRow
-                          id={row._id}
-                          firstname={row.firstname}
-                          lastname={row.lastname}
-                          date={row.date}
-                          heure={row.heure}
-                          phone={row.phone}
-                          result={row.result}
-                          etat={row.etat}
-                          idp={row.prelevement}
-
-                        />
-
-                      );
-                    
-
-
+                    return (
+                      <TablesTableRow
+                        id={row._id}
+                        firstname={row.firstname}
+                        lastname={row.lastname}
+                        date={row.date}
+                        heure={row.heure}
+                        result={row.result}
+                      />
+                    );
 
                   })}
-
                 </Tbody>
-
               </Table>
-              :
-              <Text>Aucune réservation trouvé</Text>
-                }
             </CardBody>
           </Card>
 
@@ -362,15 +218,16 @@ class Tables extends React.Component {
               <ModalBody pb={6}>
                 <FormControl>
                   <FormLabel>Prénom</FormLabel>
-                  <Input onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
+                  <Input onChange={(event) => this.handleChange(event, "firstname")} defaultValue={sessionStorage.getItem("firstname")} placeholder="Prénom" />
                   <FormLabel>Nom</FormLabel>
-                  <Input onChange={(event) => this.handleChange(event, "lastname")} placeholder="Nom" />
+                  <Input onChange={(event) => this.handleChange(event, "lastname")} defaultValue={sessionStorage.getItem("lastname")} placeholder="Nom" />
                   <FormLabel>Téléphone</FormLabel>
-                  <Input onChange={(event) => this.handleChange(event, "phone")} placeholder="Téléphone" />
+                  <Input onChange={(event) => this.handleChange(event, "phone")} defaultValue={sessionStorage.getItem("phone")} placeholder="Téléphone" />
                   <FormLabel>Date</FormLabel>
                   <Input type="date" onChange={(event) => this.handleChange(event, "date")} placeholder="Date" />
                   <FormLabel>Heure</FormLabel>
                   <Input onChange={(event) => this.handleChange(event, "heure")} placeholder="Heure" />
+                  
                 </FormControl>
               </ModalBody>
               <ModalFooter>

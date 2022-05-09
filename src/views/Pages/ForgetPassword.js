@@ -22,108 +22,25 @@ import {
 // Assets
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
-
 import signInImage from "assets/img/BgSignUp.png";
 function SignIn() {
   // Chakra color mode
   const history = useHistory();
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
   const toast = useToast()
   const toastIdRef = React.useRef()
-  var md5 = require('md5');
+
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
-
-
-  function addToast() {
-    toastIdRef.current = toast({ description: 'some text' })
-  }
   const Signup = () => {
     history.push("/auth/signup");
   }
-  const ForgetPassword = () => {
-    history.push("/auth/forgetPasword");
+  const   Signin = () => {
+    history.push("/auth/signin ");
   }
-  const login = () => {
-    console.log(isMail)
-    Axios.post("https://interxpim.herokuapp.com/api/users/login", {
-
-      email: email,
-
-      password:password,
-    }).then((response) => {
-
-      if (!response.data.message) {
-        // setLoginStatus( response.data.message);
-        if (response.data.role == "Admin" && isMail) {
-          sessionStorage.setItem("email", response.data.email)
-          sessionStorage.setItem("password", response.data.password)
-          sessionStorage.setItem("nomHospital", response.data.nomHospital)
-          sessionStorage.setItem("addresseHospital", response.data.addresseHospital)
-          sessionStorage.setItem("phoneHospital", response.data.phoneHospital)
-          sessionStorage.setItem("faxHospital", response.data.faxHospital)
-          sessionStorage.setItem("id", response.data._id)
-          sessionStorage.setItem("role", response.data.role)
-         // window.location.reload(false);
-          console.log(response);
-          history.push("/admin/reservations");
-          window.location.reload(false);
-        }else if (response.data.role=="user"){
-          sessionStorage.setItem("email", response.data.email)
-          sessionStorage.setItem("password", response.data.password)
-          sessionStorage.setItem("firstname", response.data.firstname)
-          sessionStorage.setItem("lastname", response.data.lastname)
-          sessionStorage.setItem("phone", response.data.phone)
-          sessionStorage.setItem("gender", response.data.gender)
-          sessionStorage.setItem("id", response.data._id)
-          sessionStorage.setItem("age", response.data.age)
-          sessionStorage.setItem("situation", response.data.situationF)
-          sessionStorage.setItem("role", response.data.role)
-          sessionStorage.setItem("hospital",response.data.hospital)
-          sessionStorage.setItem("sendsms",response.data.sendsms)
-          sessionStorage.setItem("sendemail",response.data.sendemail)
-          console.log(response);
-          history.push("/admin/reservations");
-
-          window.location.reload(false);
-        }else if (response.data.role=="SupAdmin"){
-          sessionStorage.setItem("email", response.data.email)
-          sessionStorage.setItem("password", response.data.password)
-          sessionStorage.setItem("role", response.data.role)
-          console.log(response);
-          history.push("/admin/reservations");
-          window.location.reload(false);
-        }
-        
-        else {
-          sessionStorage.setItem("email", response.data.email)
-          sessionStorage.setItem("password", response.data.password)
-          sessionStorage.setItem("firstname", response.data.firstname)
-          sessionStorage.setItem("lastname", response.data.lastname)
-          sessionStorage.setItem("phone", response.data.phone)
-          sessionStorage.setItem("adresse", response.data.adresse)
-          sessionStorage.setItem("id", response.data._id)
-          sessionStorage.setItem("birthday", response.data.birthday)
-          sessionStorage.setItem("situation", response.data.situationF)
-          sessionStorage.setItem("GroupeSanguine", response.data.GroupeSanguine)
-          sessionStorage.setItem("sendsms",response.data.sendsms)
-          sessionStorage.setItem("sendemail",response.data.sendemail)
-         
-          console.log(response);
-          history.push("/admin/reservations");
-          window.location.reload(false);
-        }
-        
-
-      } else {
-       
-        console.log(isMail)
-      }
-    });
-  };
+ 
   const isMail = () => {
 
     let regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
@@ -135,7 +52,24 @@ function SignIn() {
       return false;
     }
   }
-
+  
+  const [email, setEmail] = useState("");
+  const [OldPassword, setOldPassword] = useState("");
+  const [NewPassword, setNewPassword] = useState("");
+  const handleSubmit = () => {
+    if (OldPassword!=0&&NewPassword!=0){
+      Axios.post("https://interxpim.herokuapp.com/api/patient/changePwd", {
+        email: email,
+        oldPwd:OldPassword,
+        newpassword: NewPassword,
+      }).then((response) => {
+        window.location.reload(false);
+      })
+      console.log("yes")
+    }else {
+      console.log("no")
+    }
+  }
   console.log(isMail)
   return (
     <>
@@ -164,7 +98,7 @@ function SignIn() {
               mt={{ md: "150px", lg: "80px" }}
             >
               <Heading color="#1daa3f" fontSize="32px" mb="10px">
-                Welcome Back
+              Forget Password ?
               </Heading>
               <Text
                 mb="36px"
@@ -173,7 +107,7 @@ function SignIn() {
                 fontWeight="bold"
                 fontSize="14px"
               >
-                Enter your email and password to sign in
+                
               </Text>
               <FormControl >
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
@@ -194,7 +128,7 @@ function SignIn() {
                   size="lg"
                 />
                 <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-                  Password
+                   Old Password
                 </FormLabel>
                 <InputGroup size='md'>
                   <Input
@@ -202,11 +136,11 @@ function SignIn() {
                     mb="36px"
                     fontSize="sm"
                     type={show ? 'text' : 'password'}
-                    value={password}
+                    value={OldPassword}
                     borderColor="gray.400"
                     focusBorderColor="#1daa3f"
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Your password"
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    placeholder="Your Old password"
                     size="lg"
                   />
                   <InputRightElement width='4.5rem'>
@@ -215,15 +149,30 @@ function SignIn() {
                     </Button>
                   </InputRightElement>
                 </InputGroup>
-                <Text color={textColor} fontWeight="medium">
-                 
-                  <Link color={"#1daa3f"} as="span" ms="5px" fontWeight="bold"
-                    onClick={ForgetPassword}>
-                    Forget Password ?
-                  </Link>
-                </Text>
+                <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+                 New Password
+                </FormLabel>
+                <InputGroup size='md'>
+                  <Input
+                    borderRadius="15px"
+                    mb="36px"
+                    fontSize="sm"
+                    type={show ? 'text' : 'password'}
+                    value={NewPassword}
+                    borderColor="gray.400"
+                    focusBorderColor="#1daa3f"
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Your New password"
+                    size="lg"
+                  />
+                  <InputRightElement width='4.5rem'>
+                    <Button h='1.75rem' size='sm' onClick={handleClick}>
+                      {show ? 'Hide' : 'Show'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
                 <Button
-                  onClick={login}
+                  onClick={handleSubmit}
                   fontSize="10px"
                   type="submit"
                   bg="#1daa3f"
@@ -239,7 +188,7 @@ function SignIn() {
                     bg: "#1daa3f",
                   }}
                 >
-                  SIGN IN
+                  CHANGE
                 </Button>
               </FormControl>
               <Flex
@@ -253,8 +202,20 @@ function SignIn() {
                   Don't have an account?
                   <Link color={"#1daa3f"} as="span" ms="5px" fontWeight="bold"
                     onClick={Signup}>
-                    Sign Up
+                    Sign Up  
                   </Link>
+                  <Flex
+                justifyContent="center"
+                alignItems="center"
+                maxW="100%"
+                mt="0px"
+              >
+                  Or 
+                  <Link color={"#1daa3f"} as="span" ms="5px" fontWeight="bold"
+                    onClick={Signin}>
+                    Sign In
+                  </Link>
+                  </Flex>
                 </Text>
               </Flex>
             </Flex>

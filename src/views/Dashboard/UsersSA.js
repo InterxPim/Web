@@ -46,7 +46,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import TablesTableRow from "components/Tables/TablesTableRow";
 
-class Users extends React.Component {
+class UsersSA extends React.Component {
 
 
   componentDidMount() {
@@ -399,4 +399,4 @@ class Users extends React.Component {
   }
 }
 
-export default Users;
+export default UsersSA;

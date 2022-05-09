@@ -4,6 +4,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Center,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
@@ -16,9 +17,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-
 import logo from "assets/img/logo.png";
-
 import IconBox from "components/Icons/IconBox";
 import { CreativeTimLogo } from "components/Icons/Icons";
 import { Separator } from "components/Separator/Separator";
@@ -57,6 +56,7 @@ function Sidebar(props) {
       inactiveColor = useColorModeValue("gray.400", "gray.400");
       sidebarActiveShadow = "none";
     }
+   
 
     return routes.map((prop, key) => {
       if (prop.redirect) {
@@ -126,7 +126,7 @@ function Sidebar(props) {
                   <Icon>{prop.icon}</Icon>
                 ) : (
                   <IconBox
-                    bg="teal.300"
+                    bg="#bec0c4"
                     color="white"
                     h="30px"
                     w="30px"
@@ -208,17 +208,28 @@ function Sidebar(props) {
   let sidebarBg = "none";
   let sidebarRadius = "0px";
   let sidebarMargins = "0px";
+  let name="";
   if (sidebarVariant === "opaque") {
     sidebarBg = useColorModeValue("white", "gray.700");
     sidebarRadius = "16px";
     sidebarMargins = "16px 0px 16px 16px";
   }
+  if (sessionStorage.getItem("role")=="Admin")
+  {
+name = sessionStorage.getItem("nomHospital")
+  }else if(sessionStorage.getItem("role")=="user")
+  {
+    name = sessionStorage.getItem("firstname") + ' ' + sessionStorage.getItem("lastname")
+  }else if(sessionStorage.getItem("role")=="SupAdmin"){
+    name = "Admin"
+  }
+  else{
+    name = sessionStorage.getItem("firstname") + ' ' + sessionStorage.getItem("lastname")
+  }
   var brand = (
     <Box pt={"25px"} mb="12px">
       <Link
-
         href={`/#/admin/reservations`}
-
         target="_blank"
         display="flex"
         lineHeight="100%"
@@ -228,13 +239,18 @@ function Sidebar(props) {
         alignItems="center"
         fontSize="11px"
       >
-
-        < IconBox  h="200px"
+        < IconBox  h="150px"
                     w="200px"
                   >   <img src={logo} height="10px"  /></IconBox>
-
+      
       </Link>
       <Separator></Separator>
+      <Center>
+      <Stack spacing={3}>
+      <Text fontSize='xs'>Bienvenu , {name}  </Text>
+     </Stack>
+     </Center>
+     <Separator></Separator>
     </Box>
   );
 
@@ -263,8 +279,7 @@ function Sidebar(props) {
           <Stack direction="column" mb="40px">
             <Box>{links}</Box>
           </Stack>
-     
-
+        
         </Box>
       </Box>
     </Box>
@@ -506,7 +521,6 @@ export function SidebarResponsive(props) {
               <Stack direction="column" mb="40px">
                 <Box>{links}</Box>
               </Stack>
-
             </Box>
           </DrawerBody>
         </DrawerContent>

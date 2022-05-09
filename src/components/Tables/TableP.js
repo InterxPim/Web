@@ -7,15 +7,7 @@ import {
   Text,
   Tr,
   useColorModeValue,
-  InputRightElement,
-  InputGroup,
-  Image
 } from "@chakra-ui/react";
-
-import ReactToPrint from "react-to-print";
-import {Grid,TextField} from '@material-ui/core';
-import QRCode from 'qrcode';
-import QrReader from 'react-qr-reader';
 import axios from 'axios';
 import moment from "moment";
 import {
@@ -43,7 +35,7 @@ import {
 } from "@chakra-ui/react"
 import React from "react";
 import { GiLoveInjection } from "react-icons/gi";
-import { FaLeaf, FaPencilAlt, FaTrashAlt } from "react-icons/fa";
+import { FaPencilAlt, FaTrashAlt } from "react-icons/fa";
 import { date } from "yup";
 class TablesTableRow extends React.Component {
 
@@ -73,23 +65,16 @@ class TablesTableRow extends React.Component {
       if (!response.data.message) {
         // console.log(response.data.note)
         this.state.note = response.data.note
-        this.state.generate = response.data.numeroD
+        this.state.numeroD = response.data.numeroD
       }
     })
-  
     // console.log("prelevement nest pas efectue")
   }
-  
-  componentDidUpdate() {
-    console.log(this.state)
-  }
-
   constructor(props) {
 
 
     super(props);
     this.state = {
-      generate: '',
       result: '',
       firstname: '',
       lastname: '',
@@ -101,25 +86,11 @@ class TablesTableRow extends React.Component {
       note: '',
       date: Date.now(),
       numeroD: '',
-      imageUrl:'',
       modalIsOpen: false,
-      modalIsOpenQ:false,
       modalIsOpenP: false,
       resdataP: [],
       pref: [],
       list: []
-    }
-  }
-
-
-  generateQrCode = async ()  =>{
-    try {
-          const response = await QRCode.toDataURL(this.state.generate);
-          console.log(response)
-          this.state.imageUrl=response;
-          console.log( this.state.imageUrl)
-    }catch (error) {
-      console.log(error);
     }
   }
   handleChange(evt, field) {
@@ -153,6 +124,7 @@ class TablesTableRow extends React.Component {
       heure: this.state.heure,
       hospital: this.state.hospital,
       etat: this.state.etat
+
     }
     axios.put(`https://interxpim.herokuapp.com/api/reservations/updateReser`, reservation)
       .then(res => {
@@ -173,7 +145,7 @@ class TablesTableRow extends React.Component {
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       date: this.state.date,
-      numeroD: this.state.generate,
+      numeroD: this.state.numeroD,
       note: this.state.note,
       reservation: this.state.id1
 
@@ -187,7 +159,7 @@ class TablesTableRow extends React.Component {
     axios.put(`https://interxpim.herokuapp.com/api/prelevements/updatePrev`, prelevement)
       .then(res => {
 
-        // alert("prelevement modifié!")
+       // alert("prelevement modifié!")
         window.location.reload(false);
       }).catch(error => {
         alert("Remplissez tous les champs!");
@@ -203,7 +175,7 @@ class TablesTableRow extends React.Component {
       }
       )
   }
- 
+
   openModal(id1) {
     this.setState({
       modalIsOpen: true,
@@ -227,14 +199,13 @@ class TablesTableRow extends React.Component {
       modalIsOpenP: true,
       id: id2
     });
-    this.generateQrCode()
     axios.post("https://interxpim.herokuapp.com/api/prelevements/show", {
 
       _id: this.props.idp,
     }).then((response) => {
 
       if (!response.data.message) {
-       // console.log(response.data.note)
+        console.log(response.data.note)
         this.state.note = response.data.note
         this.state.numeroD = response.data.numeroD
 
@@ -242,26 +213,12 @@ class TablesTableRow extends React.Component {
     })
     //console.log(id2)
   }
-  openModal3(id1) {
-    this.setState({
-      ...this.state,
-      modalIsOpenQ: true,
-      id: id1
-    });
-  }
+
   closeModal() {
     this.setState({
       modalIsOpen: false,
 
     });
-  }
-  closeModalQ() {
-    this.setState({
-      ...this.state,
-      modalIsOpenQ:false,
-
-    });
-
   }
   closeModalP() {
     this.setState({
@@ -269,22 +226,6 @@ class TablesTableRow extends React.Component {
 
     });
   }
-  codeGen = async (event) => {
-    event.preventDefault();
-    let response = await axios.post("https://interxpim.herokuapp.com/api/prelevements/geree", {})
-    this.setState({
-      ...this.state,
-      generate: response.data
-    })
-
-    this.generateQrCode()
-  }
-  print(){
-    console.log("print")
-    print(this.generateQrCode())
-}
-
-
 
   render() {
 
@@ -326,6 +267,11 @@ class TablesTableRow extends React.Component {
           <Td>
             <Text fontSize="md" color="gray.700" fontWeight="bold" pb=".5rem">
               {heure}
+            </Text>
+          </Td>
+          <Td>
+            <Text fontSize="md" color="gray.700" fontWeight="bold" pb=".5rem">
+              {phone}
             </Text>
           </Td>
           <Td>
@@ -388,22 +334,7 @@ class TablesTableRow extends React.Component {
               </Button>
             </Flex>
           </Td>
-          <Td>
-
-
-            <Button onClick={() => { this.openModal2(idp) }} p="0px" bg="transparent">
-
-              <Flex cursor="pointer" align="center" p="12px"
-                borderRadius={"10px"}
-                bg={etat === true ? "green.400" : "gray.400"}
-                color={etat === false ? "white" : "gray.700"}
-              >
-                <Icon as={GiLoveInjection} me="4px" />
-
-              </Flex>
-
-            </Button>
-          </Td>
+         
         </Tr>
         <Modal
           isOpen={this.state.modalIsOpen}
@@ -416,7 +347,7 @@ class TablesTableRow extends React.Component {
               <ModalHeader>Modifier la réservation</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
-                <FormControl >
+                <FormControl>
                   <FormLabel>Prénom</FormLabel>
                   <Input defaultValue={firstname} onChange={(event) => this.handleChange(event, "firstname")} placeholder="Prénom" />
                   <FormLabel>Nom</FormLabel>
@@ -448,7 +379,7 @@ class TablesTableRow extends React.Component {
           <ModalOverlay />
           <ModalContent>
 
-            <form id="form" onSubmit={this.handleSubmit1} >
+            <form id="form" onSubmit={this.handleSubmit1}>
               <ModalHeader>prélévement </ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={5}>
@@ -460,83 +391,18 @@ class TablesTableRow extends React.Component {
                   <FormLabel>Note</FormLabel>
                   <Input defaultValue={this.state.note} onChange={(event) => this.handleChange(event, "note")} placeholder="note" />
                   <FormLabel>numéro Dignostique</FormLabel>
-                  <InputGroup size='md'>
-                    <Input value={this.state.generate} readOnly onChange={(event) => this.handleChange(event, "numeroD")} placeholder="numeroD" >
-                    </Input>
-                    <InputRightElement width='4.5rem'>
-                      <Popover
-                        initialFocusRef={this.state.modalIsOpenQ}
-                        onOpen={() => { this.closeModalQ() }}
-                        placement='right'
-                        
-                        closeOnBlur={true}
-                      >
-                        <PopoverTrigger>
-                          <Button 
-                           onClick={() => { this.generateQrCode() }}
-                            h='1.75rem' size='sm'
-                            mb={{ sm: "10px", md: "0px" }}
-                            me={{ md: "12px" }}
-                          >
-                           test
-                          </Button>
-                        </PopoverTrigger>
-
-                        <PopoverContent>
-                          <PopoverHeader fontWeight='semibold'>QR Code</PopoverHeader>
-                          <PopoverArrow />
-                          <PopoverCloseButton />
-                          <PopoverBody>
-                            Scaner le QR Code 
-                            
-                            <Image src={this.state.imageUrl} ref={el => (this.componentRef = el)} />
-                            <br/>
-                           
-                    
-                          </PopoverBody>
-                          <PopoverFooter d='flex' justifyContent='flex-end'>
-                            <ButtonGroup size='sm'>
-                            <ReactToPrint
-          trigger={() => <a>Print this QRCode!</a>}
-          content={() => this.componentRef}
-        />
-       
-                            </ButtonGroup>
-                          </PopoverFooter>
-                        </PopoverContent>
-                      </Popover>
-
-
-                    </InputRightElement>
-                  </InputGroup>
+               
+                  <Input defaultValue={this.state.numeroD} onChange={(event) => this.handleChange(event, "numeroD")} placeholder="numeroD" />
+                  
+             
                 </FormControl>
               </ModalBody>
               <ModalFooter>
-
-
-
-                <Button type="submit" bg="#1daa3f"
-                  _hover={{
-                    bg: "#147a2c",
-                  }}
-                  _active={{
-                    bg: "#1daa3f",
-                  }}
-                  mr={3}>
+                <Button type="submit" colorScheme="blue" mr={3}>
                   Valider
                 </Button>
                 <Button onClick={() => { this.closeModalP() }} >Annuler</Button>
-                {!this.state.generate && <Button onClick={this.codeGen}
-                  bg="#1daa3f"
-                  _hover={{
-                    bg: "#147a2c",
-                  }}
-                  _active={{
-                    bg: "#1daa3f",
-                  }}
-                >
-                  Geree
-                </Button>}
+
               </ModalFooter>
             </form>
           </ModalContent>

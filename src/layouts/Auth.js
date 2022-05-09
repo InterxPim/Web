@@ -5,9 +5,7 @@ import Footer from "components/Footer/Footer.js";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-
 import routes from "routes2.js";
-
 import theme from "theme/theme.js";
 
 export default function Pages(props) {
@@ -88,7 +86,7 @@ export default function Pages(props) {
   return (
     <ChakraProvider theme={theme} resetCss={false} w="100%">
       <Box ref={navRef} w="100%">
-
+    
         <Box w="100%">
           <Box ref={wrapper} w="100%">
             <Switch>
